@@ -2,7 +2,7 @@
 .hero {
   position: relative;
   height: 400px;
-  background: url('../img/img-11.jpeg') center/cover no-repeat;
+  background: url("../img/img-11.jpeg") center/cover no-repeat;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -13,7 +13,7 @@
   content: "";
   position: absolute;
   inset: 0;
-  background: rgba(0,0,0,0.3); /* dark overlay */
+  background: rgba(0, 0, 0, 0.3); /* dark overlay */
 }
 
 .hero-text {
@@ -31,8 +31,8 @@
 .hero-text h2 {
   font-size: 2rem;
   font-weight: 700;
-  color: #3B82F6;
-  border-bottom: 2px solid #3B82F6;
+  color: #3b82f6;
+  border-bottom: 2px solid #3b82f6;
   display: inline-block;
   padding-bottom: 5px;
 }
@@ -53,7 +53,7 @@
 }
 
 .about .text h4 {
-  color: #3B82F6; /* golden heading */
+  color: #3b82f6; /* golden heading */
   font-weight: 600;
   letter-spacing: 1px;
 }
@@ -111,9 +111,9 @@
 }
 
 .num {
-    color: #3B82F6;
-    font-size: 18px;
-    font-weight: 700;
+  color: #3b82f6;
+  font-size: 18px;
+  font-weight: 700;
 }
 
 /* animated */
@@ -151,9 +151,9 @@
   position: absolute;
   width: 14px;
   height: 14px;
-  background: #3B82F6;
+  background: #3b82f6;
   border-radius: 50%;
-  box-shadow: 0 0 12px #3B82F6;
+  box-shadow: 0 0 12px #3b82f6;
   transform: translate(-50%, -50%);
 }
 
@@ -162,7 +162,7 @@
 }
 
 .text-area h5 {
-  color: #3B82F6;
+  color: #3b82f6;
   font-size: 16px;
   letter-spacing: 1px;
   margin-bottom: 15px;
@@ -188,7 +188,7 @@
 }
 
 .stat h3 {
-  color: #3B82F6;
+  color: #3b82f6;
   font-size: 36px;
   font-weight: 700;
 }
@@ -218,9 +218,9 @@
     justify-content: center;
   }
 }
-  /* what as apart */
+/* what as apart */
 
-  .what-sets-us-apart {
+.what-sets-us-apart {
   background-color: #fff; /* Black background */
   color: #000; /* White text for general content */
   padding: 80px 0; /* Vertical padding */
@@ -243,7 +243,7 @@
 }
 
 .what-sets-us-apart .left-content .subtitle {
-  color: #3B82F6; /* Light yellow/gold for the subtitle */
+  color: #3b82f6; /* Light yellow/gold for the subtitle */
   font-size: 0.9em;
   margin-bottom: 10px;
   text-transform: uppercase;
@@ -264,7 +264,7 @@
 }
 
 .what-sets-us-apart .call-to-action {
-  background-color: #3B82F6; /* Light yellow/gold button */
+  background-color: #3b82f6; /* Light yellow/gold button */
   color: #fff;
   border: none;
   padding: 15px 30px;
@@ -276,14 +276,17 @@
 }
 
 .what-sets-us-apart .call-to-action:hover {
-  background-color: #3B82F6; /* Slightly darker on hover */
+  background-color: #3b82f6; /* Slightly darker on hover */
 }
 
 .what-sets-us-apart .right-content {
   flex: 1.5; /* Takes more space than left content */
   min-width: 400px; /* Minimum width before wrapping */
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); /* Two columns on larger screens, single on smaller */
+  grid-template-columns: repeat(
+    auto-fit,
+    minmax(250px, 1fr)
+  ); /* Two columns on larger screens, single on smaller */
   gap: 40px; /* Space between feature cards */
 }
 
