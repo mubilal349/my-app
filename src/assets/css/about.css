@@ -1,0 +1,347 @@
+/* ===== Hero Section ===== */
+.hero {
+  position: relative;
+  height: 400px;
+  background: url('../img/img-11.jpeg') center/cover no-repeat;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 100px; /* space for fixed navbar */
+}
+
+.hero::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: rgba(0,0,0,0.3); /* dark overlay */
+}
+
+.hero-text {
+  position: relative;
+  color: white;
+  text-align: center;
+  z-index: 2;
+}
+
+.hero-text h1 {
+  font-size: 2.5rem;
+  font-weight: 600;
+}
+
+.hero-text h2 {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #3B82F6;
+  border-bottom: 2px solid #3B82F6;
+  display: inline-block;
+  padding-bottom: 5px;
+}
+
+/* image - text */
+
+.about {
+  background: #fff; /* black background */
+  color: #000;
+  padding: 80px 10%;
+}
+
+.about-content {
+  display: grid;
+  grid-template-columns: 1fr 1fr; /* text + image side-by-side */
+  align-items: center;
+  gap: 60px;
+}
+
+.about .text h4 {
+  color: #3B82F6; /* golden heading */
+  font-weight: 600;
+  letter-spacing: 1px;
+}
+
+.about .text h2 {
+  font-size: 2.5rem;
+  margin-bottom: 20px;
+}
+
+.about .text p {
+  line-height: 1.7;
+  color: #000;
+  margin-bottom: 15px;
+}
+
+.about .text ul {
+  list-style: none;
+  padding: 0;
+  margin-top: 20px;
+}
+
+.about .text ul li {
+  margin-bottom: 10px;
+  font-size: 1rem;
+}
+
+.about .image {
+  display: flex;
+  justify-content: center;
+}
+
+.about .image img {
+  width: 100%;
+  max-width: 500px;
+  border-radius: 12px;
+  /* box-shadow: 0 0 25px rgba(0, 0, 0, 0.6); */
+  object-fit: cover;
+}
+
+/* 🔹 Responsive (mobile & tablet view) */
+@media (max-width: 992px) {
+  .about-content {
+    grid-template-columns: 1fr;
+    text-align: center;
+  }
+
+  .about .image {
+    justify-content: center;
+    margin-top: 30px;
+  }
+
+  .about .image img {
+    max-width: 90%;
+  }
+}
+
+.num {
+    color: #3B82F6;
+    font-size: 18px;
+    font-weight: 700;
+}
+
+/* animated */
+
+.clients-section {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 80px 5%;
+  background-color: #fff;
+}
+
+.container {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 40px;
+  max-width: 1200px;
+  width: 100%;
+}
+
+.map-area {
+  position: relative;
+  flex: 1 1 45%;
+}
+
+.world-map {
+  width: 100%;
+  opacity: 0.3;
+  /* filter: grayscale(1); */
+}
+
+.dots .dot {
+  position: absolute;
+  width: 14px;
+  height: 14px;
+  background: #3B82F6;
+  border-radius: 50%;
+  box-shadow: 0 0 12px #3B82F6;
+  transform: translate(-50%, -50%);
+}
+
+.text-area {
+  flex: 1 1 45%;
+}
+
+.text-area h5 {
+  color: #3B82F6;
+  font-size: 16px;
+  letter-spacing: 1px;
+  margin-bottom: 15px;
+}
+
+.text-area h2 {
+  font-size: 36px;
+  line-height: 1.3;
+  margin-bottom: 20px;
+}
+
+.text-area p {
+  color: #bbb;
+  font-size: 15px;
+  line-height: 1.6;
+  margin-bottom: 40px;
+}
+
+.stats {
+  display: flex;
+  gap: 50px;
+  flex-wrap: wrap;
+}
+
+.stat h3 {
+  color: #3B82F6;
+  font-size: 36px;
+  font-weight: 700;
+}
+
+.stat p {
+  color: #ccc;
+  font-size: 14px;
+  margin-top: 5px;
+}
+
+/* Responsive */
+@media (max-width: 900px) {
+  .container {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .map-area {
+    order: 2;
+  }
+
+  .text-area {
+    order: 1;
+  }
+
+  .stats {
+    justify-content: center;
+  }
+}
+  /* what as apart */
+
+  .what-sets-us-apart {
+  background-color: #fff; /* Black background */
+  color: #000; /* White text for general content */
+  padding: 80px 0; /* Vertical padding */
+  font-family: Arial, sans-serif; /* Example font */
+}
+
+.what-sets-us-apart .container {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  flex-wrap: wrap; /* Allow wrapping on smaller screens */
+  gap: 40px; /* Space between left and right content */
+  align-items: flex-start; /* Align items to the top */
+}
+
+.what-sets-us-apart .left-content {
+  flex: 1; /* Takes available space */
+  min-width: 300px; /* Minimum width before wrapping */
+  padding-right: 20px;
+}
+
+.what-sets-us-apart .left-content .subtitle {
+  color: #3B82F6; /* Light yellow/gold for the subtitle */
+  font-size: 0.9em;
+  margin-bottom: 10px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.what-sets-us-apart .left-content h1 {
+  font-size: 3em;
+  margin-bottom: 20px;
+  line-height: 1.2;
+}
+
+.what-sets-us-apart .left-content .description {
+  font-size: 1.1em;
+  line-height: 1.6;
+  margin-bottom: 30px;
+  color: #a0a0a0; /* Lighter grey for description */
+}
+
+.what-sets-us-apart .call-to-action {
+  background-color: #3B82F6; /* Light yellow/gold button */
+  color: #fff;
+  border: none;
+  padding: 15px 30px;
+  font-size: 1em;
+  font-weight: bold;
+  cursor: pointer;
+  border-radius: 5px;
+  transition: background-color 0.3s ease;
+}
+
+.what-sets-us-apart .call-to-action:hover {
+  background-color: #3B82F6; /* Slightly darker on hover */
+}
+
+.what-sets-us-apart .right-content {
+  flex: 1.5; /* Takes more space than left content */
+  min-width: 400px; /* Minimum width before wrapping */
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); /* Two columns on larger screens, single on smaller */
+  gap: 40px; /* Space between feature cards */
+}
+
+.what-sets-us-apart .feature-card {
+  padding: 0; /* No explicit padding, text inside has its own spacing */
+}
+
+.what-sets-us-apart .feature-card h2 {
+  font-size: 1.8em;
+  margin-bottom: 10px;
+  line-height: 1.3;
+}
+
+.what-sets-us-apart .feature-card p {
+  font-size: 1em;
+  line-height: 1.6;
+  color: #a0a0a0; /* Lighter grey for feature descriptions */
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .what-sets-us-apart .container {
+    flex-direction: column; /* Stack columns on smaller screens */
+    align-items: center; /* Center content when stacked */
+    text-align: center;
+    padding: 0 20px; /* Add some horizontal padding */
+  }
+
+  .what-sets-us-apart .left-content,
+  .what-sets-us-apart .right-content {
+    min-width: unset; /* Remove min-width for flexibility */
+    width: 100%; /* Take full width */
+    padding-right: 0;
+  }
+
+  .what-sets-us-apart .left-content h1 {
+    font-size: 2.5em;
+  }
+
+  .what-sets-us-apart .right-content {
+    grid-template-columns: 1fr; /* Single column for feature cards on small screens */
+  }
+
+  .what-sets-us-apart .feature-card h2 {
+    font-size: 1.5em;
+  }
+}
+
+@media (max-width: 480px) {
+  .what-sets-us-apart .left-content h1 {
+    font-size: 2em;
+  }
+  .what-sets-us-apart .left-content .description,
+  .what-sets-us-apart .feature-card p {
+    font-size: 0.95em;
+  }
+  .what-sets-us-apart .call-to-action {
+    padding: 12px 25px;
+    font-size: 0.9em;
+  }
+}

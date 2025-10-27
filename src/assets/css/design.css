@@ -1,0 +1,331 @@
+.hero {
+  position: relative;
+  height: 400px;
+  background: url('../img/img-13.jpeg') center/cover no-repeat;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 100px; /* space for fixed navbar */
+}
+
+.hero::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: rgba(0,0,0,0.3); /* dark overlay */
+}
+
+.hero-text {
+  position: relative;
+  color: white;
+  text-align: center;
+  z-index: 2;
+}
+
+.hero-text h1 {
+  font-size: 2.5rem;
+  font-weight: 600;
+}
+
+.hero-text h2 {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #3B82F6;
+  border-bottom: 2px solid #3B82F6;
+  display: inline-block;
+  padding-bottom: 5px;
+}
+
+/* FAQ's */
+
+.faqs-section {
+  background-color: #fff; /* Black background */
+  color: #000; /* White text */
+  padding: 80px 0; /* Vertical padding */
+}
+
+.faqs-section .container {
+  max-width: 900px; /* Slightly narrower than previous section for focus */
+  margin: 0 auto;
+  padding: 0 20px; /* Horizontal padding for smaller screens */
+  text-align: center; /* Center the title and subtitle */
+}
+
+.faqs-section .faqs-subtitle {
+  color: #3B82F6; /* Light yellow/gold for the subtitle */
+  font-size: 0.9em;
+  margin-bottom: 10px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.faqs-section h2 {
+  font-size: 2.8em;
+  margin-bottom: 50px; /* Space below the main title */
+  line-height: 1.2;
+}
+
+.faqs-section .faq-list {
+  text-align: left; /* Align FAQ questions to the left */
+}
+
+.faqs-section .faq-item {
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1); /* Subtle divider */
+  padding: 20px 0;
+  cursor: pointer; /* Indicates it's interactive */
+}
+
+.faqs-section .faq-item:first-child {
+  padding-top: 0;
+}
+
+.faqs-section .faq-item:last-child {
+  border-bottom: none; /* No border for the last item */
+  padding-bottom: 0;
+}
+
+.faqs-section .faq-question {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.faqs-section .faq-question h3 {
+  font-size: 1.15em; /* Question font size */
+  margin: 0; /* Remove default margin */
+  font-weight: normal; /* Less bold than main headings */
+  color: #000;
+  flex-grow: 1; /* Allows it to take up available space */
+}
+
+.faqs-section .faq-toggle-icon {
+  width: 16px;
+  height: 16px;
+  position: relative;
+  display: inline-block;
+  transition: transform 0.3s ease;
+}
+
+/* Create the plus icon using pseudo-elements */
+.faqs-section .faq-toggle-icon::before,
+.faqs-section .faq-toggle-icon::after {
+  content: "";
+  position: absolute;
+  background-color: white; /* Change color as needed */
+  transition: all 0.3s ease;
+}
+
+/* Vertical line */
+.faqs-section .faq-toggle-icon::before {
+  top: 0;
+  left: 50%;
+  width: 2px;
+  height: 100%;
+  transform: translateX(-50%);
+}
+
+/* Horizontal line */
+.faqs-section .faq-toggle-icon::after {
+  top: 50%;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  transform: translateY(-50%);
+}
+
+/* When active (open) — turn plus into minus */
+.faqs-section .faq-item.active .faq-toggle-icon::before {
+  opacity: 0; /* hide vertical line */
+}
+
+.faqs-section .faq-item.active .faq-toggle-icon {
+  transform: rotate(180deg); /* small rotation for smooth animation */
+}
+
+
+/* Style for the answer content */
+.faqs-section .faq-answer {
+  max-height: 0; /* Hidden by default */
+  overflow: hidden;
+  transition: max-height 0.3s ease-out; /* Smooth slide transition */
+  padding-right: 20px; /* Space for the icon */
+}
+
+.faqs-section .faq-item.active .faq-answer {
+  max-height: 150px; /* Or a larger value to accommodate content, or use JS to calculate height */
+  margin-top: 15px; /* Space between question and answer */
+}
+
+.faqs-section .faq-answer p {
+  font-size: 1em;
+  line-height: 1.6;
+  color: #a0a0a0; /* Lighter grey for description */
+  margin: 0; /* Remove default paragraph margin */
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .faqs-section h2 {
+    font-size: 2.2em;
+    margin-bottom: 40px;
+  }
+  .faqs-section .faq-question h3 {
+    font-size: 1em;
+  }
+  .faqs-section .faq-item {
+    padding: 15px 0;
+  }
+  .faqs-section .faq-item.active .faq-answer {
+    margin-top: 10px;
+  }
+}
+
+@media (max-width: 480px) {
+  .faqs-section h2 {
+    font-size: 1.8em;
+    margin-bottom: 30px;
+  }
+  .faqs-section .container {
+    padding: 0 15px;
+  }
+}
+
+/* 
+before/after */
+
+.configurator-section {
+  background-color: #fff; /* Black background */
+  color: #000; /* White text */
+  padding: 80px 0; /* Vertical padding */
+}
+
+.configurator-section .container {
+  max-width: 1200px; /* Match previous section's width */
+  margin: 0 auto;
+  display: flex;
+  flex-wrap: wrap; /* Allow columns to wrap on smaller screens */
+  gap: 40px; /* Space between left and right content */
+  align-items: center; /* Vertically align items in the middle */
+}
+
+.configurator-section .left-content {
+  flex: 1; /* Takes available space */
+  min-width: 350px; /* Minimum width before wrapping */
+  padding-right: 20px; /* Spacing from the image */
+}
+
+.configurator-section .left-content .subtitle {
+  color: #3B82F6; /* Light yellow/gold for the subtitle */
+  font-size: 0.9em;
+  margin-bottom: 10px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.configurator-section .left-content h1 {
+  font-size: 3.2em; /* Larger heading */
+  margin-bottom: 20px;
+  line-height: 1.2;
+}
+
+.configurator-section .left-content .description {
+  font-size: 1.1em;
+  line-height: 1.6;
+  margin-bottom: 30px;
+  color: #a0a0a0; /* Lighter grey for description */
+}
+
+.configurator-section .call-to-action {
+  background-color: #3B82F6; /* Light yellow/gold button */
+  color: #fff;
+  border: none;
+  padding: 15px 30px;
+  font-size: 1em;
+  font-weight: bold;
+  cursor: pointer;
+  border-radius: 5px;
+  transition: background-color 0.3s ease;
+}
+
+.configurator-section .call-to-action:hover {
+  background-color: #3B82F6; /* Slightly darker on hover */
+}
+
+.configurator-section .right-content {
+  flex: 1.2; /* Slightly more space for the image */
+  min-width: 450px; /* Minimum width for the image container */
+  display: flex; /* To center the image if it's smaller */
+  justify-content: center;
+  align-items: center;
+}
+
+.configurator-section .image-wrapper {
+  position: relative;
+  width: 100%;
+  padding-bottom: 75%; /* Aspect ratio (e.g., 4:3 if image is 800x600) for responsive image */
+  background-color: #333; /* Placeholder background */
+  border-radius: 10px; /* Slightly rounded corners for the image container */
+  overflow: hidden; /* Ensure image doesn't overflow corners */
+}
+
+.configurator-section .image-wrapper img {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover; /* Ensures image covers the area without distortion */
+  display: block;
+  border-radius: 10px; /* Apply border-radius directly to the image too */
+}
+
+
+/* Responsive adjustments */
+@media (max-width: 992px) {
+  .configurator-section .container {
+    gap: 30px;
+    padding: 0 30px; /* Add horizontal padding */
+  }
+
+  .configurator-section .left-content h1 {
+    font-size: 2.8em;
+  }
+
+  .configurator-section .left-content,
+  .configurator-section .right-content {
+    min-width: unset; /* Remove min-width for flexibility */
+    width: 100%; /* Take full width on smaller screens */
+    text-align: center; /* Center text when stacked */
+    padding-right: 0;
+  }
+
+  .configurator-section .right-content {
+    order: -1; /* Place image above text on small screens if desired */
+    margin-bottom: 30px;
+  }
+}
+
+@media (max-width: 576px) {
+  .configurator-section {
+    padding: 60px 0;
+  }
+
+  .configurator-section .left-content h1 {
+    font-size: 2.2em;
+    margin-bottom: 15px;
+  }
+
+  .configurator-section .left-content .description {
+    font-size: 1em;
+    margin-bottom: 25px;
+  }
+
+  .configurator-section .call-to-action {
+    padding: 12px 25px;
+    font-size: 0.9em;
+  }
+
+  .configurator-section .image-wrapper {
+    padding-bottom: 60%; /* Adjust aspect ratio for smaller screens if needed */
+  }
+}
