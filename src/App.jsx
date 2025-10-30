@@ -9,8 +9,9 @@ import ImageCards from "./components/ImageCards";
 import ProjectComparison from "./components/ProjectComparison";
 import Footer from "./components/Footer";
 import BackToTop from "./components/BackToTop";
-import DesignWheel from "./components/DesignWheel";
 import AboutSection from "./components/AboutSection";
+import AccessoriesPage from "./components/AccessoriesPage";
+import Customization from "./components/Customization";
 
 const App = () => {
   return (
@@ -33,9 +34,8 @@ const App = () => {
             </>
           }
         />
-
-        {/* ✅ Design Page */}
-        <Route path="/design-wheel" element={<DesignWheel />} />
+        <Route path="/accessories-page" element={<AccessoriesPage />} />
+        <Route path="/customization" element={<Customization />} />
       </Routes>
     </Router>
   );

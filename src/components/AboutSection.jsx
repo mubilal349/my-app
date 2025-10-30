@@ -55,11 +55,12 @@ const AboutSection = () => {
         </h2>
         <p
           style={{
-            fontSize: "1rem",
-            lineHeight: "1.6",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
+            fontSize: "1.125rem",
+            lineHeight: "1.8",
+            maxWidth: "700px",
+            margin: "40px auto",
+            textAlign: "justify",
+            padding: "0 20px",
           }}
         >
           We specialize in crafting unique steering wheels and car interiors
@@ -76,10 +77,14 @@ const AboutSection = () => {
               flex-direction: column !important;
             }
             div[style*="order: 1"] {
-              order: 1 !important; /* text first */
+              order: 1 !important; 
             }
             div[style*="order: 2"] {
-              order: 2 !important; /* image second */
+              order: 2 !important; 
+            }
+            h2 {
+            margin: 20px auto;   
+            padding: 0 20px;    
             }
           }
         `}
