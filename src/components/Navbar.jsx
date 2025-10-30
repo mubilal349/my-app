@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import logo from "/img/Steerline_Adil-UK_SuperX_CJ___Tommy_on_a_Date-removebg-preview.png";
+import { Menu, X } from "lucide-react";
 
 const Navbar = () => {
   const shadowStyle = {
@@ -127,19 +128,16 @@ const Navbar = () => {
             zIndex: 1300,
             display: "flex",
             flexDirection: "column",
-            gap: "4px",
-            order: 1, // Force to left side
+            gap: "3px",
+            order: 1,
+            padding: "4px",
           }}
         >
-          <span
-            style={{ width: "25px", height: "3px", background: "#000" }}
-          ></span>
-          <span
-            style={{ width: "25px", height: "3px", background: "#000" }}
-          ></span>
-          <span
-            style={{ width: "25px", height: "3px", background: "#000" }}
-          ></span>
+          {menuOpen ? (
+            <X size={22} color="#000" />
+          ) : (
+            <Menu size={22} color="#000" />
+          )}
         </div>
       )}
 
@@ -148,6 +146,7 @@ const Navbar = () => {
         className="logo"
         style={{
           filter: "drop-shadow(0 4px 6px rgba(0,0,0,0.3))",
+          width: "18%",
           order: isMobile ? 2 : 1, // Adjust order for mobile
           marginLeft: isMobile ? "10px" : "0",
         }}
@@ -172,9 +171,9 @@ const Navbar = () => {
             {[
               "Home",
               "About us",
-              "Design",
+              "Design my wheel",
               "Realisations",
-              "Partners",
+              "Accessories",
               "Shop",
             ].map((item, index) => (
               <li key={index}>
@@ -283,9 +282,9 @@ const Navbar = () => {
             {[
               "Home",
               "About us",
-              "Design",
+              "Design my wheel",
               "Realisations",
-              "Partners",
+              "Accessories",
               "Shop",
             ].map((item, index) => (
               <li key={index}>

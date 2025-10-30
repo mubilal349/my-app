@@ -101,10 +101,6 @@ nav ul li a {
   .hamburger {
     display: flex;
   }
-
-  .cta {
-    display: none; /* hide button on mobile if needed */
-  }
 }
 
 /* slider css */
@@ -135,6 +131,7 @@ nav ul li a {
   .hero-slider .content h1 {
     font-size: 2.5rem !important;
     letter-spacing: 1px !important;
+    z-index: 1000;
   }
 
   .navigation {

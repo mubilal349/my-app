@@ -1,0 +1,136 @@
+.control-section {
+  background: #ffffff;
+  padding: 80px 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.control-container {
+  max-width: 1200px;
+  width: 100%;
+  text-align: center;
+}
+
+.control-heading {
+  font-size: 2.5rem;
+  font-weight: 800;
+  color: #417ef3;
+  margin-bottom: 10px;
+}
+
+.control-subtext {
+  color: #666;
+  font-size: 1.1rem;
+  margin-bottom: 50px;
+}
+
+/* Grid layout */
+.control-card-row {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 30px;
+}
+
+.control-card {
+  background: #f9f9f9;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  position: relative;
+}
+
+.control-card:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+}
+
+.control-image-wrapper {
+  position: relative;
+  width: 100%;
+  height: 250px;
+  overflow: hidden;
+  border-bottom: 2px solid #eee;
+}
+
+/* Both images stack on top of each other */
+.img-default,
+.img-hover {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  top: 0;
+  left: 0;
+  transition: opacity 0.4s ease, transform 0.4s ease;
+}
+
+/* Default image visible first */
+.img-default {
+  opacity: 1;
+  z-index: 1;
+}
+
+/* Hover image hidden at first */
+.img-hover {
+  opacity: 0;
+  z-index: 2;
+}
+
+/* When hovered, hover image fades in */
+.control-card:hover .img-hover {
+  opacity: 1;
+  z-index: 3;
+}
+
+/* Optional: zoom effect */
+.control-card:hover .img-default,
+.control-card:hover .img-hover {
+  transform: scale(1.05);
+}
+
+.control-card-content {
+  padding: 25px;
+}
+
+.control-card-content h3 {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #333;
+  margin-bottom: 10px;
+}
+
+.control-card-content p {
+  font-size: 1rem;
+  color: #666;
+  margin-bottom: 20px;
+}
+
+.control-card-content button {
+  padding: 12px 24px;
+  background: #007bff;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: background 0.3s ease;
+}
+
+.control-card-content button:hover {
+  background: #0056b3;
+}
+
+/* Responsive Design */
+@media (max-width: 900px) {
+  .control-card-row {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 600px) {
+  .control-card-row {
+    grid-template-columns: repeat(1, 1fr);
+  }
+}

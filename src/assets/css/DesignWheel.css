@@ -1,0 +1,685 @@
+/* ==================================================================== */
+/* 1. Global & Utility Styles (Minimalist Theme) */
+/* ==================================================================== */
+
+:root {
+  --color-background-dark: #1f2937; /* Dark slate gray/blue */
+  --color-background-card: #374151; /* Slightly lighter card background */
+  --color-text-primary: #f3f4f6; /* Off-white text */
+  --color-text-secondary: #d1d5db; /* Lighter text for details */
+  --color-accent: #3b82f6; /* Simple blue accent */
+  --color-border: #4b5563; /* Subtle border color */
+  --color-shadow: rgba(0, 0, 0, 0.4);
+  --color-tertiary: #f4f4f4;
+  --font-family: "Inter", "Helvetica Neue", Arial, sans-serif;
+}
+
+.design-wheel-page {
+  min-height: 100vh;
+  background-color: var(--color-tertiary);
+  color: var(--color-text-primary);
+  padding: 30px 20px;
+  font-family: var(--font-family);
+  /* Set background image */
+  background-image: url("/img/bg-white.jpg"); /* replace with your image path */
+  background-size: cover; /* makes the image cover the entire container */
+  background-position: center; /* centers the image */
+  background-repeat: no-repeat; /* prevents tiling */
+  background-attachment: fixed;
+}
+
+.page-header {
+  text-align: center;
+  margin-bottom: 50px;
+  padding-top: 10px;
+}
+
+.simple-title {
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: var(--color-text-primary);
+  margin-bottom: 5px;
+}
+
+.simple-subtitle {
+  font-size: 1.1rem;
+  color: var(--color-text-secondary);
+}
+
+/* Card Style */
+.simple-card {
+  background-color: var(--color-background-card);
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+  box-shadow: 0 4px 10px var(--color-shadow);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+/* Accent Text */
+.accent-text {
+  font-weight: 600;
+  color: var(--color-accent);
+}
+
+/* ==================================================================== */
+/* 2. Layout & Responsiveness */
+/* ==================================================================== */
+
+.design-layout {
+  display: grid;
+  grid-template-columns: 280px 1fr; /* Fixed sidebar width, flexible main */
+  gap: 30px;
+  max-width: 1300px;
+  margin: 0 auto;
+}
+
+.wheels-grid-container {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.wheels-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 20px;
+}
+
+/* Tablet Layout */
+@media (max-width: 1024px) {
+  .design-layout {
+    grid-template-columns: 1fr;
+    gap: 30px;
+  }
+  .filter-sidebar {
+    position: static; /* No sticky on small screens */
+  }
+}
+
+/* Mobile Layout */
+@media (max-width: 600px) {
+  .simple-title {
+    font-size: 2rem;
+  }
+  .wheels-grid {
+    grid-template-columns: 1fr;
+  }
+  .design-wheel-page {
+    padding: 20px 10px;
+  }
+}
+
+/* ==================================================================== */
+/* 3. Sidebar (Filters) */
+/* ==================================================================== */
+
+.filter-sidebar {
+  padding: 20px;
+  background-color: var(--color-background-card);
+  border-radius: 8px;
+  border: 1px solid var(--color-border);
+}
+
+.sidebar-section {
+  margin-bottom: 25px;
+}
+
+.sidebar-title {
+  font-size: 1.1rem;
+  font-weight: 600;
+  margin-bottom: 12px;
+  color: var(--color-accent);
+  padding-bottom: 5px;
+  border-bottom: 1px solid var(--color-border);
+}
+
+.filter-options {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.filter-option {
+  background: var(--color-border);
+  color: var(--color-text-primary);
+  border: none;
+  padding: 6px 10px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 0.85rem;
+  transition: all 0.2s ease;
+}
+
+.filter-option:hover {
+  background: var(--color-accent);
+}
+
+.filter-option.active {
+  background-color: var(--color-accent);
+  box-shadow: 0 2px 5px rgba(59, 130, 246, 0.5);
+  font-weight: 600;
+}
+
+.reset-filters {
+  width: 100%;
+  padding: 10px;
+  background-color: var(--color-accent);
+  color: var(--color-text-primary);
+  border: none;
+  border-radius: 6px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.reset-filters:hover {
+  background-color: #2563eb; /* Darker blue */
+}
+
+/* ==================================================================== */
+/* 4. Wheel Cards */
+/* ==================================================================== */
+
+.wheel-card {
+  display: flex;
+  flex-direction: column;
+  padding: 15px;
+  text-align: center;
+  min-height: 350px;
+  background: #384152;
+}
+
+.wheel-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 20px var(--color-shadow), 0 0 15px var(--color-accent);
+}
+
+.card-image-container {
+  position: relative;
+  height: 180px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 15px;
+  overflow: hidden;
+}
+
+.card-image {
+  width: 90%;
+  height: 90%;
+  object-fit: contain;
+  transition: transform 0.3s ease;
+}
+
+.card-badge {
+  position: absolute;
+  top: 0;
+  right: 0;
+  background-color: #dc2626; /* Simple red for price/sale */
+  padding: 4px 10px;
+  border-radius: 0 8px 0 8px;
+  font-weight: 600;
+  font-size: 0.9rem;
+}
+
+.card-content {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.card-title {
+  font-size: 1.1rem;
+  margin-bottom: 8px;
+  color: var(--color-text-primary);
+}
+
+.card-specs {
+  display: flex;
+  justify-content: center;
+  gap: 6px;
+  margin-bottom: 15px;
+}
+
+.spec-tag {
+  font-size: 0.7rem;
+  padding: 3px 6px;
+  border-radius: 3px;
+  font-weight: 500;
+  background-color: var(--color-border);
+  color: var(--color-text-secondary);
+}
+
+.card-actions {
+  display: flex;
+  gap: 8px;
+  margin-top: 10px;
+}
+
+.btn-buy,
+.btn-customize {
+  flex: 1;
+  padding: 10px;
+  border: 1px solid var(--color-accent);
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: all 0.2s ease;
+}
+
+.btn-buy {
+  background-color: var(--color-accent);
+  color: var(--color-text-primary);
+}
+
+.btn-customize {
+  background-color: transparent;
+  color: var(--color-accent);
+}
+
+.btn-buy:hover {
+  background-color: #2563eb;
+}
+.btn-customize:hover {
+  background-color: var(--color-border);
+}
+
+/* ==================================================================== */
+/* 5. Customization Modal (COMPACT DESKTOP REVISION) */
+/* ==================================================================== */
+
+/* Modal overlay */
+.modal-overlay {
+  position: fixed;
+  inset: 0; /* top:0; right:0; bottom:0; left:0 */
+  background: rgba(0, 0, 0, 0.7);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  padding: 20px; /* ensures spacing on large screens */
+}
+
+/* Modal container */
+.customization-modal {
+  width: 100%;
+  max-width: 1000px; /* limit modal width */
+  height: 90vh; /* almost full height */
+  background: rgba(255, 255, 255, 0.05); /* glass effect */
+  border-radius: 12px;
+  padding: 20px;
+  overflow-y: auto; /* scroll if content overflows */
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  box-shadow: 0 0 20px rgba(0, 255, 255, 0.2);
+}
+
+/* Modal header */
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 15px;
+}
+
+.modal-header h2 {
+  font-size: 1.6rem;
+  color: #0ff; /* neon color */
+}
+
+.close-modal {
+  font-size: 1.5rem;
+  background: none;
+  border: none;
+  color: #fff;
+  cursor: pointer;
+}
+
+/* Customization content layout */
+.customization-content {
+  display: flex;
+  gap: 20px;
+  width: 100%;
+}
+
+/* Preview section */
+.preview-section {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+
+/* Preview image */
+.customization-preview img {
+  width: 220px;
+  height: 220px;
+  object-fit: contain;
+  border: 2px solid #0ff;
+  border-radius: 50%;
+}
+
+/* Info & add-to-cart */
+.preview-info {
+  text-align: center;
+  width: 100%;
+}
+
+.price-display {
+  font-size: 1.4rem;
+  margin: 10px 0;
+  color: #0ff;
+}
+
+.btn-add-to-cart {
+  padding: 10px 15px;
+  border-radius: 10px;
+  border: none;
+  background: #0ff;
+  color: #000;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+/* Customization options */
+.customization-options {
+  flex: 1.2;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.option-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.option-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.option-btn {
+  padding: 6px 12px;
+  border-radius: 8px;
+  border: 1px solid #444;
+  background: transparent;
+  color: #ccc;
+  cursor: pointer;
+}
+
+.option-btn.active {
+  border-color: #0ff;
+  color: #fff;
+}
+
+.color-picker {
+  width: 40px;
+  height: 30px;
+  border: none;
+  cursor: pointer;
+}
+
+/* Feature toggles */
+.feature-options {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.feature-toggle {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 0.9rem;
+  cursor: pointer;
+}
+
+.toggle-slider {
+  width: 40px;
+  height: 18px;
+  background: #444;
+  border-radius: 10px;
+  position: relative;
+}
+
+.toggle-slider::before {
+  content: "";
+  position: absolute;
+  top: 1px;
+  left: 1px;
+  width: 16px;
+  height: 16px;
+  background: #0ff;
+  border-radius: 50%;
+  transition: 0.3s;
+}
+
+/* Checkbox checked animation */
+.feature-toggle input:checked + .toggle-slider::before {
+  transform: translateX(22px);
+}
+
+/* Responsive desktop styling */
+@media (min-width: 1200px) {
+  .customization-modal {
+    padding: 30px;
+  }
+
+  .customization-content {
+    gap: 30px;
+  }
+
+  .customization-preview img {
+    width: 260px;
+    height: 260px;
+  }
+}
+
+/* Preview Section */
+.preview-section {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 15px; /* Reduced gap */
+  padding: 10px; /* Reduced padding */
+  background: var(--color-background-card);
+  border-radius: 6px;
+}
+
+.customization-preview {
+  /* Smaller preview container */
+  width: 100%;
+  max-width: 250px;
+  aspect-ratio: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px;
+}
+
+.preview-image {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  transition: all 0.3s ease;
+}
+
+/* Removed: preview-overlay, led-glow for simplicity */
+.preview-overlay,
+.led-glow {
+  display: none;
+}
+
+.price-display {
+  font-size: 1.8rem;
+  font-weight: bold;
+  color: var(--color-accent);
+  margin: 10px 0;
+}
+
+.btn-add-to-cart {
+  width: 100%;
+  padding: 12px;
+  background-color: #10b981; /* Green for Buy */
+  color: var(--color-text-primary);
+  border: none;
+  border-radius: 6px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.btn-add-to-cart:hover {
+  background-color: #059669;
+}
+
+/* Options Section */
+.customization-options {
+  /* Gives more room to the options panel */
+  flex: 1.5;
+  display: flex;
+  flex-direction: column;
+  gap: 10px; /* Reduced gap between option groups */
+}
+
+.option-group {
+  padding: 10px;
+  background-color: var(--color-background-card);
+  border-radius: 6px;
+  border: 1px solid var(--color-border);
+}
+
+.option-title {
+  font-size: 1rem;
+  font-weight: 600;
+  margin-bottom: 8px; /* Reduced margin */
+  color: var(--color-accent);
+}
+
+.option-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px; /* Reduced gap between buttons */
+}
+
+.option-btn {
+  background: var(--color-border);
+  color: var(--color-text-secondary);
+  border: none;
+  padding: 6px 9px; /* Reduced padding */
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 0.75rem; /* Smaller font size */
+  transition: all 0.2s ease;
+  flex-grow: 1; /* Allow buttons to grow to fill space */
+}
+
+.option-btn.active {
+  background-color: var(--color-accent);
+  color: var(--color-text-primary);
+  font-weight: 600;
+}
+
+/* Simple Color Picker */
+.color-picker {
+  width: 100%;
+  height: 30px;
+  padding: 0;
+  border: 2px solid var(--color-border);
+  border-radius: 4px;
+  background: var(--color-background-dark);
+  cursor: pointer;
+}
+
+/* Sliders */
+.slider {
+  width: 100%;
+  height: 6px;
+  background: var(--color-border);
+  border-radius: 3px;
+  -webkit-appearance: none;
+  appearance: none;
+  cursor: pointer;
+}
+
+.slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: var(--color-accent);
+  cursor: pointer;
+}
+
+/* Feature Toggles (Checkboxes) */
+.feature-toggle {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+  font-size: 0.85rem; /* Smaller font size */
+  padding: 3px 0; /* Reduced padding */
+}
+
+.feature-toggle input[type="checkbox"] {
+  display: none;
+}
+
+.toggle-slider {
+  width: 30px; /* Smaller toggle switch */
+  height: 16px;
+  background-color: #6b7280;
+  border-radius: 18px;
+  transition: background-color 0.3s;
+  flex-shrink: 0;
+}
+
+.toggle-slider::before {
+  content: "";
+  position: absolute;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  left: 2px;
+  bottom: 2px;
+  background-color: #fff;
+  transition: transform 0.3s;
+}
+
+.feature-toggle input[type="checkbox"]:checked + .toggle-slider {
+  background-color: var(--color-accent);
+}
+
+.feature-toggle input[type="checkbox"]:checked + .toggle-slider::before {
+  transform: translateX(14px); /* Adjusted movement */
+}
+
+/* No Results Message */
+.no-results {
+  padding: 40px;
+  text-align: center;
+  background: var(--color-background-card);
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+  grid-column: 1 / -1; /* Span all columns */
+}
+
+.neon-title {
+  color: #417ef4;
+}
+.neon-subtitle {
+  color: #417ef4;
+}
+
+.neon-text {
+  color: #3b80f6;
+}
