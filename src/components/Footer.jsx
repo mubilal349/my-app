@@ -1,33 +1,51 @@
 import React from "react";
+import { FaFacebookF, FaInstagram, FaYoutube, FaTiktok } from "react-icons/fa";
 
 const Footer = () => {
   return (
     <footer className="footer">
       {/* Footer Links */}
       <div className="footer-links">
-        <a href="#">Shipping Policy</a>
-        <a href="#">Warranty & Refund Policy</a>
-        <a href="#">Privacy Policy</a>
-        <a href="#">Terms of Service</a>
+        <a href="#" className=" hover:text-[#3b82f6] transition-colors">
+          Shipping Policy
+        </a>
+        <a href="#" className=" hover:text-[#3b82f6] transition-colors">
+          Warranty & Refund Policy
+        </a>
+        <a href="#" className=" hover:text-[#3b82f6] transition-colors">
+          Privacy Policy
+        </a>
+        <a href="#" className=" hover:text-[#3b82f6] transition-colors">
+          Terms of Service
+        </a>
       </div>
 
       {/* Footer Socials (Unicons) */}
-      <div className="footer-socials">
-        {/* Note: Ensure the Unicons CSS library is linked in your public/index.html */}
+
+      <div className="footer-socials flex gap-4">
         <a href="#">
-          <i className="uil uil-facebook-f"></i>
+          <FaFacebookF
+            size={24}
+            className="text-white hover:text-[#3b82f6] transition-colors"
+          />
         </a>
         <a href="#">
-          <i className="uil uil-instagram"></i>
+          <FaInstagram
+            size={24}
+            className="text-white hover:text-[#3b82f6] transition-colors"
+          />
         </a>
         <a href="#">
-          <i className="uil uil-pinterest"></i>
+          <FaYoutube
+            size={24}
+            className="text-white hover:text-[#3b82f6] transition-colors"
+          />
         </a>
         <a href="#">
-          <i className="uil uil-youtube"></i>
-        </a>
-        <a href="#">
-          <i className="uil uil-tiktok"></i>
+          <FaTiktok
+            size={24}
+            className="text-white hover:text-[#3b82f6] transition-colors"
+          />
         </a>
       </div>
 

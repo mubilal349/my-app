@@ -2,8 +2,10 @@ import React, { useState, useEffect } from "react";
 import logo from "/img/Steerline_Adil-UK_SuperX_CJ___Tommy_on_a_Date-removebg-preview.png";
 import { Menu, X } from "lucide-react";
 import { Link } from "react-router-dom";
+import { useCart } from "../context/CartContext";
 
 const Navbar = () => {
+  const { cartItems, addToCart, calculateTotal } = useCart(); // ✅ works now
   const shadowStyle = {
     backgroundColor: "#fff",
     borderRadius: "12px",
@@ -18,59 +20,9 @@ const Navbar = () => {
   const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
   const [isSticky, setIsSticky] = useState(false);
   const [cartOpen, setCartOpen] = useState(false);
-  const [cartItems, setCartItems] = useState([]);
 
   const toggleMenu = () => setMenuOpen((prev) => !prev);
   const toggleCart = () => setCartOpen((prev) => !prev);
-
-  // Sample random products
-  const sampleProducts = [
-    {
-      id: 1,
-      name: "Custom Steering Wheel",
-      price: 299.99,
-      image: "/img/wheel.jpg",
-    },
-    {
-      id: 2,
-      name: "Carbon Fiber Shift Knob",
-      price: 89.99,
-      image: "/img/shift-knob.jpg",
-    },
-    {
-      id: 3,
-      name: "LED Headlights",
-      price: 159.99,
-      image: "/img/headlights.jpg",
-    },
-    {
-      id: 4,
-      name: "Performance Exhaust",
-      price: 449.99,
-      image: "/img/exhaust.jpg",
-    },
-    {
-      id: 5,
-      name: "Custom Seat Covers",
-      price: 129.99,
-      image: "/img/seat-covers.jpg",
-    },
-    { id: 6, name: "Window Tint Kit", price: 79.99, image: "/img/tint.jpg" },
-  ];
-
-  // Add random products to cart
-  const addRandomToCart = () => {
-    const randomCount = Math.floor(Math.random() * 3) + 1; // 1-3 random items
-    const shuffled = [...sampleProducts].sort(() => 0.5 - Math.random());
-    const randomProducts = shuffled.slice(0, randomCount);
-
-    setCartItems(
-      randomProducts.map((product) => ({
-        ...product,
-        quantity: Math.floor(Math.random() * 2) + 1, // 1-2 quantity
-      }))
-    );
-  };
 
   // Detect screen resize for mobile
   useEffect(() => {
@@ -87,19 +39,6 @@ const Navbar = () => {
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
-
-  // Auto-add random products when cart opens
-  useEffect(() => {
-    if (cartOpen) {
-      addRandomToCart();
-    }
-  }, [cartOpen]);
-
-  const calculateTotal = () => {
-    return cartItems
-      .reduce((total, item) => total + item.price * item.quantity, 0)
-      .toFixed(2);
-  };
 
   return (
     <header
@@ -361,29 +300,44 @@ const Navbar = () => {
                     gap: "15px",
                     padding: "10px 0",
                     borderBottom: "1px solid #eee",
+                    alignItems: "center",
                   }}
                 >
+                  {/* Product Image */}
                   <div
                     style={{
                       width: "60px",
                       height: "60px",
-                      background: "#f5f5f5",
                       borderRadius: "8px",
+                      overflow: "hidden",
+                      background: "#f5f5f5",
                       display: "flex",
                       alignItems: "center",
                       justifyContent: "center",
                     }}
                   >
-                    <span>🛒</span>
+                    <img
+                      src={item.image}
+                      alt={item.title}
+                      style={{
+                        width: "100%",
+                        height: "100%",
+                        objectFit: "cover",
+                      }}
+                    />
                   </div>
+
+                  {/* Product Info */}
                   <div style={{ flex: 1 }}>
-                    <h4 style={{ margin: "0 0 5px 0" }}>{item.name}</h4>
-                    <p style={{ margin: "0", color: "#666" }}>
+                    <h4 style={{ margin: "0 0 5px 0" }}>{item.title}</h4>
+                    <p style={{ margin: 0, color: "#666" }}>
                       ${item.price} x {item.quantity}
                     </p>
                   </div>
+
+                  {/* Subtotal */}
                   <div style={{ fontWeight: "bold" }}>
-                    ${(item.price * item.quantity).toFixed(2)}
+                    ${item.price * item.quantity}
                   </div>
                 </div>
               ))
@@ -414,12 +368,25 @@ const Navbar = () => {
                 style={{
                   width: "100%",
                   padding: "12px",
-                  background: "#000",
+                  background: "#111111",
                   color: "#fff",
                   border: "none",
                   borderRadius: "6px",
                   cursor: "pointer",
                   fontSize: "16px",
+                }}
+                onClick={() => {
+                  // Replace your number with country code (no +, no 0 at start)
+                  const whatsappNumber = "923123456789";
+                  // Optional: include cart total and message
+                  const message = `Hello, I want to order the following items from my cart. Total: $${calculateTotal()}`;
+                  const encodedMessage = encodeURIComponent(message);
+
+                  // Open WhatsApp in new tab
+                  window.open(
+                    `https://wa.me/${whatsappNumber}?text=${encodedMessage}`,
+                    "_blank"
+                  );
                 }}
               >
                 Checkout

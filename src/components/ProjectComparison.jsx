@@ -4,9 +4,9 @@ import "aos/dist/aos.css";
 import "../assets/css/ProjectComparison.css";
 
 const ProjectComparison = () => {
-  const [sliderPosition1, setSliderPosition1] = useState(50);
-  const [sliderPosition2, setSliderPosition2] = useState(50);
-  const [sliderPosition3, setSliderPosition3] = useState(50);
+  const [sliderPosition1, setSliderPosition1] = useState(0);
+  const [sliderPosition2, setSliderPosition2] = useState(0);
+  const [sliderPosition3, setSliderPosition3] = useState(0);
 
   const containerRef1 = useRef(null);
   const containerRef2 = useRef(null);
@@ -102,34 +102,76 @@ const ProjectComparison = () => {
 
   const ComparisonCard = ({ id, position, containerRef }) => {
     return (
-      <div className="comparison-container" ref={containerRef}>
+      <div
+        className="comparison-container"
+        ref={containerRef}
+        style={{ position: "relative", width: "100%", height: "400px" }}
+      >
         {/* Before Image */}
         <img
           src="/img/DSC04395-scaled.jpg"
           alt="Before"
-          className="comparison-before"
+          style={{
+            width: "100%",
+            height: "100%",
+            objectFit: "cover",
+            opacity: 0.7, // slightly transparent
+            display: "block",
+          }}
         />
 
         {/* After Image Overlay */}
         <div
           className="comparison-overlay"
-          style={{ clipPath: `inset(0 ${100 - position}% 0 0)` }}
+          style={{
+            position: "absolute",
+            top: 0,
+            left: 0,
+            height: "100%",
+            width: `${position}%`, // only cover the left side
+            overflow: "hidden",
+            transition: "width 0.2s ease-out",
+          }}
         >
           <img
             src="/img/IMG_4667-1-768x768.jpg"
             alt="After"
-            className="comparison-after"
+            style={{
+              width: "100%",
+              height: "100%",
+              objectFit: "cover",
+              display: "block",
+            }}
           />
         </div>
 
         {/* Slider Handle */}
         <div
           className="slider-handle"
-          style={{ left: `${position}%` }}
+          style={{
+            position: "absolute",
+            top: 0,
+            left: `${position}%`,
+            transform: "translateX(-50%)",
+            height: "100%",
+            cursor: "ew-resize",
+          }}
           onMouseDown={(e) => handleStartDrag(e, id)}
           onTouchStart={(e) => handleStartDrag(e, id)}
         >
-          <span className="handle-icon">↔</span>
+          <span
+            className="handle-icon"
+            style={{
+              position: "absolute",
+              top: "50%",
+              left: "50%",
+              transform: "translate(-50%, -50%)",
+              fontSize: "24px",
+              color: "#3b82f6",
+            }}
+          >
+            ↔
+          </span>
         </div>
       </div>
     );

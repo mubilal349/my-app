@@ -18,6 +18,7 @@ import About from "./pages/About.jsx";
 import Design from "./pages/Design.jsx";
 import Realisations from "./pages/Realisation.jsx";
 import ShopPage from "./pages/ShopPage.jsx";
+import { CartProvider } from "./context/CartContext.jsx";
 
 const App = () => {
   return (

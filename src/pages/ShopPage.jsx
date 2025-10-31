@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import "../assets/css/ShopPage.css";
+import { useCart } from "../context/CartContext";
 
 const ShopPage = () => {
   const [allProducts, setAllProducts] = useState([]);
@@ -8,12 +9,19 @@ const ShopPage = () => {
   const [selectedCategory, setSelectedCategory] = useState("All");
   const [loading, setLoading] = useState(true);
 
+  const { addToCart } = useCart();
+
   useEffect(() => {
     fetch("/data/products.json")
       .then((res) => res.json())
       .then((data) => {
         const all = data.categories.flatMap((cat) =>
-          cat.products.map((p) => ({ ...p, category: cat.title }))
+          cat.products.map((p) => ({
+            ...p,
+            category: cat.title,
+            price: parseFloat(p.discountPrice.replace("$", "")), // numeric price
+            originalPriceNum: parseFloat(p.originalPrice.replace("$", "")), // optional
+          }))
         );
 
         setAllProducts(all);
@@ -73,7 +81,12 @@ const ShopPage = () => {
                     alt={product.title}
                     className="shop-image"
                   />
-                  <button className="shop-btn">Shop Now</button>
+                  <button
+                    className="shop-btn"
+                    onClick={() => addToCart(product)}
+                  >
+                    Shop Now
+                  </button>
                 </div>
                 <div className="shop-info">
                   <h3 className="shop-name">{product.title}</h3>

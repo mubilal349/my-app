@@ -528,10 +528,14 @@ const Customization = () => {
                     "Black",
                   ].map((color) => (
                     <button
-                      style={{ marginTop: "10px", width: "30%", height: "5vh" }}
+                      style={{
+                        marginTop: "10px",
+                        width: "100%",
+                        height: "5vh",
+                      }}
                       key={color}
                       onClick={() => updateFormData("stripeColor", color)}
-                      className={`p-4 rounded-full border transition-all duration-200 ${
+                      className={`p-4  border transition-all duration-200 ${
                         formData.stripeColor === color
                           ? "border-blue-400 bg-blue-400 bg-opacity-10 scale-105"
                           : "border-gray-700 hover:border-gray-600"
@@ -611,7 +615,7 @@ const Customization = () => {
                         onClick={() =>
                           updateFormData("transmission", option.value)
                         }
-                        className={`w-50 p-4 rounded-lg border-2 transition-all duration-200 ${
+                        className={`w-full p-4 rounded-lg border-2 transition-all duration-200 ${
                           selected
                             ? "border-[#297fff] bg-[#297fff]/10 text-white scale-105"
                             : "border-gray-700 hover:border-gray-600 text-gray-300"
