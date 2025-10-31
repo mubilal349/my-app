@@ -2,11 +2,10 @@
 .hero {
   position: relative;
   height: 400px;
-  background: url("../img/img-11.jpeg") center/cover no-repeat;
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-top: 100px; /* space for fixed navbar */
+  /* margin-top: 100px;  */
 }
 
 .hero::after {

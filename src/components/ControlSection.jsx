@@ -5,19 +5,28 @@ const ControlSection = () => {
   const navigate = useNavigate();
   const sections = [
     {
+      title: "Buy Now",
+      img: "/img/banner/landscape no 1.jpg",
+      align: "right",
+      link: "/shop",
+    },
+    {
       title: "Accessories",
       img: "/img/banner/landscape no 2.jpg",
       align: "left",
+      link: "/accessories",
     },
     {
       title: "Design Your Wheel",
       img: "/img/banner/landscape no 3.jpg",
       align: "right",
+      link: "/customization",
     },
-    { title: "Buy Now", img: "/img/banner/landscape no 1.jpg", align: "right" },
   ];
-  const handleClick = () => {
-    navigate("/accessories-page"); // 👈 route to your accessories page
+  const handleClick = (path) => {
+    console.log("Navigate to :", path);
+
+    navigate(path);
   };
 
   return (
@@ -26,7 +35,9 @@ const ControlSection = () => {
         <div
           key={index}
           className="relative w-full sm:aspect-[3/4] md:h-screen cursor-pointer group overflow-hidden"
-          onClick={handleClick}
+          onClick={() => {
+            handleClick(section.link);
+          }}
         >
           {/* Background Image */}
           <img

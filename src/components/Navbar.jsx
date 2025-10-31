@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import logo from "/img/Steerline_Adil-UK_SuperX_CJ___Tommy_on_a_Date-removebg-preview.png";
 import { Menu, X } from "lucide-react";
+import { Link } from "react-router-dom";
 
 const Navbar = () => {
   const shadowStyle = {
@@ -151,9 +152,9 @@ const Navbar = () => {
           marginLeft: isMobile ? "10px" : "0",
         }}
       >
-        <a href="/">
+        <Link to="/">
           <img src={logo} alt="Control Customs Logo" height="50" />
-        </a>
+        </Link>
       </div>
 
       {/* DESKTOP NAV */}
@@ -171,14 +172,14 @@ const Navbar = () => {
             {[
               "Home",
               "About us",
-              "Design my wheel",
+              "Design",
               "Realisations",
               "Accessories",
               "Shop",
             ].map((item, index) => (
               <li key={index}>
-                <a
-                  href={`/${item.toLowerCase().replace(" ", "")}`}
+                <Link
+                  to={`/${item.toLowerCase().replace(/\s+/g, "")}`}
                   style={{
                     color: "#000",
                     textDecoration: "none",
@@ -187,7 +188,7 @@ const Navbar = () => {
                   }}
                 >
                   {item}
-                </a>
+                </Link>
               </li>
             ))}
           </ul>
@@ -288,8 +289,8 @@ const Navbar = () => {
               "Shop",
             ].map((item, index) => (
               <li key={index}>
-                <a
-                  href={`/${item.toLowerCase().replace(" ", "")}`}
+                <Link
+                  to={`/${item.toLowerCase().replace(" ", "")}`}
                   style={{
                     color: "#000",
                     textDecoration: "none",
@@ -299,7 +300,7 @@ const Navbar = () => {
                   onClick={() => setMenuOpen(false)}
                 >
                   {item}
-                </a>
+                </Link>
               </li>
             ))}
           </ul>

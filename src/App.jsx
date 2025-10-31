@@ -13,6 +13,12 @@ import AboutSection from "./components/AboutSection";
 import AccessoriesPage from "./components/AccessoriesPage";
 import Customization from "./components/Customization";
 
+//pages
+import About from "./pages/About.jsx";
+import Design from "./pages/Design.jsx";
+import Realisations from "./pages/Realisation.jsx";
+import ShopPage from "./pages/ShopPage.jsx";
+
 const App = () => {
   return (
     <Router>
@@ -34,8 +40,12 @@ const App = () => {
             </>
           }
         />
-        <Route path="/accessories-page" element={<AccessoriesPage />} />
         <Route path="/customization" element={<Customization />} />
+        <Route path="/aboutus" element={<About />} />
+        <Route path="/design" element={<Design />} />
+        <Route path="/realisations" element={<Realisations />} />
+        <Route path="/accessories" element={<AccessoriesPage />} />
+        <Route path="/shop" element={<ShopPage />} />
       </Routes>
     </Router>
   );

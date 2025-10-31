@@ -1,0 +1,190 @@
+.shop-section {
+  padding: 60px 20px;
+  background: #fafafa;
+}
+
+.shop-title {
+  text-align: center;
+  font-size: 2rem;
+  margin-bottom: 10px;
+  position: relative;
+  display: inline-block;
+  color: #111;
+}
+
+/* Underline using ::before and ::after */
+.shop-title::before,
+.shop-title::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  height: 3px;
+  width: 0;
+  background: linear-gradient(90deg, #007bff, #00c3ff);
+  transition: width 0.6s ease-in-out;
+}
+
+/* Left and right sides of underline */
+.shop-title::before {
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.shop-title::after {
+  right: 50%;
+  transform: translateX(50%);
+}
+
+/* Animate underline on page load */
+@keyframes underlineExpand {
+  0% {
+    width: 0;
+  }
+  100% {
+    width: 60px;
+  }
+}
+
+.shop-title::before,
+.shop-title::after {
+  animation: underlineExpand 0.8s ease forwards;
+  animation-delay: 0.3s;
+}
+
+.shop-subtitle {
+  text-align: center;
+  color: #666;
+  margin-bottom: 30px;
+}
+
+/* Filter bar */
+.filter-bar {
+  text-align: center;
+  margin-bottom: 40px;
+}
+
+.filter-bar label {
+  margin-right: 10px;
+  font-weight: 600;
+  color: #333;
+}
+
+.filter-dropdown {
+  padding: 8px 12px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  font-size: 1rem;
+  cursor: pointer;
+}
+
+/* Grid layout */
+.shop-grid {
+  display: grid;
+  grid-template-columns: repeat(1, 1fr);
+  gap: 1.5rem;
+}
+
+@media (min-width: 768px) {
+  .shop-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 1024px) {
+  .shop-grid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+/* Card design */
+.shop-card {
+  background: #fff;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease;
+}
+
+.shop-card:hover {
+  transform: translateY(-5px);
+}
+
+/* Image container */
+.image-wrapper {
+  position: relative;
+  overflow: hidden;
+}
+
+/* Product image */
+.shop-image {
+  width: 100%;
+  height: auto;
+  display: block;
+  border-radius: 6px;
+  transition: transform 0.3s ease;
+}
+
+/* Button always visible at bottom center */
+.shop-btn {
+  position: absolute;
+  bottom: 10px; /* 👈 stays at bottom */
+  left: 50%; /* 👈 centers horizontally */
+  transform: translateX(-50%); /* 👈 perfect centering */
+  background-color: #111;
+  color: #fff;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  opacity: 1; /* 👈 always visible */
+}
+
+/* Optional hover effects */
+.image-wrapper:hover .shop-image {
+  transform: scale(1.05);
+}
+
+.shop-btn:hover {
+  background-color: #007bff;
+}
+
+.shop-info {
+  padding: 10px 15px;
+  text-align: center;
+}
+
+.shop-name {
+  font-size: 1rem;
+  font-weight: 600;
+}
+
+.shop-category {
+  color: #777;
+  font-size: 0.9rem;
+  margin-top: 4px;
+}
+
+.shop-prices {
+  margin-top: 8px;
+}
+
+.discount {
+  color: #d32f2f;
+  margin-right: 8px;
+  font-weight: bold;
+}
+
+.original {
+  color: #999;
+  text-decoration: line-through;
+}
+
+.no-results {
+  grid-column: 1 / -1;
+  text-align: center;
+  color: #555;
+  font-size: 1.1rem;
+  margin-top: 20px;
+}

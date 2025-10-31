@@ -48,7 +48,7 @@ const BackToTop = () => {
             zIndex: 9999,
           }}
           onMouseEnter={(e) =>
-            (e.currentTarget.style.backgroundColor = "#ff0000")
+            (e.currentTarget.style.backgroundColor = "#1883ca")
           }
           onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = "#000")}
         >

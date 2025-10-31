@@ -1,5 +1,7 @@
 import React, { useEffect } from "react";
 import "../assets/css/about.css";
+import BackToTop from "../components/BackToTop";
+import bg from "/img/img-11.jpeg";
 
 const About = () => {
   useEffect(() => {
@@ -16,7 +18,10 @@ const About = () => {
   return (
     <>
       {/* ===== Hero Section ===== */}
-      <section className="hero">
+      <section
+        className="hero"
+        style={{ background: `url(${bg}) center/cover no-repeat` }}
+      >
         <div className="overlay"></div>
         <div className="hero-text">
           <h1>Control Customs</h1>
@@ -76,7 +81,7 @@ const About = () => {
           </div>
 
           <div className="image">
-            <img src="assets/img/img-12.jpg" alt="Steer Line steering wheel" />
+            <img src="/img/img-12.jpg" alt="Steer Line steering wheel" />
           </div>
         </div>
       </section>
@@ -86,7 +91,7 @@ const About = () => {
         <div className="container">
           <div className="map-area">
             <img
-              src="assets/img/global-globalization-world-map-environmental-concservation-concept.jpg"
+              src="/img/global-globalization-world-map-environmental-concservation-concept.jpg"
               alt="World Map"
               className="world-map"
             />
@@ -199,7 +204,7 @@ const About = () => {
         <div className="footer-divider"></div>
 
         <div className="footer-payments">
-          <img src="assets/img/img-6.avif" alt="PayPal" />
+          <img src="/img/img-6.avif" alt="PayPal" />
         </div>
 
         <p className="footer-copy">© 2025 STEER LINE</p>
@@ -215,6 +220,7 @@ const About = () => {
       >
         <i className="uil uil-whatsapp"></i>
       </a>
+      <BackToTop />
     </>
   );
 };
