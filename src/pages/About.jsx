@@ -212,7 +212,7 @@ const About = () => {
 
       {/* ===== WhatsApp Floating Button ===== */}
       <a
-        href="https://wa.me/923435676966"
+        href="https://wa.me/447598863458"
         className="whatsapp-float"
         target="_blank"
         rel="noopener noreferrer"

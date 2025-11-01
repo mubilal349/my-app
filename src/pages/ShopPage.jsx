@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
 import "../assets/css/ShopPage.css";
 import { useCart } from "../context/CartContext";
+import WhatsappIcon from "../components/WhatsappIcon";
+import BackToTop from "../components/BackToTop";
 
 const ShopPage = () => {
   const [allProducts, setAllProducts] = useState([]);
@@ -103,6 +105,8 @@ const ShopPage = () => {
           )}
         </div>
       </div>
+      <WhatsappIcon />
+      <BackToTop />
     </section>
   );
 };

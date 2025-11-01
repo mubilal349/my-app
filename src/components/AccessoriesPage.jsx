@@ -1,10 +1,15 @@
 import React, { useEffect, useState } from "react";
 import "../assets/css/AccessoriesPage.css"; // ✅ linked CSS file
+import { useCart } from "../context/CartContext";
+import WhatsappIcon from "../components/WhatsappIcon";
+import BackToTop from "../components/BackToTop";
 
 const AccessoriesPage = () => {
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+
+  const { addToCart } = useCart();
 
   useEffect(() => {
     fetch("/data/products.json")
@@ -22,6 +27,10 @@ const AccessoriesPage = () => {
       });
   }, []);
 
+  const handleAddToCart = (product) => {
+    if (!product || !product.id) return;
+    addToCart(product);
+  };
   if (loading)
     return (
       <div className="loading-container">
@@ -52,7 +61,12 @@ const AccessoriesPage = () => {
                     alt={product.title}
                     className="product-image"
                   />
-                  <button className="shop-button">Shop Now</button>
+                  <button
+                    className="shop-button"
+                    onClick={() => handleAddToCart(product)}
+                  >
+                    Shop Now
+                  </button>
                 </div>
 
                 <div className="product-info">
@@ -75,6 +89,8 @@ const AccessoriesPage = () => {
           {index !== data.categories.length - 1 && (
             <div className="divider"></div>
           )}
+          <WhatsappIcon />
+          <BackToTop />
         </section>
       ))}
     </div>
