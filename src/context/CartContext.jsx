@@ -1,4 +1,5 @@
 import React, { createContext, useContext, useState, useEffect } from "react";
+import Toast from "../components/Toast/Toast";
 
 // Create context
 const CartContext = createContext();
@@ -9,6 +10,7 @@ export const CartProvider = ({ children }) => {
     const stored = localStorage.getItem("cartItems");
     return stored ? JSON.parse(stored) : [];
   });
+  const [toastMessage, setToastMessage] = useState(""); // ✅ for showing the toast
   // Save cart to localStorage whenever it changes
   useEffect(() => {
     localStorage.setItem("cartItems", JSON.stringify(cartItems));
@@ -17,7 +19,7 @@ export const CartProvider = ({ children }) => {
   // ✅ Add product to cart
   // CartContext.jsx
   const addToCart = (product) => {
-    const price = parseFloat(product.discountPrice.replace("$", "")); // Convert to number
+    const price = parseFloat(product.discountPrice.replace("$", ""));
     setCartItems((prev) => {
       const existing = prev.find((item) => item.id === product.id);
       if (existing) {
@@ -29,24 +31,37 @@ export const CartProvider = ({ children }) => {
       }
       return [...prev, { ...product, quantity: 1, price }];
     });
+    // ✅ Show toast message
+    setToastMessage("✅ Your product is added successfully!");
   };
 
   // ✅ Remove product
   const removeFromCart = (id) => {
-    setCartItems((prev) => prev.filter((item) => item.id !== id));
+    console.log("Remove from Cart:", id);
+
+    setCartItems((prevItems) => prevItems.filter((item) => item.id !== id));
   };
 
   // ✅ Calculate total
-  const calculateTotal = () =>
-    cartItems
-      .reduce((total, item) => total + item.price * item.quantity, 0)
-      .toFixed(2);
+  // Calculate total
+  const calculateTotal = () => {
+    return cartItems.reduce(
+      (total, item) => total + item.price * item.quantity,
+      0
+    );
+  };
+
+  const closeToast = () => setToastMessage(""); // hide toast after timeout
 
   return (
     <CartContext.Provider
       value={{ cartItems, addToCart, removeFromCart, calculateTotal }}
     >
       {children}
+      {toastMessage && (
+        <Toast message={toastMessage} onClose={closeToast} />
+      )}{" "}
+      {/* ✅ global toast */}
     </CartContext.Provider>
   );
 };

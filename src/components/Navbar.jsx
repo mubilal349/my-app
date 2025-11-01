@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from "react";
 import logo from "/img/Steerline_Adil-UK_SuperX_CJ___Tommy_on_a_Date-removebg-preview.png";
-import { Menu, X } from "lucide-react";
+import { Menu, X, Trash2 } from "lucide-react";
 import { Link } from "react-router-dom";
 import { useCart } from "../context/CartContext";
 
 const Navbar = () => {
-  const { cartItems, addToCart, calculateTotal } = useCart(); // ✅ works now
+  const { cartItems, addToCart, removeFromCart, calculateTotal } = useCart(); // ✅ works now
   const shadowStyle = {
     backgroundColor: "#fff",
     borderRadius: "12px",
@@ -338,6 +338,13 @@ const Navbar = () => {
                   {/* Subtotal */}
                   <div style={{ fontWeight: "bold" }}>
                     ${item.price * item.quantity}
+                    {/* DELETE ICON */}
+                    <Trash2
+                      size={18}
+                      color="#ff4444"
+                      style={{ cursor: "pointer" }}
+                      onClick={() => removeFromCart(item.id)}
+                    />
                   </div>
                 </div>
               ))
@@ -376,17 +383,30 @@ const Navbar = () => {
                   fontSize: "16px",
                 }}
                 onClick={() => {
-                  // Replace your number with country code (no +, no 0 at start)
-                  const whatsappNumber = "923123456789";
-                  // Optional: include cart total and message
-                  const message = `Hello, I want to order the following items from my cart. Total: $${calculateTotal()}`;
-                  const encodedMessage = encodeURIComponent(message);
+                  const whatsappNumber = "447598863458"; // ✅ no "+" or spaces
 
-                  // Open WhatsApp in new tab
-                  window.open(
-                    `https://wa.me/${whatsappNumber}?text=${encodedMessage}`,
-                    "_blank"
-                  );
+                  // ✅ Message header
+                  let message =
+                    "Hello, I want to order the following items from my cart.%0A%0A";
+
+                  // ✅ Add all cart items with image + name + price
+                  message += cartItems
+                    .map(
+                      (item, index) =>
+                        `${index + 1}. ${item.title}%0A🖼️ Image: ${
+                          item.image.startsWith("http")
+                            ? item.image
+                            : window.location.origin + item.image
+                        }%0A💰 Price: ${item.discountPrice}%0A`
+                    )
+                    .join("%0A");
+
+                  // ✅ Add total at the end
+                  message += `%0A----------------------%0A💵 Total: $${calculateTotal()}`;
+
+                  // ✅ Open WhatsApp
+                  const whatsappURL = `https://wa.me/${whatsappNumber}?text=${message}`;
+                  window.open(whatsappURL, "_blank");
                 }}
               >
                 Checkout
