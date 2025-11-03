@@ -91,7 +91,7 @@ const Navbar = () => {
           marginLeft: isMobile ? "10px" : "0",
         }}
       >
-        <Link to="/">
+        <Link to="/home">
           <img src={logo} alt="Control Customs Logo" height="50" />
         </Link>
       </div>

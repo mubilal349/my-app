@@ -1,6 +1,8 @@
 import React from "react";
 import "../assets/css/realisation.css";
 import BackToTop from "../components/BackToTop";
+import Footer from "../components/Footer";
+import WhatsappIcon from "../components/WhatsappIcon";
 
 const Realisations = () => {
   const brands = [
@@ -98,42 +100,10 @@ const Realisations = () => {
       </section>
 
       {/* ✅ Footer */}
-      <footer className="footer">
-        <div className="footer-links">
-          <a href="#">Shipping Policy</a>
-          <a href="#">Warranty & Refund Policy</a>
-          <a href="#">Privacy Policy</a>
-          <a href="#">Terms of Service</a>
-        </div>
-
-        <div className="footer-socials">
-          <a href="#">
-            <i className="uil uil-facebook-f"></i>
-          </a>
-          <a href="#">
-            <i className="uil uil-instagram"></i>
-          </a>
-          <a href="#">
-            <i className="uil uil-pinterest"></i>
-          </a>
-          <a href="#">
-            <i className="uil uil-youtube"></i>
-          </a>
-        </div>
-
-        <p className="footer-copy">© 2025 STEER LINE</p>
-      </footer>
+      <Footer />
 
       {/* ✅ WhatsApp Floating Icon */}
-      <a
-        href="https://wa.me/447598863458"
-        className="whatsapp-float"
-        target="_blank"
-        rel="noopener noreferrer"
-        aria-label="Chat on WhatsApp"
-      >
-        <i className="uil uil-whatsapp"></i>
-      </a>
+      <WhatsappIcon />
 
       <BackToTop />
     </>

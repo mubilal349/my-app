@@ -14,9 +14,14 @@ const ShopPage = () => {
   const { addToCart } = useCart();
 
   useEffect(() => {
+    // Start loading
+    setLoading(true);
+
+    // 1️⃣ First fetch: local JSON
     fetch("/data/products.json")
       .then((res) => res.json())
-      .then((data) => {
+      .then(async (data) => {
+        // --- Your existing logic (unchanged) ---
         const all = data.categories.flatMap((cat) =>
           cat.products.map((p) => ({
             ...p,
@@ -26,12 +31,46 @@ const ShopPage = () => {
           }))
         );
 
-        setAllProducts(all);
-        setFilteredProducts(all);
-        setCategories(["All", ...data.categories.map((cat) => cat.title)]);
+        // 2️⃣ Second fetch: backend API
+        try {
+          const apiRes = await fetch(
+            "https://cornflowerblue-gaur-794659.hostingersite.com/api/getProducts.php"
+          );
+          const apiData = await apiRes.json();
+
+          // Match backend structure to your frontend
+          const backendProducts = apiData.map((p) => ({
+            id: p.id,
+            title: p.title,
+            image: p.image.startsWith("http")
+              ? p.image
+              : `https://cornflowerblue-gaur-794659.hostingersite.com${p.image}`,
+            price: parseFloat(p.discountPrice.replace("$", "")),
+            originalPriceNum: parseFloat(p.originalPrice.replace("$", "")),
+          }));
+
+          // Combine both product lists
+          const combined = [...all, ...backendProducts];
+
+          setAllProducts(combined);
+          setFilteredProducts(combined);
+          setCategories([
+            "All",
+            ...new Set([...data.categories.map((cat) => cat.title), "Backend"]),
+          ]);
+        } catch (apiError) {
+          console.error("Backend API error:", apiError);
+          setAllProducts(all);
+          setFilteredProducts(all);
+          setCategories(["All", ...data.categories.map((cat) => cat.title)]);
+        }
+
         setLoading(false);
       })
-      .catch(() => setLoading(false));
+      .catch((err) => {
+        console.error("Local JSON error:", err);
+        setLoading(false);
+      });
   }, []);
 
   const handleFilter = (category) => {

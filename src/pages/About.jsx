@@ -2,6 +2,8 @@ import React, { useEffect } from "react";
 import "../assets/css/about.css";
 import BackToTop from "../components/BackToTop";
 import bg from "/img/img-11.jpeg";
+import Footer from "../components/Footer";
+import WhatsappIcon from "../components/WhatsappIcon";
 
 const About = () => {
   useEffect(() => {
@@ -36,7 +38,7 @@ const About = () => {
             <h4>ABOUT US</h4>
             <h2>Market leaders</h2>
             <p>
-              Welcome to <strong>Steer Line Canada</strong>, the premier
+              Welcome to <strong>Steer Line England</strong>, the premier
               destination for steering wheel re-trimming and customization. We
               understand how important it is for Canadians to have a vehicle
               that looks, feels, and performs perfectly — and nothing transforms
@@ -67,7 +69,7 @@ const About = () => {
               </li>
               <li>
                 <span className="num">2.</span> Custom designs tailored for
-                Canadian drivers
+                England drivers
               </li>
               <li>
                 <span className="num">3.</span> Modification and restoration of
@@ -175,51 +177,10 @@ const About = () => {
       </section>
 
       {/* ===== Footer ===== */}
-      <footer className="footer">
-        <div className="footer-links">
-          <a href="#">Shipping Policy</a>
-          <a href="#">Warranty & Refund Policy</a>
-          <a href="#">Privacy Policy</a>
-          <a href="#">Terms of Service</a>
-        </div>
-
-        <div className="footer-socials">
-          <a href="#">
-            <i className="uil uil-facebook-f"></i>
-          </a>
-          <a href="#">
-            <i className="uil uil-instagram"></i>
-          </a>
-          <a href="#">
-            <i className="uil uil-pinterest"></i>
-          </a>
-          <a href="#">
-            <i className="uil uil-youtube"></i>
-          </a>
-          <a href="#">
-            <i className="uil uil-tiktok"></i>
-          </a>
-        </div>
-
-        <div className="footer-divider"></div>
-
-        <div className="footer-payments">
-          <img src="/img/img-6.avif" alt="PayPal" />
-        </div>
-
-        <p className="footer-copy">© 2025 STEER LINE</p>
-      </footer>
+      <Footer />
 
       {/* ===== WhatsApp Floating Button ===== */}
-      <a
-        href="https://wa.me/447598863458"
-        className="whatsapp-float"
-        target="_blank"
-        rel="noopener noreferrer"
-        aria-label="Chat on WhatsApp"
-      >
-        <i className="uil uil-whatsapp"></i>
-      </a>
+      <WhatsappIcon />
       <BackToTop />
     </>
   );

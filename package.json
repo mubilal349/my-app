@@ -15,6 +15,7 @@
     "@iconscout/unicons": "^4.2.0",
     "@tailwindcss/vite": "^4.1.16",
     "aos": "^2.3.4",
+    "axios": "^1.13.1",
     "gsap": "^3.13.0",
     "lucide-react": "^0.548.0",
     "react": "^19.1.1",

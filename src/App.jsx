@@ -27,7 +27,7 @@ const App = () => {
       <Routes>
         {/* ✅ Home Page */}
         <Route
-          path="/"
+          path="/home"
           element={
             <>
               <HeroSlider />
