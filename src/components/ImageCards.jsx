@@ -15,10 +15,11 @@ const ImageCards = () => {
           <div className="icon">
             <i className="fas fa-pencil-ruler"></i>
           </div>
-          <h3>Choose Your Design</h3>
-          <p>
-            Pick from premium leather, Alcantara, carbon fiber, or custom
-            stitching. You can also send us your own design idea.
+          <h3>Pick your style</h3>
+          <p style={{ textTransform: "lowercase" }}>
+            CHOOSE YOUR BASE, GRIP, COLORS, STITCHING AND TRIMS. MIX IT UP OR
+            KEEP IT CLEAN — YOUR WHEEL, YOUR VIBE. YOU CALL THE SHOTS. WE MAKE
+            IT HAPPEN.
           </p>
         </div>
 
@@ -27,22 +28,11 @@ const ImageCards = () => {
           <div className="icon">
             <i className="fas fa-clock"></i>
           </div>
-          <h3>Production Time</h3>
-          <p>
-            Our standard re-trim and customization process takes{" "}
-            <strong>5–7 working days</strong>, depending on design complexity.
-          </p>
-        </div>
-
-        {/* Step 3 */}
-        <div className="step">
-          <div className="icon">
-            <i className="fas fa-tools"></i>
-          </div>
-          <h3>Quality Craftsmanship</h3>
-          <p>
-            We carefully handcraft every detail using OEM-grade materials —
-            ensuring your steering wheel feels brand new.
+          <h3>We build it </h3>
+          <p style={{ textTransform: "lowercase" }}>
+            ONCE YOU LOCK IN YOUR DESIGN, WE GET TO WORK. EACH WHEEL’S BUILT
+            FROM AN OEM BASE FOR PERFECT FITMENT, THEN CUSTOMIZED BY HAND.{" "}
+            <strong> 4–6 WEEKS </strong> FROM ORDER TO DONE — WORTH THE WAIT.
           </p>
         </div>
 
@@ -51,10 +41,12 @@ const ImageCards = () => {
           <div className="icon">
             <i className="fas fa-shipping-fast"></i>
           </div>
-          <h3>Delivery & Installation</h3>
-          <p>
-            Once complete, your wheel is securely shipped or installed locally.
-            Ready to drive with a new look and feel!
+          <h3 style={{ textTransform: "lowercase" }}>
+            DELIVERED & READY TO ROLL
+          </h3>
+          <p style={{ textTransform: "lowercase" }}>
+            YOUR CUSTOM WHEEL SHIPS OUT, READY TO BOLT IN AND FLEX. AFFORDABLE,
+            FRESH, AND BUILT TO MAKE YOUR SETUP STAND OUT.
           </p>
         </div>
       </div>

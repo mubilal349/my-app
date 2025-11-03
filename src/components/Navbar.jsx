@@ -393,12 +393,11 @@ const Navbar = () => {
                   message += cartItems
                     .map(
                       (item, index) =>
-                        `${index + 1}. ${item.title}%0A🖼️ Image: ${
-                          item.image.startsWith("http")
-                            ? item.image
-                            : window.location.origin + item.image
-                        }%0A💰 Price: ${item.discountPrice}%0A`
+                        `${index + 1}. ${item.title}%0A💰 Price: ${
+                          item.discountPrice
+                        }%0A`
                     )
+
                     .join("%0A");
 
                   // ✅ Add total at the end
