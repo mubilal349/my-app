@@ -14,65 +14,87 @@ const ShopPage = () => {
   const { addToCart } = useCart();
 
   useEffect(() => {
-    // Start loading
-    setLoading(true);
+    const fetchProducts = async () => {
+      setLoading(true);
 
-    // 1️⃣ First fetch: local JSON
-    fetch("/data/products.json")
-      .then((res) => res.json())
-      .then(async (data) => {
-        // --- Your existing logic (unchanged) ---
-        const all = data.categories.flatMap((cat) =>
+      try {
+        // 1️⃣ Fetch from local JSON
+        const res = await fetch("/data/products.json");
+        const data = await res.json();
+
+        const localJsonProducts = data.categories.flatMap((cat) =>
           cat.products.map((p) => ({
             ...p,
             category: cat.title,
-            price: parseFloat(p.discountPrice.replace("$", "")), // numeric price
-            originalPriceNum: parseFloat(p.originalPrice.replace("$", "")), // optional
+            price: parseFloat(p.discountPrice.replace("$", "")),
+            originalPriceNum: parseFloat(p.originalPrice.replace("$", "")),
           }))
         );
 
-        // 2️⃣ Second fetch: backend API
+        // 2️⃣ Fetch from backend API
+        let backendProducts = [];
         try {
           const apiRes = await fetch(
             "https://cornflowerblue-gaur-794659.hostingersite.com/api/getProducts.php"
           );
           const apiData = await apiRes.json();
 
-          // Match backend structure to your frontend
-          const backendProducts = apiData.map((p) => ({
+          backendProducts = apiData.map((p) => ({
             id: p.id,
             title: p.title,
             image: p.image.startsWith("http")
               ? p.image
               : `https://cornflowerblue-gaur-794659.hostingersite.com${p.image}`,
+            discountPrice: p.discountPrice,
+            originalPrice: p.originalPrice,
+            category: "Backend",
             price: parseFloat(p.discountPrice.replace("$", "")),
             originalPriceNum: parseFloat(p.originalPrice.replace("$", "")),
           }));
-
-          // Combine both product lists
-          const combined = [...all, ...backendProducts];
-
-          setAllProducts(combined);
-          setFilteredProducts(combined);
-          setCategories([
-            "All",
-            ...new Set([...data.categories.map((cat) => cat.title), "Backend"]),
-          ]);
-        } catch (apiError) {
-          console.error("Backend API error:", apiError);
-          setAllProducts(all);
-          setFilteredProducts(all);
-          setCategories(["All", ...data.categories.map((cat) => cat.title)]);
+        } catch (err) {
+          console.error("Backend fetch error:", err);
         }
 
+        // 3️⃣ Fetch products added via Admin Dashboard (from localStorage)
+        const adminProducts =
+          JSON.parse(localStorage.getItem("products"))?.map((p) => ({
+            id: p.id,
+            title: p.title,
+            image: p.image, // Use the base64 image directly
+            discountPrice: p.discountPrice || "$0.00",
+            originalPrice: p.originalPrice || "$0.00",
+            category: "New Products Added",
+            price: parseFloat(p.discountPrice?.replace("$", "") || 0),
+            originalPriceNum: parseFloat(
+              p.originalPrice?.replace("$", "") || 0
+            ),
+          })) || [];
+
+        // 4️⃣ Combine everything
+        const combinedProducts = [
+          ...localJsonProducts,
+          ...backendProducts,
+          ...adminProducts,
+        ];
+
+        // 5️⃣ Set all products + categories
+        setAllProducts(combinedProducts);
+        setFilteredProducts(combinedProducts);
+        setCategories([
+          "All",
+          ...new Set(combinedProducts.map((p) => p.category)),
+        ]);
+      } catch (err) {
+        console.error("Error loading products:", err);
+      } finally {
         setLoading(false);
-      })
-      .catch((err) => {
-        console.error("Local JSON error:", err);
-        setLoading(false);
-      });
+      }
+    };
+
+    fetchProducts();
   }, []);
 
+  // 🔹 Category filter handler
   const handleFilter = (category) => {
     setSelectedCategory(category);
     if (category === "All") setFilteredProducts(allProducts);
@@ -122,6 +144,7 @@ const ShopPage = () => {
                     alt={product.title}
                     className="shop-image"
                   />
+
                   <button
                     className="shop-btn"
                     onClick={() => addToCart(product)}

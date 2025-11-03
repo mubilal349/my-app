@@ -91,7 +91,7 @@ const Navbar = () => {
           marginLeft: isMobile ? "10px" : "0",
         }}
       >
-        <Link to="/home">
+        <Link to="/">
           <img src={logo} alt="Control Customs Logo" height="50" />
         </Link>
       </div>
@@ -118,7 +118,11 @@ const Navbar = () => {
             ].map((item, index) => (
               <li key={index}>
                 <Link
-                  to={`/${item.toLowerCase().replace(/\s+/g, "")}`}
+                  to={
+                    item.toLowerCase() === "home"
+                      ? "/"
+                      : `/${item.toLowerCase().replace(/\s+/g, "")}`
+                  }
                   style={{
                     color: "#000",
                     textDecoration: "none",

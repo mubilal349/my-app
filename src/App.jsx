@@ -1,5 +1,10 @@
 import React from "react";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  useLocation,
+} from "react-router-dom";
 import Navbar from "./components/Navbar";
 import "../src/assets/css/style.css";
 import HeroSlider from "./components/HeroSlider";
@@ -19,35 +24,52 @@ import Design from "./pages/Design.jsx";
 import Realisations from "./pages/Realisation.jsx";
 import ShopPage from "./pages/ShopPage.jsx";
 import { CartProvider } from "./context/CartContext.jsx";
+import AdminDashboard from "./pages/AdminDashboard.jsx";
+
+const AppLayout = ({ children }) => {
+  const location = useLocation();
+  const hideLayout = location.pathname === "/admin";
+
+  return (
+    <>
+      {!hideLayout && <Navbar />}
+      {children}
+      {!hideLayout && <Footer />}
+      {!hideLayout && <WhatsappIcon />}
+      {!hideLayout && <BackToTop />}
+    </>
+  );
+};
 
 const App = () => {
   return (
     <Router>
-      <Navbar />
-      <Routes>
-        {/* ✅ Home Page */}
-        <Route
-          path="/home"
-          element={
-            <>
-              <HeroSlider />
-              <ControlSection />
-              <ImageCards />
-              <ProjectComparison />
-              <AboutSection />
-              <Footer />
-              <WhatsappIcon />
-              <BackToTop />
-            </>
-          }
-        />
-        <Route path="/customization" element={<Customization />} />
-        <Route path="/aboutus" element={<About />} />
-        <Route path="/design" element={<Design />} />
-        <Route path="/realisations" element={<Realisations />} />
-        <Route path="/accessories" element={<AccessoriesPage />} />
-        <Route path="/shop" element={<ShopPage />} />
-      </Routes>
+      <AppLayout>
+        <Routes>
+          {/* ✅ Home Page */}
+          <Route
+            path="/"
+            element={
+              <>
+                <HeroSlider />
+                <ControlSection />
+                <ImageCards />
+                <ProjectComparison />
+                <AboutSection />
+              </>
+            }
+          />
+          {/* Admin Route */}
+          <Route path="/admin" element={<AdminDashboard />} />
+
+          <Route path="/customization" element={<Customization />} />
+          <Route path="/aboutus" element={<About />} />
+          <Route path="/design" element={<Design />} />
+          <Route path="/realisations" element={<Realisations />} />
+          <Route path="/accessories" element={<AccessoriesPage />} />
+          <Route path="/shop" element={<ShopPage />} />
+        </Routes>
+      </AppLayout>
     </Router>
   );
 };
