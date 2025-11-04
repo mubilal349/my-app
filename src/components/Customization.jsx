@@ -1,9 +1,38 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Check } from "lucide-react";
+import Swal from "sweetalert2";
 import "../index.css";
 
 const Customization = () => {
+  const handlePersonalInfoSubmit = () => {
+    const { fullName, country, email, phone } = formData;
+
+    if (!fullName || !country || !email || !phone) {
+      Swal.fire("⚠️ Missing Info", "Please fill all fields!", "warning");
+      return;
+    }
+
+    Swal.fire({
+      icon: "success",
+      title: "✅ Success!",
+      text: "Personal info saved successfully!",
+      showConfirmButton: false,
+      timer: 1500,
+    });
+
+    // Move to next step (Customization Page)
+    setTimeout(() => {
+      setCurrentStep((prev) => prev + 1);
+    }, 1500); // wait for alert to finish
+  };
+
   const [currentStep, setCurrentStep] = useState(1);
+  useEffect(() => {
+    if (currentStep === 8) {
+      handlePersonalInfoSubmit();
+    }
+  }, [currentStep]);
+
   const [formData, setFormData] = useState({
     shape: "original",
     carbon: [],
@@ -115,7 +144,7 @@ const Customization = () => {
         <div className="bg-gray-900 bg-opacity-50 backdrop-blur-lg rounded-2xl border border-gray-800 shadow-2xl overflow-hidden">
           <div className="p-8 md:p-12" style={{ padding: "20px" }}>
             <h2 className="text-3xl font-bold mb-2 bg-gradient-to-r from-yellow-400 to-orange-500 bg-clip-text text-transparent">
-              {steps[currentStep - 1].label}
+              {steps[currentStep - 1]?.label || "Customization"}
             </h2>
             <p className="text-gray-400 mb-8">Step {currentStep} of 8</p>
 
@@ -749,7 +778,13 @@ const Customization = () => {
                 </button>
 
                 <button
-                  onClick={handleNext}
+                  onClick={() => {
+                    if (currentStep === 8) {
+                      handlePersonalInfoSubmit(); // validate & go next
+                    } else {
+                      handleNext(); // normal next
+                    }
+                  }}
                   className="px-6 py-4 text-center text-sm sm:text-base font-semibold rounded-full bg-gradient-to-r from-yellow-400 to-orange-500 text-black shadow-md hover:shadow-yellow-400/40 transition-all duration-300 hover:scale-105 min-w-[100px]"
                 >
                   {currentStep === 8 ? "Get Quote" : "Next"}

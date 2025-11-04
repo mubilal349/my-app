@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import "../assets/css/Dashboard.css";
+
 import {
   BarChart,
   Bar,
@@ -17,6 +18,8 @@ import {
   FaChartPie,
   FaSignOutAlt,
   FaPlus,
+  FaBars,
+  FaTimes,
 } from "react-icons/fa";
 
 const AdminDashboard = () => {
@@ -34,6 +37,17 @@ const AdminDashboard = () => {
     discountPrice: "",
   });
   const [loginData, setLoginData] = useState({ username: "", password: "" });
+
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const toggleSidebar = () => setIsSidebarOpen(!isSidebarOpen);
+
+  const [customers, setCustomers] = useState([]);
+
+  // ✅ Close Sidebar when a tab is clicked (on mobile)
+  const handleTabChange = (tab) => {
+    setActiveTab(tab);
+    setIsSidebarOpen(false); // close sidebar after clicking
+  };
 
   const ADMIN_USERNAME = "admin_unique_4f8b9";
   const ADMIN_PASSWORD =
@@ -150,9 +164,21 @@ const AdminDashboard = () => {
     { name: "Jul", sales: 3490 },
   ];
   const trafficData = [
-    { name: "Desktop", value: 63 },
-    { name: "Tablet", value: 15 },
-    { name: "Phone", value: 22 },
+    { name: "BMW Steering Wheel", value: 63 },
+    { name: "Audi Steering Wheel ", value: 15 },
+    { name: "Volkswagen Steering Wheel", value: 22 },
+  ];
+  const sampleCustomers = [
+    { id: 1, name: "John Doe", email: "john@example.com", city: "New York" },
+    { id: 2, name: "Sarah Khan", email: "sarah@example.com", city: "Lahore" },
+    { id: 3, name: "Alex Smith", email: "alex@example.com", city: "London" },
+    { id: 4, name: "Fatima Ali", email: "fatima@example.com", city: "Karachi" },
+    {
+      id: 5,
+      name: "Michael Lee",
+      email: "michael@example.com",
+      city: "Toronto",
+    },
   ];
 
   // ------------------ LOGIN PAGE ------------------
@@ -196,13 +222,22 @@ const AdminDashboard = () => {
   // ------------------ DASHBOARD PAGE ------------------
   return (
     <div className="custom-container">
+      {/* Mobile Menu Button */}
+      <button className="menu-toggle" onClick={toggleSidebar}>
+        {isSidebarOpen ? <FaTimes /> : <FaBars />}
+      </button>
+
       {/* Sidebar */}
-      <aside className="sidebar">
+      <aside className={`sidebar ${isSidebarOpen ? "mobile-open" : ""}`}>
         <h1 className="sidebar-title">SteerLine</h1>
         <nav className="sidebar-nav">
           <button
             className={`nav-button ${activeTab === "Overview" ? "active" : ""}`}
-            onClick={() => setActiveTab("Overview")}
+            // onClick={() => setActiveTab("Overview")}
+            onClick={() => {
+              handleTabChange("Overview");
+              setActiveTab("Overview");
+            }}
           >
             <FaChartPie /> Overview
           </button>
@@ -210,19 +245,31 @@ const AdminDashboard = () => {
             className={`nav-button ${
               activeTab === "Customers" ? "active" : ""
             }`}
-            onClick={() => setActiveTab("Customers")}
+            onClick={() => {
+              handleTabChange("Customers");
+              setActiveTab("Customers");
+              setCustomers(sampleCustomers);
+            }}
           >
             <FaUsers /> Customers
           </button>
           <button
             className={`nav-button ${activeTab === "Products" ? "active" : ""}`}
-            onClick={() => setActiveTab("Products")}
+            // onClick={() => setActiveTab("Products")}
+            onClick={() => {
+              handleTabChange("Products");
+              setActiveTab("Products");
+            }}
           >
             <FaBoxOpen /> Products
           </button>
           <button
             className={`nav-button ${activeTab === "Sales" ? "active" : ""}`}
-            onClick={() => setActiveTab("Sales")}
+            // onClick={() => setActiveTab("Sales")}
+            onClick={() => {
+              handleTabChange("Sales");
+              setActiveTab("Sales");
+            }}
           >
             <FaDollarSign /> Sales
           </button>
@@ -401,6 +448,22 @@ const AdminDashboard = () => {
               ))}
             </div>
           </>
+        )}
+        {/* Customers Section */}
+        {activeTab === "Customers" && (
+          <div className="customers-section">
+            <h2>👥 Customers</h2>
+
+            <ul className="customers-list">
+              {customers.map((c) => (
+                <li key={c.id} className="customer-card">
+                  <p className="customer-name">{c.name}</p>
+                  <p className="customer-email">{c.email}</p>
+                  <p className="customer-city">{c.city}</p>
+                </li>
+              ))}
+            </ul>
+          </div>
         )}
       </main>
     </div>

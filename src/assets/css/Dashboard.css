@@ -454,6 +454,32 @@ body {
   font-size: 1.25rem;
   font-weight: bold;
 }
+/* Mobile menu button */
+.menu-toggle {
+  display: none;
+  background: #333;
+  color: white;
+  border: none;
+  padding: 10px 15px;
+  font-size: 1.3rem;
+  cursor: pointer;
+  border-radius: 5px;
+  position: fixed;
+  top: 15px;
+  right: 15px;
+  z-index: 1001;
+}
+
+/* Sidebar mobile behavior */
+@media (max-width: 768px) {
+  .menu-toggle {
+    display: block;
+  }
+
+  .sidebar.mobile-open {
+    transform: translateX(0);
+  }
+}
 
 /* ========== MOBILE RESPONSIVE ========== */
 @media (max-width: 768px) {
@@ -582,4 +608,65 @@ body {
   .login-container {
     padding: 1.5rem;
   }
+}
+
+/* Customers  */
+.customers-section {
+  padding: 30px;
+  background: #f7f9fc;
+  min-height: 100vh;
+  transition: all 0.3s ease;
+}
+
+.customers-section h2 {
+  font-size: 26px;
+  font-weight: 600;
+  color: #2c3e50;
+  border-bottom: 2px solid #3498db;
+  padding-bottom: 8px;
+  margin-bottom: 25px;
+}
+
+.customers-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 20px;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.customer-card {
+  background: #ffffff;
+  border-radius: 12px;
+  padding: 20px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.08);
+  border: 1px solid #eee;
+  transition: all 0.25s ease;
+  cursor: pointer;
+}
+
+.customer-card:hover {
+  transform: scale(1.03);
+  box-shadow: 0 8px 16px rgba(52, 152, 219, 0.2);
+  border-color: #3498db;
+}
+
+.customer-name {
+  font-size: 18px;
+  font-weight: 600;
+  color: #34495e;
+  margin-bottom: 6px;
+}
+
+.customer-email {
+  font-size: 14px;
+  color: #7f8c8d;
+  margin-bottom: 4px;
+}
+
+.customer-city {
+  font-size: 14px;
+  font-weight: 500;
+  color: #2980b9;
 }
