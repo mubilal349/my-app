@@ -7,6 +7,27 @@
       "products": [
         {
           "id": 1,
+          "title": "Steering logo",
+          "image": "/img/images/28.png",
+          "originalPrice": "$3.50",
+          "discountPrice": "$2.50"
+        },
+        {
+          "id": 1,
+          "title": "Steering logo",
+          "image": "/img/images/29.png",
+          "originalPrice": "$3.50",
+          "discountPrice": "$2.50"
+        },
+        {
+          "id": 1,
+          "title": "BMW Steering logo",
+          "image": "/img/images/Gemini_Generated_30.png",
+          "originalPrice": "$3.50",
+          "discountPrice": "$2.50"
+        },
+        {
+          "id": 1,
           "title": "Mercedes Steering logo",
           "image": "/img/images/Group-19.png",
           "originalPrice": "$3.50",
@@ -106,30 +127,366 @@
         {
           "id": 13,
           "title": "KeyChain",
-          "image": "/img/images/Wholesale-Car-Keychain-Accessories-Spinning-New-Disc-Brake-Rotor-Keychain.avif",
+          "image": "/img/keychains/10.png",
           "originalPrice": "$80.30",
           "discountPrice": "$70.10"
         },
         {
           "id": 14,
           "title": "KeyChain",
-          "image": "/img/images/keychain2_1024x.webp",
+          "image": "/img/keychains/11.png",
           "originalPrice": "$80.30",
           "discountPrice": "$70.10"
         },
         {
           "id": 15,
           "title": "KeyChain",
-          "image": "/img/images/images.jpeg",
+          "image": "/img/keychains/12.png",
           "originalPrice": "$80.30",
           "discountPrice": "$70.10"
         },
         {
           "id": 16,
           "title": "KeyChain",
-          "image": "/img/images/silver-washington-huskies-personalized-key-ring_pi4924000_altimages_ff_4924006-8ac8f49ac64286eff766alt1_full.jpg",
+          "image": "/img/keychains/13.png",
           "originalPrice": "$80.30",
           "discountPrice": "$70.10"
+        },
+        {
+          "id": 17,
+          "title": "KeyChain",
+          "image": "/img/keychains/14.png",
+          "originalPrice": "$80.30",
+          "discountPrice": "$70.10"
+        },
+        {
+          "id": 18,
+          "title": "KeyChain",
+          "image": "/img/keychains/15.png",
+          "originalPrice": "$80.30",
+          "discountPrice": "$70.10"
+        },
+        {
+          "id": 19,
+          "title": "KeyChain",
+          "image": "/img/keychains/16.png",
+          "originalPrice": "$80.30",
+          "discountPrice": "$70.10"
+        },
+        {
+          "id": 20,
+          "title": "KeyChain",
+          "image": "/img/keychains/17.png",
+          "originalPrice": "$80.30",
+          "discountPrice": "$70.10"
+        },
+        {
+          "id": 21,
+          "title": "KeyChain",
+          "image": "/img/keychains/18.png",
+          "originalPrice": "$80.30",
+          "discountPrice": "$70.10"
+        },
+        {
+          "id": 22,
+          "title": "KeyChain",
+          "image": "/img/keychains/19.png",
+          "originalPrice": "$80.30",
+          "discountPrice": "$70.10"
+        },
+        {
+          "id": 23,
+          "title": "KeyChain",
+          "image": "/img/keychains/20.png",
+          "originalPrice": "$80.30",
+          "discountPrice": "$70.10"
+        },
+        {
+          "id": 24,
+          "title": "KeyChain",
+          "image": "/img/keychains/21.png",
+          "originalPrice": "$80.30",
+          "discountPrice": "$70.10"
+        },
+        {
+          "id": 25,
+          "title": "KeyChain",
+          "image": "/img/keychains/22.png",
+          "originalPrice": "$80.30",
+          "discountPrice": "$70.10"
+        },
+        {
+          "id": 26,
+          "title": "KeyChain",
+          "image": "/img/keychains/23.png",
+          "originalPrice": "$80.30",
+          "discountPrice": "$70.10"
+        },
+        {
+          "id": 27,
+          "title": "KeyChain",
+          "image": "/img/keychains/24.png",
+          "originalPrice": "$80.30",
+          "discountPrice": "$70.10"
+        },
+        {
+          "id": 28,
+          "title": "KeyChain",
+          "image": "/img/keychains/Gemini_Generated_10.png",
+          "originalPrice": "$80.30",
+          "discountPrice": "$70.10"
+        },
+        {
+          "id": 29,
+          "title": "KeyChain",
+          "image": "/img/keychains/Gemini_Generated_11.png",
+          "originalPrice": "$80.30",
+          "discountPrice": "$70.10"
+        },
+        {
+          "id": 30,
+          "title": "KeyChain",
+          "image": "/img/keychains/Gemini_Generated_12.png",
+          "originalPrice": "$80.30",
+          "discountPrice": "$70.10"
+        },
+        {
+          "id": 31,
+          "title": "KeyChain",
+          "image": "/img/keychains/Gemini_Generated_13.png",
+          "originalPrice": "$80.30",
+          "discountPrice": "$70.10"
+        },
+        {
+          "id": 32,
+          "title": "KeyChain",
+          "image": "/img/keychains/Gemini_Generated_14.png",
+          "originalPrice": "$80.30",
+          "discountPrice": "$70.10"
+        },
+        {
+          "id": 33,
+          "title": "KeyChain",
+          "image": "/img/keychains/Gemini_Generated_15.png",
+          "originalPrice": "$80.30",
+          "discountPrice": "$70.10"
+        },
+        {
+          "id": 34,
+          "title": "KeyChain",
+          "image": "/img/keychains/Gemini_Generated_16.png",
+          "originalPrice": "$80.30",
+          "discountPrice": "$70.10"
+        },
+        {
+          "id": 35,
+          "title": "KeyChain",
+          "image": "/img/keychains/Gemini_Generated_17.png",
+          "originalPrice": "$80.30",
+          "discountPrice": "$70.10"
+        },
+        {
+          "id": 36,
+          "title": "KeyChain",
+          "image": "/img/keychains/Gemini_Generated_18.png",
+          "originalPrice": "$80.30",
+          "discountPrice": "$70.10"
+        },
+        {
+          "id": 37,
+          "title": "KeyChain",
+          "image": "/img/keychains/Gemini_Generated_19.png",
+          "originalPrice": "$80.30",
+          "discountPrice": "$70.10"
+        },
+        {
+          "id": 38,
+          "title": "KeyChain",
+          "image": "/img/keychains/Gemini_Generated_20.png",
+          "originalPrice": "$80.30",
+          "discountPrice": "$70.10"
+        },
+        {
+          "id": 39,
+          "title": "KeyChain",
+          "image": "/img/keychains/Gemini_Generated_21.png",
+          "originalPrice": "$80.30",
+          "discountPrice": "$70.10"
+        },
+        {
+          "id": 40,
+          "title": "KeyChain",
+          "image": "/img/keychains/Gemini_Generated_22.png",
+          "originalPrice": "$80.30",
+          "discountPrice": "$70.10"
+        },
+        {
+          "id": 41,
+          "title": "KeyChain",
+          "image": "/img/keychains/Gemini_Generated_23.png",
+          "originalPrice": "$80.30",
+          "discountPrice": "$70.10"
+        },
+        {
+          "id": 42,
+          "title": "KeyChain",
+          "image": "/img/keychains/Gemini_Generated_24.png",
+          "originalPrice": "$80.30",
+          "discountPrice": "$70.10"
+        },
+        {
+          "id": 43,
+          "title": "KeyChain",
+          "image": "/img/keychains/Gemini_Generated_25.png",
+          "originalPrice": "$80.30",
+          "discountPrice": "$70.10"
+        },
+        {
+          "id": 44,
+          "title": "KeyChain",
+          "image": "/img/keychains/Gemini_Generated_26.png",
+          "originalPrice": "$80.30",
+          "discountPrice": "$70.10"
+        },
+        {
+          "id": 45,
+          "title": "KeyChain",
+          "image": "/img/keychains/Gemini_Generated_27.png",
+          "originalPrice": "$80.30",
+          "discountPrice": "$70.10"
+        }
+      ]
+    },
+    {
+      "id": "nos-keychains",
+      "title": "NOS Bottle Keychain",
+      "description": "Mini nitrous oxide tank keychains for car enthusiasts, available in multiple colors like red, blue, gold, and more.",
+      "products": [
+        {
+          "id": 18,
+          "title": "NOS Bottle Keychain (Red)",
+          "image": "/img/key chain bottle/1.png",
+          "originalPrice": "$15.00",
+          "discountPrice": "$13.50"
+        }
+      ]
+    },
+    {
+      "id": "car-perfume",
+      "title": "Car Perfume",
+      "description": "Premium car perfume bottles designed for car enthusiasts, available in multiple colors like red, blue, gold, and more for a refreshing driving experience.",
+      "products": [
+        {
+          "id": 19,
+          "title": "Car Perfume Black",
+          "image": "/img/car perfume/4.png",
+          "originalPrice": "$50.00",
+          "discountPrice": "$40.50"
+        },
+        {
+          "id": 20,
+          "title": "Car Perfume ",
+          "image": "/img/car perfume/5.png",
+          "originalPrice": "$50.00",
+          "discountPrice": "$38.50"
+        },
+        {
+          "id": 21,
+          "title": "Car Perfume Black",
+          "image": "/img/car perfume/6.png",
+          "originalPrice": "$50.00",
+          "discountPrice": "$35.50"
+        }
+      ]
+    },
+    {
+      "id": "magnetic phone holder",
+      "title": "Magnetic Phone Holder",
+      "description": "Premium magnetic phone holders designed for car enthusiasts, available in multiple colors like red, blue, gold, and more, providing a secure and convenient driving experience.",
+      "products": [
+        {
+          "id": 19,
+          "title": "Magnetic Phone Holder Black",
+          "image": "/img/magnetic-phone-holder/7.png",
+          "originalPrice": "$100.00",
+          "discountPrice": "$80.50"
+        },
+        {
+          "id": 20,
+          "title": "Magnetic Phone Holder Black ",
+          "image": "/img/magnetic-phone-holder/8.png",
+          "originalPrice": "$100.00",
+          "discountPrice": "$90.50"
+        },
+        {
+          "id": 21,
+          "title": "Magnetic Phone Holder Black",
+          "image": "/img/magnetic-phone-holder/9.png",
+          "originalPrice": "$100.00",
+          "discountPrice": "$70.50"
+        },
+        {
+          "id": 22,
+          "title": "Magnetic Phone Holder Black",
+          "image": "/img/magnetic-phone-holder/Gemini_Generated_7.png",
+          "originalPrice": "$100.00",
+          "discountPrice": "$60.50"
+        },
+        {
+          "id": 23,
+          "title": "Magnetic Phone Holder Black",
+          "image": "/img/magnetic-phone-holder/Gemini_Generated_8.png",
+          "originalPrice": "$100.00",
+          "discountPrice": "$50.50"
+        },
+        {
+          "id": 24,
+          "title": "Magnetic Phone Holder Black",
+          "image": "/img/magnetic-phone-holder/Gemini_Generated_9.png",
+          "originalPrice": "$100.00",
+          "discountPrice": "$45.50"
+        }
+      ]
+    },
+    {
+      "id": "car air freshener dispenser and car air freshener.",
+      "title": "Car Air Freshener Dispenser and Car Air Freshener",
+      "description": "Premium car air freshener dispensers and refills designed for car enthusiasts, available in multiple colors like red, blue, gold, and more, providing a long-lasting and refreshing driving experience.",
+      "products": [
+        {
+          "id": 25,
+          "title": "Car Air Freshener Dispenser",
+          "image": "/img/despencer-and-freshener/2.png",
+          "originalPrice": "$30.00",
+          "discountPrice": "$25.50"
+        },
+        {
+          "id": 26,
+          "title": "Car Air Freshener",
+          "image": "/img/despencer-and-freshener/3.png",
+          "originalPrice": "$30.00",
+          "discountPrice": "$22.50"
+        },
+        {
+          "id": 27,
+          "title": "Car Air Freshener Dispenser Black",
+          "image": "/img/despencer-and-freshener/30.png",
+          "originalPrice": "$30.00",
+          "discountPrice": "$20.50"
+        },
+        {
+          "id": 28,
+          "title": "Car Perfume Black",
+          "image": "/img/despencer-and-freshener/Gemini_Generated_2.png",
+          "originalPrice": "$30.00",
+          "discountPrice": "$18.50"
+        },
+        {
+          "id": 29,
+          "title": "Car Perfume Black",
+          "image": "/img/despencer-and-freshener/Gemini_Generated_3.png",
+          "originalPrice": "$30.00",
+          "discountPrice": "$15.50"
         }
       ]
     },
@@ -142,64 +499,64 @@
           "id": 9,
           "title": "Volkswagen Steering wheel",
           "image": "/img/accessories/20250730_150323.jpg",
-          "originalPrice": "$80.30",
-          "discountPrice": "$70.10"
+          "originalPrice": "$280.30",
+          "discountPrice": "$270.10"
         },
         {
           "id": 10,
           "title": "BMW steering wheel",
           "image": "/img/accessories/20250911_123610.jpg",
-          "originalPrice": "$80.30",
-          "discountPrice": "$70.10"
+          "originalPrice": "$480.30",
+          "discountPrice": "$370.10"
         },
         {
           "id": 11,
           "title": "Steering wheel",
           "image": "/img/accessories/1000035770.jpg",
-          "originalPrice": "$80.30",
-          "discountPrice": "$70.10"
+          "originalPrice": "$450.30",
+          "discountPrice": "$350.10"
         },
         {
           "id": 12,
           "title": "BMW with light",
           "image": "/img/accessories/1000046733.jpg",
-          "originalPrice": "$80.30",
-          "discountPrice": "$70.10"
+          "originalPrice": "$500.30",
+          "discountPrice": "$400.10"
         },
         {
           "id": 13,
           "title": "BMW dark steering wheel",
           "image": "/img/accessories/1000047180.jpg",
-          "originalPrice": "$80.30",
-          "discountPrice": "$70.10"
+          "originalPrice": "$580.30",
+          "discountPrice": "$470.10"
         },
         {
           "id": 14,
           "title": "BMW with lightbeam",
           "image": "/img/accessories/1000050396.jpg",
-          "originalPrice": "$80.30",
-          "discountPrice": "$70.10"
+          "originalPrice": "$680.30",
+          "discountPrice": "$570.10"
         },
         {
           "id": 15,
           "title": "volkswagen with lightbeam",
           "image": "/img/accessories/1000059977.jpg",
-          "originalPrice": "$80.30",
-          "discountPrice": "$70.10"
+          "originalPrice": "$780.30",
+          "discountPrice": "$670.10"
         },
         {
           "id": 16,
           "title": "Carbon fiber steering wheel",
           "image": "/img/accessories/1000060649.jpg",
-          "originalPrice": "$80.30",
-          "discountPrice": "$70.10"
+          "originalPrice": "$280.30",
+          "discountPrice": "$170.10"
         },
         {
           "id": 17,
           "title": "Carbon fiber steering wheel",
           "image": "/img/accessories/1000062897.jpg",
-          "originalPrice": "$80.30",
-          "discountPrice": "$70.10"
+          "originalPrice": "$150.30",
+          "discountPrice": "$120.10"
         }
       ]
     }

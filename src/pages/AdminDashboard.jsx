@@ -49,28 +49,61 @@ const AdminDashboard = () => {
     setIsSidebarOpen(false); // close sidebar after clicking
   };
 
-  const ADMIN_USERNAME = "admin_unique_4f8b9";
-  const ADMIN_PASSWORD =
-    "$2a$12$KIXu1q9Z0xq2A3bF5e6G.O8bH9cJ0kLmN1pQrS2tUV3wXyZ4a5b6";
+  useEffect(() => {
+    const checkAuth = async () => {
+      try {
+        const res = await fetch("http://localhost:4000/api/me", {
+          credentials: "include",
+        });
+        const data = await res.json();
+        if (res.ok && data.authenticated) {
+          localStorage.setItem("isLoggedIn", "true");
+          setIsLoggedIn(true);
+        } else {
+          localStorage.removeItem("isLoggedIn");
+          setIsLoggedIn(false);
+        }
+      } catch (e) {
+        console.error(e);
+      }
+    };
+    checkAuth();
+  }, []);
 
   useEffect(() => {
     localStorage.setItem("products", JSON.stringify(products)) || [];
   }, [products]);
 
-  const handleLogin = (e) => {
+  const handleLogin = async (e) => {
     e.preventDefault();
-    if (
-      loginData.username === ADMIN_USERNAME &&
-      loginData.password === ADMIN_PASSWORD
-    ) {
-      localStorage.setItem("isLoggedIn", "true");
-      setIsLoggedIn(true);
-    } else {
-      alert("Invalid credentials!");
+    try {
+      const res = await fetch("http://localhost:4000/api/login", {
+        method: "POST",
+        credentials: "include",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          username: loginData.username,
+          password: loginData.password,
+        }),
+      });
+      const data = await res.json();
+      if (res.ok && data.success) {
+        localStorage.setItem("isLoggedIn", "true");
+        setIsLoggedIn(true);
+      } else {
+        alert(data.error || "Invalid credentials");
+      }
+    } catch (err) {
+      console.error(err);
+      alert("Login failed");
     }
   };
 
-  const handleLogout = () => {
+  const handleLogout = async () => {
+    await fetch("http://localhost:4000/api/logout", {
+      method: "POST",
+      credentials: "include",
+    });
     localStorage.removeItem("isLoggedIn");
     setIsLoggedIn(false);
   };
