@@ -8,6 +8,7 @@ const AccessoriesPage = () => {
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [selectedProduct, setSelectedProduct] = useState(null);
 
   const { addToCart } = useCart();
 
@@ -60,6 +61,7 @@ const AccessoriesPage = () => {
                     src={product.image}
                     alt={product.title}
                     className="product-image"
+                    onClick={() => setSelectedProduct(product)}
                   />
                   <button
                     className="shop-button"
@@ -84,6 +86,51 @@ const AccessoriesPage = () => {
               </div>
             ))}
           </div>
+          {selectedProduct && (
+            <div className="modal-backdrop">
+              <div className="modal-card">
+                {/* Close button */}
+                <button
+                  className="modal-close"
+                  onClick={() => setSelectedProduct(null)}
+                >
+                  &times;
+                </button>
+
+                {/* Product Image */}
+                <img
+                  src={selectedProduct.image}
+                  alt={selectedProduct.title}
+                  className="modal-image"
+                />
+
+                {/* Product Info */}
+                <h2 className="modal-title">{selectedProduct.title}</h2>
+                <div className="modal-price-box">
+                  <span className="modal-price">
+                    {selectedProduct.discountPrice}
+                  </span>
+                  <span className="modal-original">
+                    {selectedProduct.originalPrice}
+                  </span>
+                </div>
+                <p className="modal-description">
+                  {selectedProduct.description}
+                </p>
+
+                {/* Add to Cart Button */}
+                <button
+                  className="modal-add-btn"
+                  onClick={() => {
+                    handleAddToCart(selectedProduct);
+                    setSelectedProduct(null);
+                  }}
+                >
+                  Add to Cart
+                </button>
+              </div>
+            </div>
+          )}
 
           {/* Divider */}
           {index !== data.categories.length - 1 && (

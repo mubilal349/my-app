@@ -16,6 +16,7 @@
     "@tailwindcss/vite": "^4.1.16",
     "aos": "^2.3.4",
     "axios": "^1.13.1",
+    "bcryptjs": "^3.0.3",
     "gsap": "^3.13.0",
     "idb-keyval": "^6.2.2",
     "lucide-react": "^0.548.0",

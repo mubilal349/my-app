@@ -10,7 +10,14 @@
           "title": "Steering logo",
           "image": "/img/images/28.png",
           "originalPrice": "$3.50",
-          "discountPrice": "$2.50"
+          "discountPrice": "$2.50",
+          "features": [
+            "High-quality, durable materials",
+            "Eco-friendly and safe",
+            "Ergonomic design",
+            "Multiple colors available",
+            "Premium performance"
+          ]
         },
         {
           "id": 1,

@@ -37,6 +37,7 @@ const AdminDashboard = () => {
     discountPrice: "",
   });
   const [loginData, setLoginData] = useState({ username: "", password: "" });
+  const [usersData, setUsersData] = useState([]);
 
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const toggleSidebar = () => setIsSidebarOpen(!isSidebarOpen);
@@ -50,62 +51,52 @@ const AdminDashboard = () => {
   };
 
   useEffect(() => {
-    const checkAuth = async () => {
-      try {
-        const res = await fetch("http://localhost:4000/api/me", {
-          credentials: "include",
-        });
-        const data = await res.json();
-        if (res.ok && data.authenticated) {
-          localStorage.setItem("isLoggedIn", "true");
-          setIsLoggedIn(true);
-        } else {
-          localStorage.removeItem("isLoggedIn");
-          setIsLoggedIn(false);
-        }
-      } catch (e) {
-        console.error(e);
-      }
-    };
-    checkAuth();
+    // credentials.json is placed in public folder
+    fetch("/credential/credentials.json")
+      .then((res) => {
+        if (!res.ok) throw new Error("Failed to load credentials");
+        return res.json();
+      })
+      .then((data) => setUsersData(data))
+      .catch((err) => {
+        console.error("Could not load credentials.json:", err);
+        // Optionally fallback to an empty array or hard-coded data
+      });
   }, []);
+
+  // 1. Removed original useEffect for checkAuth (backend fetch)
+  // Local storage handles initial isLoggedIn state now.
 
   useEffect(() => {
     localStorage.setItem("products", JSON.stringify(products)) || [];
   }, [products]);
 
-  const handleLogin = async (e) => {
+  // 2. Modified handleLogin to check against USERS_DATA array
+  const handleLogin = (e) => {
     e.preventDefault();
-    try {
-      const res = await fetch("http://localhost:4000/api/login", {
-        method: "POST",
-        credentials: "include",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          username: loginData.username,
-          password: loginData.password,
-        }),
-      });
-      const data = await res.json();
-      if (res.ok && data.success) {
-        localStorage.setItem("isLoggedIn", "true");
-        setIsLoggedIn(true);
-      } else {
-        alert(data.error || "Invalid credentials");
-      }
-    } catch (err) {
-      console.error(err);
-      alert("Login failed");
+    const user = usersData.find(
+      (u) =>
+        u.username === loginData.username && u.password === loginData.password
+    );
+
+    if (user) {
+      localStorage.setItem("isLoggedIn", "true");
+      localStorage.setItem("username", user.username);
+      setIsLoggedIn(true);
+      setLoginData({ username: "", password: "" });
+      // redirect to /admin or show dashboard
+    } else {
+      alert("❌ Invalid credentials. Try again.");
     }
   };
 
-  const handleLogout = async () => {
-    await fetch("http://localhost:4000/api/logout", {
-      method: "POST",
-      credentials: "include",
-    });
+  // 3. Modified handleLogout to clear local storage items
+  const handleLogout = () => {
     localStorage.removeItem("isLoggedIn");
+    localStorage.removeItem("username"); // Clear simulated session data
     setIsLoggedIn(false);
+    setActiveTab("Overview"); // Reset view after logout
+    alert("👋 Logged out successfully!");
   };
 
   const handleInputChange = (e) => {
@@ -129,7 +120,8 @@ const AdminDashboard = () => {
     if (!formData.image) return alert("Please upload an image!");
 
     const newProduct = {
-      id: products.length + 1,
+      // Use timestamp for a more unique ID, especially after deletion
+      id: Date.now(),
       title: formData.title,
       image: formData.image,
       originalPrice: formData.originalPrice,
@@ -186,6 +178,7 @@ const AdminDashboard = () => {
     }
   };
 
+  // --- Static Data (unchanged) ---
   const COLORS = ["#4F46E5", "#22C55E", "#FACC15"];
   const salesData = [
     { name: "Jan", sales: 4000 },
@@ -247,6 +240,7 @@ const AdminDashboard = () => {
               Login
             </button>
           </form>
+          {/* <p className="login-hint"></p> */}
         </div>
       </div>
     );
@@ -266,10 +260,8 @@ const AdminDashboard = () => {
         <nav className="sidebar-nav">
           <button
             className={`nav-button ${activeTab === "Overview" ? "active" : ""}`}
-            // onClick={() => setActiveTab("Overview")}
             onClick={() => {
               handleTabChange("Overview");
-              setActiveTab("Overview");
             }}
           >
             <FaChartPie /> Overview
@@ -280,7 +272,6 @@ const AdminDashboard = () => {
             }`}
             onClick={() => {
               handleTabChange("Customers");
-              setActiveTab("Customers");
               setCustomers(sampleCustomers);
             }}
           >
@@ -288,20 +279,16 @@ const AdminDashboard = () => {
           </button>
           <button
             className={`nav-button ${activeTab === "Products" ? "active" : ""}`}
-            // onClick={() => setActiveTab("Products")}
             onClick={() => {
               handleTabChange("Products");
-              setActiveTab("Products");
             }}
           >
             <FaBoxOpen /> Products
           </button>
           <button
             className={`nav-button ${activeTab === "Sales" ? "active" : ""}`}
-            // onClick={() => setActiveTab("Sales")}
             onClick={() => {
               handleTabChange("Sales");
-              setActiveTab("Sales");
             }}
           >
             <FaDollarSign /> Sales
@@ -314,7 +301,7 @@ const AdminDashboard = () => {
 
       {/* Main Content */}
       <main className="main-container">
-        {activeTab !== "Products" && (
+        {activeTab === "Overview" && (
           <>
             <h2 className="main-heading">Dashboard Overview</h2>
 
@@ -387,7 +374,7 @@ const AdminDashboard = () => {
           </>
         )}
 
-        {/* Add Product */}
+        {/* Add Product and Product List */}
         {activeTab === "Products" && (
           <>
             <div className="add-product-card">

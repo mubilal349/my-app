@@ -10,6 +10,7 @@ const ShopPage = () => {
   const [categories, setCategories] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState("All");
   const [loading, setLoading] = useState(true);
+  const [selectedProduct, setSelectedProduct] = useState(null);
 
   const { addToCart } = useCart();
 
@@ -143,6 +144,7 @@ const ShopPage = () => {
                     src={product.image}
                     alt={product.title}
                     className="shop-image"
+                    onClick={() => setSelectedProduct(product)}
                   />
 
                   <button
@@ -166,7 +168,81 @@ const ShopPage = () => {
             <p className="no-results">No products found for this category.</p>
           )}
         </div>
+        {/* Product Modal */}
+        {selectedProduct && (
+          <div
+            className="modal-backdrop"
+            onClick={() => setSelectedProduct(null)}
+          >
+            <div
+              className="modal-card"
+              onClick={(e) => e.stopPropagation()} // Prevent closing on click inside
+            >
+              {/* Close Button */}
+              <button
+                className="modal-close"
+                onClick={() => setSelectedProduct(null)}
+              >
+                &times;
+              </button>
+
+              {/* Modal Content */}
+              <div className="modal-content">
+                {/* Image */}
+                <img
+                  src={selectedProduct.image}
+                  alt={selectedProduct.title}
+                  className="modal-image"
+                />
+
+                {/* Info */}
+                <div className="modal-info">
+                  <h2 className="modal-title">{selectedProduct.title}</h2>
+                  <div className="modal-price-box">
+                    <span className="modal-price">
+                      {selectedProduct.discountPrice}
+                    </span>
+                    <span className="modal-original">
+                      {selectedProduct.originalPrice}
+                    </span>
+                  </div>
+                  <p className="modal-description">
+                    {selectedProduct.description}
+                  </p>
+
+                  {/* Quality & Features */}
+                  {selectedProduct.features && (
+                    <div className="modal-features-box">
+                      <h3 className="modal-subtitle">Quality & Features:</h3>
+                      <ul>
+                        <li>
+                          ✅ High-quality, durable materials for long-lasting
+                          use
+                        </li>
+                        <li>✅ Eco-friendly and safe for everyday use</li>
+                        <li>✅ Ergonomic and user-friendly design</li>
+                        <li>✅ Available in multiple colors and sizes</li>
+                        <li>✅ Carefully tested for premium performance</li>
+                      </ul>
+                    </div>
+                  )}
+
+                  <button
+                    className="modal-add-btn"
+                    onClick={() => {
+                      addToCart(selectedProduct);
+                      setSelectedProduct(null);
+                    }}
+                  >
+                    Add to Cart
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
       </div>
+
       <WhatsappIcon />
       <BackToTop />
     </section>
