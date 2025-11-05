@@ -209,24 +209,6 @@ const ShopPage = () => {
                   <p className="modal-description">
                     {selectedProduct.description}
                   </p>
-
-                  {/* Quality & Features */}
-                  {selectedProduct.features && (
-                    <div className="modal-features-box">
-                      <h3 className="modal-subtitle">Quality & Features:</h3>
-                      <ul>
-                        <li>
-                          ✅ High-quality, durable materials for long-lasting
-                          use
-                        </li>
-                        <li>✅ Eco-friendly and safe for everyday use</li>
-                        <li>✅ Ergonomic and user-friendly design</li>
-                        <li>✅ Available in multiple colors and sizes</li>
-                        <li>✅ Carefully tested for premium performance</li>
-                      </ul>
-                    </div>
-                  )}
-
                   <button
                     className="modal-add-btn"
                     onClick={() => {

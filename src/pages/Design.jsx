@@ -1,7 +1,7 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import "../assets/css/design.css";
 import BackToTop from "../components/BackToTop";
-import Footer from "../components/Footer";
 import WhatsappIcon from "../components/WhatsappIcon";
 
 const Design = () => {
@@ -57,7 +57,7 @@ const Design = () => {
 
           <div className="text-side">
             <h2>Take control</h2>
-            <p>
+            <p style={{ color: "#666", lineHeight: "1.6", fontSize: "1rem" }}>
               Control Customs UK specialize in high-quality steering wheel
               re-trims and carbon fiber upgrades, so you can add an extra touch
               of style or a luxurious look to your car interior.
@@ -88,12 +88,12 @@ const Design = () => {
             },
             {
               title: "Steering wheel re-trims",
-              img: "/img/img-10.jpg",
+              img: "/img/Steering Wheel_rem.png",
               btn: "Design Your Steering Wheel",
             },
             {
               title: "Airbag covers",
-              img: "/img/img-10.jpg",
+              img: "/img/Airbag-covers.png",
               btn: "Design Your Airbag Cover",
             },
           ].map((item, i) => (
@@ -103,9 +103,9 @@ const Design = () => {
               </div>
               <div className="card-info">
                 <h3>{item.title}</h3>
-                <a href="#" className="btn">
+                <Link to="/customization" className="btn">
                   {item.btn}
-                </a>
+                </Link>
               </div>
             </div>
           ))}
@@ -158,27 +158,42 @@ const Design = () => {
       {/*================ Configurator Section ==============*/}
       <section className="configurator">
         <div className="config-wrapper">
+          {/* Left Text Section */}
           <div className="config-text">
-            <p className="config-tag">CONFIGURATOR</p>
+            <p className="config-tag">⚙️ CONFIGURATOR</p>
             <h2 className="config-title">
-              See what your steering wheel can look like
+              Visualize Your Custom Steering Wheel
             </h2>
             <p className="config-desc">
-              Select the modifications you are interested in, send us a photo of
-              your steering wheel, and we will prepare an offer especially for
-              you.
+              Choose your favorite materials, colors, and stitching. Upload a
+              photo of your steering wheel, and we’ll create a personalized 3D
+              preview — just for you.
             </p>
-            <button className="config-btn">I Want To See</button>
+
+            <button
+              className="config-btn"
+              onClick={() => window.open("/customization", "_self")}
+            >
+              🚗 Try the Configurator
+            </button>
           </div>
 
+          {/* Right Image Section */}
           <div className="config-image">
-            <img src="/img/img-4.webp" alt="Customized steering wheel" />
+            <img
+              src="/img/img-4.webp"
+              alt="Customized steering wheel"
+              className="config-wheel"
+            />
+            <div className="config-hover-overlay">
+              <p>
+                Click on the button to start customizing your dream steering
+                wheel!
+              </p>
+            </div>
           </div>
         </div>
       </section>
-
-      {/*======== Footer ==========*/}
-      <Footer />
 
       {/* WhatsApp Icon */}
       <WhatsappIcon />

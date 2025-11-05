@@ -324,11 +324,12 @@
 
 /* Configurator */
 .configurator {
-  width: 100%;
-  padding: 100px 20px;
+  padding: 80px 10%;
+  background: #f9f9f9;
   display: flex;
   justify-content: center;
   align-items: center;
+  transition: background 0.4s ease;
 }
 
 .config-wrapper {
@@ -337,22 +338,17 @@
   justify-content: space-between;
   flex-wrap: wrap;
   gap: 50px;
-  /* max-width: 1100px; */
-  width: 100%;
-  background: rgba(255, 255, 255, 0.9);
-  border-radius: 20px;
-  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
-  padding: 50px;
 }
 
 .config-text {
-  flex: 1 1 400px;
-  text-align: left;
+  flex: 1;
+  max-width: 500px;
+  animation: fadeInUp 0.8s ease-in-out;
 }
 
 .config-tag {
-  color: #007bff;
   font-weight: 600;
+  color: #007bff;
   letter-spacing: 2px;
   margin-bottom: 10px;
 }
@@ -360,66 +356,102 @@
 .config-title {
   font-size: 2rem;
   font-weight: 700;
-  color: #222;
-  margin-bottom: 20px;
+  margin-bottom: 15px;
+  color: #111;
 }
 
 .config-desc {
-  color: #555;
   font-size: 1rem;
-  line-height: 1.7;
-  margin-bottom: 30px;
-  max-width: 450px;
+  color: #444;
+  line-height: 1.6;
+  margin-bottom: 25px;
 }
 
 .config-btn {
-  padding: 12px 30px;
-  background: #111;
+  background: #101210;
   color: #fff;
+  padding: 12px 24px;
   border: none;
-  border-radius: 25px;
-  font-size: 1rem;
+  border-radius: 8px;
   cursor: pointer;
-  transition: background 0.3s ease;
+  font-weight: 600;
+  transition: transform 0.3s, box-shadow 0.3s;
 }
 
 .config-btn:hover {
-  background: #007bff;
+  transform: translateY(-4px);
+  box-shadow: 0 8px 16px rgba(0, 123, 255, 0.3);
+  background: #3b82fc;
+  color: #fff;
 }
 
 .config-image {
-  flex: 1 1 400px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  flex: 1;
+  max-width: 500px;
+  position: relative;
 }
 
-.config-image img {
+.config-wheel {
   width: 100%;
-  max-width: 400px;
-  border-radius: 20px;
-  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+  border-radius: 10px;
   transition: transform 0.4s ease;
 }
 
-.config-image img:hover {
-  transform: scale(1.05);
+.config-wheel:hover {
+  transform: scale(1.05) rotate(2deg);
 }
 
-/* ✅ Mobile adjustments */
+.config-hover-overlay {
+  position: absolute;
+  bottom: 15px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(0, 0, 0, 0.6);
+  color: #fff;
+  padding: 10px 20px;
+  border-radius: 6px;
+  font-size: 0.9rem;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.config-image:hover .config-hover-overlay {
+  opacity: 1;
+}
+
+/* Responsive */
 @media (max-width: 768px) {
   .config-wrapper {
     flex-direction: column;
     text-align: center;
-    padding: 40px 25px;
   }
 
-  .config-text {
-    text-align: center;
+  .config-title {
+    font-size: 1.6rem;
   }
 
-  .config-desc {
-    margin: 0 auto 30px;
+  .config-btn {
+    width: 100%;
+  }
+  .text-side {
+    text-align: center; /* center text horizontally */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding-right: 40px;
+  }
+}
+
+/* Animation */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
   }
 }
 

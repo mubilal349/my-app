@@ -188,7 +188,13 @@ const Navbar = () => {
 
       {/* CTA Button */}
       {!isMobile && (
-        <a href="#" className="cta" style={{ shadowStyle, order: 4 }}>
+        <a
+          href="https://wa.me/447598863458"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="cta"
+          style={{ shadowStyle, order: 4 }}
+        >
           Get A Quote
         </a>
       )}
@@ -226,7 +232,7 @@ const Navbar = () => {
             {[
               "Home",
               "About us",
-              "Design my wheel",
+              "Design",
               "Realisations",
               "Accessories",
               "Shop",

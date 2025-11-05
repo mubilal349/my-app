@@ -263,7 +263,7 @@
 }
 
 .what-sets-us-apart .call-to-action {
-  background-color: #3b82f6; /* Light yellow/gold button */
+  background-color: #111113; /* Light yellow/gold button */
   color: #fff;
   border: none;
   padding: 15px 30px;
@@ -275,7 +275,8 @@
 }
 
 .what-sets-us-apart .call-to-action:hover {
-  background-color: #3b82f6; /* Slightly darker on hover */
+  background-color: #3b82fc;
+  color: #fff;
 }
 
 .what-sets-us-apart .right-content {
