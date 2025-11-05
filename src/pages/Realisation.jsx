@@ -1,7 +1,6 @@
 import React from "react";
 import "../assets/css/realisation.css";
 import BackToTop from "../components/BackToTop";
-import Footer from "../components/Footer";
 import WhatsappIcon from "../components/WhatsappIcon";
 
 const Realisations = () => {
@@ -98,9 +97,6 @@ const Realisations = () => {
           </div>
         </div>
       </section>
-
-      {/* ✅ Footer */}
-      <Footer />
 
       {/* ✅ WhatsApp Floating Icon */}
       <WhatsappIcon />

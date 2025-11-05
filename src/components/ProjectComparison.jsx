@@ -1,107 +1,69 @@
-import React, { useState, useRef, useCallback, useEffect } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import AOS from "aos";
 import "aos/dist/aos.css";
 import "../assets/css/ProjectComparison.css";
 
 const ProjectComparison = () => {
-  // Slider positions (0–100)
-  const [sliderPosition1, setSliderPosition1] = useState();
-  const [sliderPosition2, setSliderPosition2] = useState();
-  const [sliderPosition3, setSliderPosition3] = useState();
+  // Start with after hidden but line in center
+  const [positions, setPositions] = useState([0, 0, 0]);
+  const containerRefs = [useRef(null), useRef(null), useRef(null)];
+  const activeIndex = useRef(null);
 
-  const containerRef1 = useRef(null);
-  const containerRef2 = useRef(null);
-  const containerRef3 = useRef(null);
-
-  const [isDragging, setIsDragging] = useState(null);
-
-  // Initialize AOS (no animation delay)
   useEffect(() => {
-    AOS.init({
-      duration: 0,
-      once: true,
-      mirror: false,
-      startEvent: "DOMContentLoaded",
-    });
+    AOS.init({ duration: 0, once: true });
   }, []);
 
-  // Smoothly update the slider
-  const updateSliderPosition = useCallback(
-    (clientX, containerRef, setPosition) => {
-      if (!containerRef?.current) return;
-      const { left, width } = containerRef.current.getBoundingClientRect();
-      let newX = ((clientX - left) / width) * 100;
-      newX = Math.max(0, Math.min(newX, 100));
-      window.requestAnimationFrame(() => setPosition(newX));
-    },
-    []
-  );
-
-  const handleStartDrag = (e, id) => {
+  const startDrag = (e, index) => {
     e.preventDefault();
-    setIsDragging(id);
-    const clientX = e.clientX ?? (e.touches && e.touches[0].clientX);
-    const ref =
-      id === 1 ? containerRef1 : id === 2 ? containerRef2 : containerRef3;
-    const setPos =
-      id === 1
-        ? setSliderPosition1
-        : id === 2
-        ? setSliderPosition2
-        : setSliderPosition3;
-    if (clientX != null) updateSliderPosition(clientX, ref, setPos);
+    activeIndex.current = index;
+    document.body.style.userSelect = "none";
+    // when drag starts, reveal after image slightly
+    setPositions((prev) =>
+      prev.map((p, i) => (i === index && p === 0 ? 0.1 : p))
+    );
   };
 
-  const handleStopDrag = () => setIsDragging(null);
+  const stopDrag = () => {
+    activeIndex.current = null;
+    document.body.style.userSelect = "auto";
+  };
 
-  const handleDragMove = useCallback(
-    (e) => {
-      if (isDragging == null) return;
-      const clientX = e.clientX ?? (e.touches && e.touches[0].clientX);
-      const ref =
-        isDragging === 1
-          ? containerRef1
-          : isDragging === 2
-          ? containerRef2
-          : containerRef3;
-      const setPos =
-        isDragging === 1
-          ? setSliderPosition1
-          : isDragging === 2
-          ? setSliderPosition2
-          : setSliderPosition3;
-      if (clientX != null) updateSliderPosition(clientX, ref, setPos);
-    },
-    [isDragging, updateSliderPosition]
-  );
+  const onPointerMove = (e) => {
+    if (activeIndex.current === null) return;
+    const container = containerRefs[activeIndex.current].current;
+    if (!container) return;
 
-  // Event listeners while dragging
+    const { left, width } = container.getBoundingClientRect();
+    const clientX = e.clientX || (e.touches && e.touches[0].clientX);
+    let percent = ((clientX - left) / width) * 100;
+    percent = Math.max(0, Math.min(percent, 100));
+
+    // 👇 Update both overlay width and handle line position
+    setPositions((prev) =>
+      prev.map((p, i) => (i === activeIndex.current ? percent : p))
+    );
+  };
+
   useEffect(() => {
-    if (isDragging != null) {
-      document.addEventListener("mousemove", handleDragMove);
-      document.addEventListener("mouseup", handleStopDrag);
-      document.addEventListener("touchmove", handleDragMove, {
-        passive: false,
-      });
-      document.addEventListener("touchend", handleStopDrag);
-    }
+    document.addEventListener("pointermove", onPointerMove);
+    document.addEventListener("pointerup", stopDrag);
+    document.addEventListener("touchmove", onPointerMove, { passive: false });
+    document.addEventListener("touchend", stopDrag);
+
     return () => {
-      document.removeEventListener("mousemove", handleDragMove);
-      document.removeEventListener("mouseup", handleStopDrag);
-      document.removeEventListener("touchmove", handleDragMove);
-      document.removeEventListener("touchend", handleStopDrag);
+      document.removeEventListener("pointermove", onPointerMove);
+      document.removeEventListener("pointerup", stopDrag);
+      document.removeEventListener("touchmove", onPointerMove);
+      document.removeEventListener("touchend", stopDrag);
     };
-  }, [isDragging, handleDragMove]);
+  }, []);
 
-  // Single comparison card
-  const ComparisonCard = ({ id, position, containerRef, before, after }) => {
-    const beforeSrc = before || "/img/before-and-after/default-before.jpg";
-    const afterSrc = after || "/img/before-and-after/default-after.jpg";
-
+  const ComparisonCard = ({ id, before, after }) => {
+    const position = positions[id];
     return (
       <div
+        ref={containerRefs[id]}
         className="comparison-container"
-        ref={containerRef}
         style={{
           position: "relative",
           width: "100%",
@@ -110,11 +72,12 @@ const ProjectComparison = () => {
           overflow: "hidden",
           borderRadius: "10px",
           boxShadow: "0 2px 10px rgba(0,0,0,0.15)",
+          touchAction: "none",
         }}
       >
         {/* Before Image */}
         <img
-          src={beforeSrc}
+          src={before}
           alt={`Before ${id}`}
           style={{
             width: "100%",
@@ -125,7 +88,7 @@ const ProjectComparison = () => {
           draggable={false}
         />
 
-        {/* After Overlay */}
+        {/* After Overlay - starts hidden */}
         <div
           className="comparison-overlay"
           style={{
@@ -135,11 +98,11 @@ const ProjectComparison = () => {
             height: "100%",
             width: `${position}%`,
             overflow: "hidden",
-            transition: "width 0.15s linear",
+            transition: "width 0.1s linear",
           }}
         >
           <img
-            src={afterSrc}
+            src={after}
             alt={`After ${id}`}
             style={{
               width: "100%",
@@ -151,13 +114,13 @@ const ProjectComparison = () => {
           />
         </div>
 
-        {/* === Center Divider Line === */}
+        {/* Draggable Line (follows overlay position) */}
         <div
           className="slider-line"
           style={{
             position: "absolute",
             top: 0,
-            left: `${position}%`,
+            left: position === 0 ? "50%" : `${position}%`,
             transform: "translateX(-50%)",
             width: "3px",
             height: "100%",
@@ -167,11 +130,11 @@ const ProjectComparison = () => {
             cursor: "ew-resize",
             zIndex: 5,
             userSelect: "none",
+            transition: activeIndex.current === id ? "none" : "left 0.15s ease",
           }}
-          onMouseDown={(e) => handleStartDrag(e, id)}
-          onTouchStart={(e) => handleStartDrag(e, id)}
+          onPointerDown={(e) => startDrag(e, id)}
+          onTouchStart={(e) => startDrag(e, id)}
         >
-          {/* Handle Circle */}
           <div
             style={{
               position: "absolute",
@@ -211,23 +174,17 @@ const ProjectComparison = () => {
 
       <div className="comparison-wrapper" style={{ padding: "29px 4%" }}>
         <ComparisonCard
-          id={1}
-          position={sliderPosition1}
-          containerRef={containerRef1}
+          id={0}
           before="/img/before-and-after/before-after 1.jpg"
           after="/img/before-and-after/before-after 1 (2).jpg"
         />
         <ComparisonCard
-          id={2}
-          position={sliderPosition2}
-          containerRef={containerRef2}
+          id={1}
           before="/img/before-and-after/before-after 4.jpg"
           after="/img/before-and-after/before-after 4 02.jpg"
         />
         <ComparisonCard
-          id={3}
-          position={sliderPosition3}
-          containerRef={containerRef3}
+          id={2}
           before="/img/before-and-after/before-after 5.jpg"
           after="/img/before-and-after/before-after 5 02.jpg"
         />

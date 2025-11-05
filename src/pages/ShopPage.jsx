@@ -10,6 +10,7 @@ const ShopPage = () => {
   const [categories, setCategories] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState("All");
   const [loading, setLoading] = useState(true);
+  const [selectedProduct, setSelectedProduct] = useState(null);
 
   const { addToCart } = useCart();
 
@@ -143,6 +144,7 @@ const ShopPage = () => {
                     src={product.image}
                     alt={product.title}
                     className="shop-image"
+                    onClick={() => setSelectedProduct(product)}
                   />
 
                   <button
@@ -166,7 +168,63 @@ const ShopPage = () => {
             <p className="no-results">No products found for this category.</p>
           )}
         </div>
+        {/* Product Modal */}
+        {selectedProduct && (
+          <div
+            className="modal-backdrop"
+            onClick={() => setSelectedProduct(null)}
+          >
+            <div
+              className="modal-card"
+              onClick={(e) => e.stopPropagation()} // Prevent closing on click inside
+            >
+              {/* Close Button */}
+              <button
+                className="modal-close"
+                onClick={() => setSelectedProduct(null)}
+              >
+                &times;
+              </button>
+
+              {/* Modal Content */}
+              <div className="modal-content">
+                {/* Image */}
+                <img
+                  src={selectedProduct.image}
+                  alt={selectedProduct.title}
+                  className="modal-image"
+                />
+
+                {/* Info */}
+                <div className="modal-info">
+                  <h2 className="modal-title">{selectedProduct.title}</h2>
+                  <div className="modal-price-box">
+                    <span className="modal-price">
+                      {selectedProduct.discountPrice}
+                    </span>
+                    <span className="modal-original">
+                      {selectedProduct.originalPrice}
+                    </span>
+                  </div>
+                  <p className="modal-description">
+                    {selectedProduct.description}
+                  </p>
+                  <button
+                    className="modal-add-btn"
+                    onClick={() => {
+                      addToCart(selectedProduct);
+                      setSelectedProduct(null);
+                    }}
+                  >
+                    Add to Cart
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
       </div>
+
       <WhatsappIcon />
       <BackToTop />
     </section>

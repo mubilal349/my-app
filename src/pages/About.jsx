@@ -2,7 +2,6 @@ import React, { useEffect } from "react";
 import "../assets/css/about.css";
 import BackToTop from "../components/BackToTop";
 import bg from "/img/img-11.jpeg";
-import Footer from "../components/Footer";
 import WhatsappIcon from "../components/WhatsappIcon";
 
 const About = () => {
@@ -143,7 +142,12 @@ const About = () => {
               individual order handling, multiple contact options, and the
               ability to modify any steering wheel.
             </p>
-            <button className="call-to-action">See Realisations</button>
+            <button
+              className="call-to-action"
+              onClick={() => window.open("/realisations", "_self")}
+            >
+              See Realisations
+            </button>
           </div>
 
           <div className="right-content">
@@ -175,9 +179,6 @@ const About = () => {
           </div>
         </div>
       </section>
-
-      {/* ===== Footer ===== */}
-      <Footer />
 
       {/* ===== WhatsApp Floating Button ===== */}
       <WhatsappIcon />
