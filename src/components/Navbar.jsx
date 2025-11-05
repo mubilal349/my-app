@@ -111,10 +111,11 @@ const Navbar = () => {
             {[
               "Home",
               "About us",
-              "Design",
+              "Design my wheel",
               "Realisations",
+              "catalogue",
               "Accessories",
-              "Shop",
+              "Shop now",
             ].map((item, index) => (
               <li key={index}>
                 <Link
@@ -232,14 +233,19 @@ const Navbar = () => {
             {[
               "Home",
               "About us",
-              "Design",
+              "Design my wheel",
               "Realisations",
+              "catalogue",
               "Accessories",
-              "Shop",
+              "Shop now",
             ].map((item, index) => (
               <li key={index}>
                 <Link
-                  to={`/${item.toLowerCase().replace(" ", "")}`}
+                  to={
+                    item.toLowerCase() === "home"
+                      ? "/"
+                      : `/${item.toLowerCase().replace(/\s+/g, "")}`
+                  }
                   style={{
                     color: "#000",
                     textDecoration: "none",

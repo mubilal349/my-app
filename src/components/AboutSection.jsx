@@ -1,5 +1,5 @@
 import React from "react";
-import sampleImage from "/img/img-13.jpeg"; // replace with your image path
+import sampleImage from "/img/before-and-after/before-after 2.jpg"; // replace with your image path
 
 const AboutSection = () => {
   return (
@@ -56,10 +56,10 @@ const AboutSection = () => {
         <p
           style={{
             fontSize: "1.125rem",
-            // lineHeight: "1.8",
+            lineHeight: "1.8",
             maxWidth: "700px",
             margin: "40px auto",
-            textAlign: "justify",
+            // textAlign: "justify",
             padding: "0 20px",
           }}
         >

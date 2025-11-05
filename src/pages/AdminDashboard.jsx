@@ -309,7 +309,7 @@ const AdminDashboard = () => {
             <div className="stats-grid">
               <div className="stat-card">
                 <p className="stat-label">Budget</p>
-                <h3 className="stat-value">$24k</h3>
+                <h3 className="stat-value">£24k</h3>
                 <p className="stat-change positive">↑ 12% since last month</p>
               </div>
               <div className="stat-card">
@@ -326,7 +326,7 @@ const AdminDashboard = () => {
               </div>
               <div className="stat-card">
                 <p className="stat-label">Total Profit</p>
-                <h3 className="stat-value">$15k</h3>
+                <h3 className="stat-value">£15k</h3>
               </div>
             </div>
 

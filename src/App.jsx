@@ -25,6 +25,9 @@ import Realisations from "./pages/Realisation.jsx";
 import ShopPage from "./pages/ShopPage.jsx";
 import { CartProvider } from "./context/CartContext.jsx";
 import AdminDashboard from "./pages/AdminDashboard.jsx";
+import Catalogue from "./pages/Catalogue.jsx";
+import SubcategoryPage from "./pages/SubCategoryPage.jsx";
+import SubcategoryDetail from "./pages/SubCategoryDetail.jsx";
 
 const AppLayout = ({ children }) => {
   const location = useLocation();
@@ -64,10 +67,19 @@ const App = () => {
 
           <Route path="/customization" element={<Customization />} />
           <Route path="/aboutus" element={<About />} />
-          <Route path="/design" element={<Design />} />
+          <Route path="/designmywheel" element={<Design />} />
           <Route path="/realisations" element={<Realisations />} />
+          <Route path="/catalogue" element={<Catalogue />} />
+          <Route
+            path="/category/:category/:subcategory"
+            element={<SubcategoryPage />}
+          />
+          <Route
+            path="/subcategory/:subcategory/detail"
+            element={<SubcategoryDetail />}
+          />
           <Route path="/accessories" element={<AccessoriesPage />} />
-          <Route path="/shop" element={<ShopPage />} />
+          <Route path="/shopnow" element={<ShopPage />} />
         </Routes>
       </AppLayout>
     </Router>
