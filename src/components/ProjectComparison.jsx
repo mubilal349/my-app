@@ -1,195 +1,112 @@
 import React, { useState, useRef, useEffect } from "react";
-import AOS from "aos";
-import "aos/dist/aos.css";
-import "../assets/css/ProjectComparison.css";
+import "../assets/css/ProjectComparison.css"; // We'll define this below
 
 const ProjectComparison = () => {
-  // Start with after hidden but line in center
-  const [positions, setPositions] = useState([0, 0, 0]);
-  const containerRefs = [useRef(null), useRef(null), useRef(null)];
-  const activeIndex = useRef(null);
+  // Sample image URLs (replace with your actual images for before/after steering wheels)
+  const wheels = [
+    {
+      before: "/img/before-and-after/before-after 1.jpg", // Dirty steering wheel
+      after: "/img/before-and-after/before-after 1 (2).jpg", // Clean steering wheel
+      alt: "Steering Wheel 1",
+    },
+    {
+      before: "/img/before-and-after/before-after 4.jpg",
+      after: "/img/before-and-after/before-after 4 02.jpg",
+      alt: "Steering Wheel 2",
+    },
+    {
+      before: "/img/before-and-after/before-after 5.jpg",
+      after: "/img/before-and-after/before-after 5 02.jpg",
+      alt: "Steering Wheel 3",
+    },
+  ];
 
-  useEffect(() => {
-    AOS.init({ duration: 0, once: true });
-  }, []);
-
-  const startDrag = (e, index) => {
-    e.preventDefault();
-    activeIndex.current = index;
-    document.body.style.userSelect = "none";
-    // when drag starts, reveal after image slightly
-    setPositions((prev) =>
-      prev.map((p, i) => (i === index && p === 0 ? 0.1 : p))
-    );
-  };
-
-  const stopDrag = () => {
-    activeIndex.current = null;
-    document.body.style.userSelect = "auto";
-  };
-
-  const onPointerMove = (e) => {
-    if (activeIndex.current === null) return;
-    const container = containerRefs[activeIndex.current].current;
-    if (!container) return;
-
-    const { left, width } = container.getBoundingClientRect();
-    const clientX = e.clientX || (e.touches && e.touches[0].clientX);
-    let percent = ((clientX - left) / width) * 100;
-    percent = Math.max(0, Math.min(percent, 100));
-
-    // 👇 Update both overlay width and handle line position
-    setPositions((prev) =>
-      prev.map((p, i) => (i === activeIndex.current ? percent : p))
-    );
-  };
-
-  useEffect(() => {
-    document.addEventListener("pointermove", onPointerMove);
-    document.addEventListener("pointerup", stopDrag);
-    document.addEventListener("touchmove", onPointerMove, { passive: false });
-    document.addEventListener("touchend", stopDrag);
-
-    return () => {
-      document.removeEventListener("pointermove", onPointerMove);
-      document.removeEventListener("pointerup", stopDrag);
-      document.removeEventListener("touchmove", onPointerMove);
-      document.removeEventListener("touchend", stopDrag);
-    };
-  }, []);
-
-  const ComparisonCard = ({ id, before, after }) => {
-    const position = positions[id];
-    return (
-      <div
-        ref={containerRefs[id]}
-        className="comparison-container"
-        style={{
-          position: "relative",
-          width: "100%",
-          height: "400px",
-          marginBottom: "40px",
-          overflow: "hidden",
-          borderRadius: "10px",
-          boxShadow: "0 2px 10px rgba(0,0,0,0.15)",
-          touchAction: "none",
-        }}
-      >
-        {/* Before Image */}
-        <img
-          src={before}
-          alt={`Before ${id}`}
-          style={{
-            width: "100%",
-            height: "100%",
-            objectFit: "cover",
-            display: "block",
-          }}
-          draggable={false}
-        />
-
-        {/* After Overlay - starts hidden */}
-        <div
-          className="comparison-overlay"
-          style={{
-            position: "absolute",
-            top: 0,
-            left: 0,
-            height: "100%",
-            width: `${position}%`,
-            overflow: "hidden",
-            transition: "width 0.1s linear",
-          }}
-        >
-          <img
-            src={after}
-            alt={`After ${id}`}
-            style={{
-              width: "100%",
-              height: "100%",
-              objectFit: "cover",
-              display: "block",
-            }}
-            draggable={false}
+  return (
+    <div className="slider-container">
+      <h2>Before & After Steering Wheel Cleaning</h2>
+      <div className="wheels-grid">
+        {wheels.map((wheel, index) => (
+          <BeforeAfterSlider
+            key={index}
+            before={wheel.before}
+            after={wheel.after}
+            alt={wheel.alt}
           />
-        </div>
+        ))}
+      </div>
+    </div>
+  );
+};
 
-        {/* Draggable Line (follows overlay position) */}
-        <div
-          className="slider-line"
-          style={{
-            position: "absolute",
-            top: 0,
-            left: position === 0 ? "50%" : `${position}%`,
-            transform: "translateX(-50%)",
-            width: "3px",
-            height: "100%",
-            backgroundColor: "white",
-            border: "1px solid rgba(0,0,0,0.2)",
-            boxShadow: "0 0 8px rgba(0,0,0,0.4)",
-            cursor: "ew-resize",
-            zIndex: 5,
-            userSelect: "none",
-            transition: activeIndex.current === id ? "none" : "left 0.15s ease",
-          }}
-          onPointerDown={(e) => startDrag(e, id)}
-          onTouchStart={(e) => startDrag(e, id)}
-        >
-          <div
-            style={{
-              position: "absolute",
-              top: "50%",
-              left: "50%",
-              transform: "translate(-50%, -50%)",
-              width: "24px",
-              height: "24px",
-              backgroundColor: "#3b82f6",
-              borderRadius: "50%",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              color: "#fff",
-              fontWeight: "bold",
-              fontSize: "14px",
-              boxShadow: "0 0 8px rgba(0,0,0,0.3)",
-            }}
-          >
-            ↔
+const BeforeAfterSlider = ({ before, after, alt }) => {
+  const [sliderPosition, setSliderPosition] = useState(50);
+  const containerRef = useRef(null);
+  const isDragging = useRef(false);
+
+  const handleMouseDown = () => {
+    isDragging.current = true;
+  };
+
+  const handleMouseUp = () => {
+    isDragging.current = false;
+  };
+
+  const handleMouseMove = (e) => {
+    if (!isDragging.current || !containerRef.current) return;
+    const rect = containerRef.current.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const percentage = Math.min(Math.max((x / rect.width) * 100, 0), 100);
+    setSliderPosition(percentage);
+  };
+
+  const handleTouchMove = (e) => {
+    if (!containerRef.current) return;
+    const rect = containerRef.current.getBoundingClientRect();
+    const x = e.touches[0].clientX - rect.left;
+    const percentage = Math.min(Math.max((x / rect.width) * 100, 0), 100);
+    setSliderPosition(percentage);
+  };
+
+  useEffect(() => {
+    const handleGlobalMouseUp = () => {
+      isDragging.current = false;
+    };
+    document.addEventListener("mouseup", handleGlobalMouseUp);
+    return () => document.removeEventListener("mouseup", handleGlobalMouseUp);
+  }, []);
+
+  return (
+    <div className="slider-wrapper">
+      <div
+        className="slider"
+        ref={containerRef}
+        onMouseMove={handleMouseMove}
+        onTouchMove={handleTouchMove}
+        onMouseDown={handleMouseDown}
+        onMouseUp={handleMouseUp}
+        onTouchStart={handleMouseDown}
+        onTouchEnd={handleMouseUp}
+      >
+        <img src={before} alt={`${alt} Before`} className="image before" />
+        <img
+          src={after}
+          alt={`${alt} After`}
+          className="image after"
+          style={{ clipPath: `inset(0 0 0 ${sliderPosition}%)` }}
+        />
+        <div className="slider-handle" style={{ left: `${sliderPosition}%` }}>
+          <div className="handle-line"></div>
+          <div className="handle-circle">
+            <span className="arrow left"> ⮚</span>
+            <span className="arrow right">⮘</span>
           </div>
         </div>
       </div>
-    );
-  };
-
-  return (
-    <section style={{ backgroundColor: "#fff" }}>
-      <div style={{ textAlign: "center", marginBottom: "20px" }}>
-        <h2 className="aft-1">Projects</h2>
-        <h2 className="aft-2">See Our Realisations</h2>
-        <p>
-          We guarantee the highest quality of the materials we use and a high
-          standard of service.
-        </p>
+      <div className="labels">
+        <span>Before</span>
+        <span>After</span>
       </div>
-
-      <div className="comparison-wrapper" style={{ padding: "29px 4%" }}>
-        <ComparisonCard
-          id={0}
-          before="/img/before-and-after/before-after 1.jpg"
-          after="/img/before-and-after/before-after 1 (2).jpg"
-        />
-        <ComparisonCard
-          id={1}
-          before="/img/before-and-after/before-after 4.jpg"
-          after="/img/before-and-after/before-after 4 02.jpg"
-        />
-        <ComparisonCard
-          id={2}
-          before="/img/before-and-after/before-after 5.jpg"
-          after="/img/before-and-after/before-after 5 02.jpg"
-        />
-      </div>
-    </section>
+    </div>
   );
 };
 

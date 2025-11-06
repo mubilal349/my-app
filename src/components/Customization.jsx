@@ -12,18 +12,45 @@ const Customization = () => {
       return;
     }
 
+    // ✅ Build WhatsApp message
+    const message = `
+ *New Customization Request* 
+
+ *Name:* ${formData.fullName}
+ *Country:* ${formData.country}
+ *Email:* ${formData.email}
+ *Phone:* ${formData.phone}
+
+ *Shape:* ${formData.shape}
+ *Carbon:* ${formData.carbon.join(", ") || "None"}
+ *Rev Counter:* ${formData.revCounter}
+ *Materials:* ${formData.materials.join(", ") || "None"}
+ *Stitching Color:* ${formData.stitchingColor}
+ *Custom Style:* ${formData.customStyle || "None"}
+ *Stripe Color:* ${formData.stripeColor}
+ *Car:* ${formData.carMake} ${formData.carModel} (${formData.carYear})
+ *Transmission:* ${formData.transmission}
+  `;
+
+    // ✅ WhatsApp API link (replace with your number)
+    const phoneNumber = "447598863458"; // your WhatsApp number with country code (e.g. 15551234567)
+    const whatsappURL = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(
+      message
+    )}`;
+
+    // ✅ Show success and open WhatsApp
     Swal.fire({
       icon: "success",
-      title: "✅ Success!",
-      text: "Personal info saved successfully!",
+      title: "✅ Inquiry Sent!",
+      text: "Redirecting you to WhatsApp...",
       showConfirmButton: false,
-      timer: 1500,
+      timer: 2000,
     });
 
-    // Move to next step (Customization Page)
     setTimeout(() => {
-      setCurrentStep((prev) => prev + 1);
-    }, 1500); // wait for alert to finish
+      window.open(whatsappURL, "_blank");
+      setCurrentStep(9); // go to Thank You page
+    }, 2000);
   };
 
   const [currentStep, setCurrentStep] = useState(1);
@@ -63,6 +90,56 @@ const Customization = () => {
   ];
 
   const handleNext = () => {
+    // Step 2: Carbon validation
+    if (currentStep === 2 && formData.carbon.length === 0) {
+      Swal.fire(
+        "⚠️ Missing Selection",
+        "Please select at least one carbon option!",
+        "warning"
+      );
+      return;
+    }
+
+    // Step 4: Material validation
+    if (currentStep === 4 && formData.materials.length === 0) {
+      Swal.fire(
+        "⚠️ Missing Selection",
+        "Please select at least one material!",
+        "warning"
+      );
+      return;
+    }
+
+    // Step 5: Stitching color validation
+    if (currentStep === 5 && !formData.stitchingColor) {
+      Swal.fire(
+        "⚠️ Missing Info",
+        "Please enter a stitching color!",
+        "warning"
+      );
+      return;
+    }
+
+    // Step 6: Stripe color validation
+    if (currentStep === 6 && !formData.stripeColor) {
+      Swal.fire("⚠️ Missing Info", "Please select a stripe color!", "warning");
+      return;
+    }
+
+    // Step 7: Car info validation
+    if (
+      currentStep === 7 &&
+      (!formData.carMake || !formData.carModel || !formData.carYear)
+    ) {
+      Swal.fire(
+        "⚠️ Missing Info",
+        "Please fill in all car details!",
+        "warning"
+      );
+      return;
+    }
+
+    // ✅ If all good, move to next step
     if (currentStep < 8) setCurrentStep(currentStep + 1);
   };
 
@@ -135,7 +212,7 @@ const Customization = () => {
         {/* Static Image */}
         <div className="mb-6 flex justify-center">
           <img
-            src="/img/img-1.png"
+            src="/img/before-and-after/before-after 3 02.jpg"
             alt="Steering Wheel"
             className="w-80 md:w-96 rounded-xl shadow-lg transform transition-transform duration-500 hover:scale-105 hover:rotate-1 hover:shadow-2xl"
           />
@@ -227,54 +304,53 @@ const Customization = () => {
                     </h3>
 
                     <div className="space-y-3">
-                      {[
-                        "Piano Black",
-                        "Gloss Carbon",
-                        "Matte Carbon",
-                        "Forged Carbon",
-                      ].map((item) => {
-                        const key = `${section}-${item}`;
-                        const selected = formData.carbon.includes(key);
+                      {["Piano Black", "Gloss Carbon", "Forged Carbon"].map(
+                        (item) => {
+                          const key = `${section}-${item}`;
+                          const selected = formData.carbon.includes(key);
 
-                        return (
-                          <label
-                            key={key}
-                            className={`flex items-center space-x-3 p-3 rounded cursor-pointer transition-all
+                          return (
+                            <label
+                              key={key}
+                              className={`flex items-center space-x-3 p-3 rounded cursor-pointer transition-all
                 ${selected ? "" : ""}`}
-                          >
-                            {/* Checkbox Circle */}
-                            <div className="relative">
-                              <input
-                                type="checkbox"
-                                checked={selected}
-                                onChange={() => toggleArrayValue("carbon", key)}
-                                className="sr-only"
-                              />
-                              <div
-                                className={`w-5 h-5 rounded-full border-2 flex items-center justify-center ${
-                                  selected
-                                    ? "border-[#297fff] bg-[#297fff]"
-                                    : "border-gray-600 bg-gray-900"
+                            >
+                              {/* Checkbox Circle */}
+                              <div className="relative">
+                                <input
+                                  type="checkbox"
+                                  checked={selected}
+                                  onChange={() =>
+                                    toggleArrayValue("carbon", key)
+                                  }
+                                  className="sr-only"
+                                />
+                                <div
+                                  className={`w-5 h-5 rounded-full border-2 flex items-center justify-center ${
+                                    selected
+                                      ? "border-[#297fff] bg-[#297fff]"
+                                      : "border-gray-600 bg-gray-900"
+                                  }`}
+                                >
+                                  {selected && (
+                                    <div className="w-2 h-2 bg-white rounded-full"></div>
+                                  )}
+                                </div>
+                              </div>
+
+                              {/* Label Text */}
+                              <span
+                                style={{ marginLeft: "5px" }}
+                                className={` text-base ${
+                                  selected ? "text-white" : "text-gray-400"
                                 }`}
                               >
-                                {selected && (
-                                  <div className="w-2 h-2 bg-white rounded-full"></div>
-                                )}
-                              </div>
-                            </div>
-
-                            {/* Label Text */}
-                            <span
-                              style={{ marginLeft: "5px" }}
-                              className={` text-base ${
-                                selected ? "text-white" : "text-gray-400"
-                              }`}
-                            >
-                              {item}
-                            </span>
-                          </label>
-                        );
-                      })}
+                                {item}
+                              </span>
+                            </label>
+                          );
+                        }
+                      )}
                     </div>
                   </div>
                 ))}
@@ -331,7 +407,6 @@ const Customization = () => {
                     {[
                       "Black alcantara 9040",
                       "Charcoal grey alcantara 9002",
-                      "Black nappa leather",
                       "Black perforated leather",
                     ].map((item) => {
                       const selected = formData.materials.includes(item);
@@ -422,29 +497,29 @@ const Customization = () => {
 
                 {/* Custom Style Options */}
                 <div className="mb-8">
-                  <h3
+                  {/* <h3
                     className="text-lg font-semibold text-yellow-400 mb-4"
                     style={{ marginTop: "10px" }}
                   >
                     Select Custom Style
-                  </h3>
+                  </h3> */}
 
                   <div className="space-y-3">
                     {[
                       {
                         value: "mPower",
-                        label: "M Power (3 colours)",
-                        desc: "BMW M Sport style",
+                        label: "",
+                        desc: "",
                       },
                       {
                         value: "sLine",
-                        label: "S-line (3 colours)",
-                        desc: "Audi Sport style",
+                        label: "",
+                        desc: "",
                       },
                       {
                         value: "pianoBlack",
-                        label: "Piano Black",
-                        desc: "Glossy black luxury finish",
+                        label: "",
+                        desc: "",
                       },
                     ].map((option) => {
                       const selected =
@@ -476,7 +551,7 @@ const Customization = () => {
                           </label>
 
                           {/* Radio Button */}
-                          <div className="relative ml-4">
+                          {/* <div className="relative ml-4">
                             <input
                               id={optionId}
                               type="radio"
@@ -499,7 +574,7 @@ const Customization = () => {
                                 <div className="w-2 h-2 bg-white rounded-full"></div>
                               )}
                             </div>
-                          </div>
+                          </div> */}
                         </div>
                       );
                     })}
@@ -633,7 +708,7 @@ const Customization = () => {
                 {/* Transmission */}
                 <div className="grid grid-cols-2 gap-4">
                   {[
-                    { value: "dsg", label: "DSG / Automatic" },
+                    { value: "dsg", label: " Automatic" },
                     { value: "manual", label: "Manual" },
                   ].map((option) => {
                     const selected = formData.transmission === option.value;
@@ -757,6 +832,22 @@ const Customization = () => {
                     </div>
                   </div>
                 </div>
+              </div>
+            )}
+            {currentStep === 9 && (
+              <div className="flex flex-col  items-center justify-center text-center py-20">
+                <img
+                  src="/img/thank-you.jpg"
+                  alt="Thank You"
+                  className="w-48 mb-8 rounded-xl"
+                />
+                <h1 className="text-4xl font-bold mb-4 text-yellow-400">
+                  Thank You!
+                </h1>
+                <p className="text-gray-300 max-w-xl">
+                  Your inquiry was sent successfully. We’ll get back to you
+                  within 24 hours!
+                </p>
               </div>
             )}
           </div>

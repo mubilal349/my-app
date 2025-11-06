@@ -1,5 +1,5 @@
 .accessories-section {
-  background: linear-gradient(to bottom, #eef5ff, #ffffff, #f4f7fb);
+  background: #000;
   padding: 80px 20px;
 }
 
@@ -43,13 +43,13 @@
 .category-title {
   font-size: 36px;
   font-weight: 700;
-  color: #222;
+  color: #fff;
   margin-bottom: 10px;
 }
 
 .category-description {
   font-size: 18px;
-  color: #555;
+  color: #727272;
   max-width: 700px;
   margin: 0 auto;
 }

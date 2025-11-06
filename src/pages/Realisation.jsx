@@ -1,107 +1,97 @@
 import React from "react";
-import "../assets/css/realisation.css";
 import BackToTop from "../components/BackToTop";
 import WhatsappIcon from "../components/WhatsappIcon";
+import bg from "/img/img-11.jpeg";
 
 const Realisations = () => {
-  const brands = [
-    { name: "Volvo", img: "/img/volvo-removebg-preview.png" },
-    { name: "Subaru", img: "/img/subaro-removebg-preview.png" },
-    { name: "Tesla", img: "/img/tesla-removebg-preview.png" },
-    { name: "Toyota", img: "/img/toyota-removebg-preview.png" },
-    { name: "Volkswagen", img: "/img/volkswagen-removebg-preview.png" },
-    { name: "Porsche", img: "/img/porsche-removebg-preview.png" },
-    { name: "BMW", img: "/img/img-11.jpeg" },
-    { name: "Mercedes", img: "/img/Mercedes_Benz.webp" },
-    { name: "Audi", img: "/img/img-10.jpg" },
-  ];
-
   return (
     <>
       {/* ✅ Hero Section */}
       <section className="realisation-hero">
-        <div className="overlay"></div>
-        <div className="hero-text">
-          <h1>Realised</h1>
-          <h2>Projects</h2>
+        <div className="hero-overlay">
+          <h1 className="hero-title">Our Realisations</h1>
         </div>
       </section>
 
-      {/* ✅ Brands Section */}
-      <section className="realisation-section">
-        {/* ✅ Realisation Process Section */}
-        <div className="realisation-process">
-          <h3 className="process-heading">Our Realisation Process</h3>
-          <p className="process-subtext">
-            Here’s how we turn your vision into a custom steering wheel —
-            designed just for you.
-          </p>
-
-          <div className="process-steps">
-            <div className="step">
-              <span className="step-number">1</span>
-              <h4>Choose Your Design</h4>
-              <p>
-                Select your preferred steering wheel model, materials,
-                stitching, and colors.
-              </p>
-            </div>
-
-            <div className="step">
-              <span className="step-number">2</span>
-              <h4>Upload Your Wheel</h4>
-              <p>
-                Upload or email a photo of your current steering wheel to
-                achieve design perfection.
-              </p>
-            </div>
-
-            <div className="step">
-              <span className="step-number">3</span>
-              <h4>Get a Custom Offer</h4>
-              <p>
-                Our team will prepare a personalized quote and estimated time
-                for your modification.
-              </p>
-            </div>
-
-            <div className="step">
-              <span className="step-number">4</span>
-              <h4>We Build Your Wheel</h4>
-              <p>
-                Once confirmed, we handcraft your steering wheel with
-                top-quality materials and precision.
-              </p>
-            </div>
-
-            <div className="step">
-              <span className="step-number">5</span>
-              <h4>Delivery & Installation</h4>
-              <p>
-                Your completed wheel is safely shipped to you, ready for easy
-                installation in your car.
-              </p>
-            </div>
-          </div>
-
-          {/* ✅ Interactive Brand Grid */}
-          <div className="brand-grid">
-            {brands.map((brand, index) => (
-              <div className="brand-card" key={index}>
-                <div className="image-container">
-                  <img src={brand.img} alt={brand.name} />
-                </div>
-                <h3>{brand.name}</h3>
-              </div>
-            ))}
-          </div>
+      {/* ✅ Image Section */}
+      <section className="realisation-image-section">
+        <div className="content-box">
+          <img
+            src="/img/Our Realisations.jpg"
+            alt="Our Realisations"
+            className="realisation-image"
+          />
         </div>
       </section>
 
-      {/* ✅ WhatsApp Floating Icon */}
       <WhatsappIcon />
-
       <BackToTop />
+
+      <style jsx>{`
+        /* ✅ Hero Section */
+        .realisation-hero {
+          background: url(${bg}) center/cover no-repeat;
+          background-size: cover;
+          background-position: center;
+          height: 60vh; /* Hero height */
+          position: relative;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          color: white;
+        }
+
+        /* ✅ Optional dark overlay */
+        .hero-overlay {
+          background: rgba(0, 0, 0, 0.5); /* dark overlay */
+          position: absolute;
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 100%;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          flex-direction: column;
+        }
+
+        .hero-title {
+          font-size: 3rem;
+          font-weight: bold;
+          text-align: center;
+          z-index: 2;
+        }
+
+        /* ✅ Image Section */
+        .realisation-image-section {
+          background-color: #000; /* background for bottom part */
+          padding: 50px 20px;
+          text-align: center;
+        }
+
+        .realisation-image {
+          width: 100%;
+          max-width: 1000px;
+          height: auto;
+          border-radius: 10px;
+        }
+
+        /* ✅ Responsive styles */
+        @media (max-width: 768px) {
+          .hero-title {
+            font-size: 2rem;
+            padding: 0 10px;
+          }
+
+          .realisation-hero {
+            height: 40vh;
+          }
+
+          .realisation-image {
+            width: 100%;
+          }
+        }
+      `}</style>
     </>
   );
 };

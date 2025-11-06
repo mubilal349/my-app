@@ -1,4 +1,5 @@
 /* ===== Hero Section ===== */
+
 .hero {
   position: relative;
   height: 400px;
@@ -263,7 +264,7 @@
 }
 
 .what-sets-us-apart .call-to-action {
-  background-color: #111113; /* Light yellow/gold button */
+  background-color: #1e0725; /* Light yellow/gold button */
   color: #fff;
   border: none;
   padding: 15px 30px;
@@ -275,7 +276,7 @@
 }
 
 .what-sets-us-apart .call-to-action:hover {
-  background-color: #3b82fc;
+  background-color: #370347;
   color: #fff;
 }
 

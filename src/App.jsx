@@ -1,4 +1,7 @@
-import React from "react";
+import React, { useEffect } from "react";
+import Aos from "aos";
+import "aos/dist/aos.css";
+import { motion } from "framer-motion";
 import {
   BrowserRouter as Router,
   Routes,
@@ -45,6 +48,12 @@ const AppLayout = ({ children }) => {
 };
 
 const App = () => {
+  useEffect(() => {
+    Aos.init({
+      duration: 1200,
+      once: true,
+    });
+  }, []);
   return (
     <Router>
       <AppLayout>
@@ -54,11 +63,27 @@ const App = () => {
             path="/"
             element={
               <>
-                <HeroSlider />
-                <ControlSection />
-                <ImageCards />
-                <ProjectComparison />
-                <AboutSection />
+                <motion.div data-aos="fade-up" transition={{ duration: 0.5 }}>
+                  <HeroSlider />
+                </motion.div>
+                <motion.div
+                  data-aos="fade-right"
+                  transition={{ duration: 0.5 }}
+                >
+                  <ControlSection />
+                </motion.div>
+                <motion.div data-aos="fade-left" transition={{ duration: 0.5 }}>
+                  <ImageCards />
+                </motion.div>
+                <motion.div
+                  data-aos="fade-right"
+                  transition={{ duration: 0.5 }}
+                >
+                  <ProjectComparison />
+                </motion.div>
+                <motion.div data-aos="fade-up" transition={{ duration: 0.5 }}>
+                  <AboutSection />
+                </motion.div>
               </>
             }
           />

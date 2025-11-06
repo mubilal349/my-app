@@ -232,12 +232,12 @@ const Navbar = () => {
           >
             {[
               "Home",
-              "About us",
               "Design my wheel",
               "Realisations",
               "catalogue",
               "Accessories",
               "Shop now",
+              "About us",
             ].map((item, index) => (
               <li key={index}>
                 <Link

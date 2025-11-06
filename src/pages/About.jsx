@@ -21,7 +21,9 @@ const About = () => {
       {/* ===== Hero Section ===== */}
       <section
         className="hero"
-        style={{ background: `url(${bg}) center/cover no-repeat` }}
+        style={{
+          background: `url(${bg}) center/cover no-repeat`,
+        }}
       >
         <div className="overlay"></div>
         <div className="hero-text">
@@ -31,12 +33,12 @@ const About = () => {
       </section>
 
       {/* ===== About Section ===== */}
-      <section className="about">
+      <section className="about" style={{ background: "#000", color: "#fff" }}>
         <div className="about-content">
           <div className="text">
             <h4>ABOUT US</h4>
             <h2>Market leaders</h2>
-            <p>
+            <p style={{ color: "#fff" }}>
               Welcome to <strong>Steer Line England</strong>, the premier
               destination for steering wheel re-trimming and customization. We
               understand how important it is for Canadians to have a vehicle
@@ -44,7 +46,7 @@ const About = () => {
               your driving experience like a custom-crafted steering wheel.
             </p>
 
-            <p>
+            <p style={{ color: "#fff" }}>
               At <strong>Steer Line</strong>, we offer premium steering wheels
               built with the finest materials, including carbon fibre and
               Alcantara. Whether you drive through snowy Alberta mornings or the
@@ -53,7 +55,7 @@ const About = () => {
               lifestyle.
             </p>
 
-            <p>
+            <p style={{ color: "#fff" }}>
               Every wheel we craft is designed to perfection — from unique
               stitching patterns to custom finishes — ensuring your car interior
               feels as exceptional as it performs. Our team is dedicated to
@@ -88,7 +90,7 @@ const About = () => {
       </section>
 
       {/* ===== Clients / Map Section ===== */}
-      <section className="clients-section">
+      <section className="clients-section" style={{ background: "#000" }}>
         <div className="container">
           <div className="map-area">
             <img
@@ -107,7 +109,9 @@ const About = () => {
 
           <div className="text-area">
             <h5>OUR CLIENTS</h5>
-            <h2>We serve customers from all over the world</h2>
+            <h2 style={{ color: "#fff" }}>
+              We serve customers from all over the world
+            </h2>
             <p>
               Our collaborations extend beyond national borders. We pride
               ourselves on satisfied customers all over the world.
@@ -132,11 +136,11 @@ const About = () => {
       </section>
 
       {/* ===== What Sets Us Apart ===== */}
-      <section className="what-sets-us-apart">
+      <section className="what-sets-us-apart" style={{ background: "#000" }}>
         <div className="container">
           <div className="left-content">
             <p className="subtitle">WHY CONTROL CUSTOMS</p>
-            <h1>What sets us apart</h1>
+            <h1 style={{ color: "#fff" }}>What sets us apart</h1>
             <p className="description">
               Four key features set us apart: highest quality materials,
               individual order handling, multiple contact options, and the
@@ -152,28 +156,30 @@ const About = () => {
 
           <div className="right-content">
             <div className="feature-card">
-              <h2>Top quality materials</h2>
+              <h2 style={{ color: "#fff" }}>Top quality materials</h2>
               <p>
                 We focus on quality. Sustainability and customer satisfaction is
                 our priority.
               </p>
             </div>
             <div className="feature-card">
-              <h2>Individual order handling</h2>
+              <h2 style={{ color: "#fff" }}>Individual order handling</h2>
               <p>
                 The customer is the most important to us, which is why we devote
                 our full attention to each client.
               </p>
             </div>
             <div className="feature-card">
-              <h2>We modify every steering wheel</h2>
+              <h2 style={{ color: "#fff" }}>We modify every steering wheel</h2>
               <p>
                 We are able to help you no matter what kind of steering wheel
                 you have.
               </p>
             </div>
             <div className="feature-card">
-              <h2>Multiple opportunities for contact</h2>
+              <h2 style={{ color: "#fff" }}>
+                Multiple opportunities for contact
+              </h2>
               <p>You can contact us by phone, email and social media.</p>
             </div>
           </div>

@@ -17,7 +17,7 @@ const Design = () => {
       </section>
 
       {/*=========== Image Section ============*/}
-      <section className="control-section">
+      <section className="control-section" style={{ background: "#000" }}>
         <div className="control-content">
           <div className="image-side">
             <div className="light-overlay"></div>
@@ -101,8 +101,8 @@ const Design = () => {
               <div className="img-wrapper">
                 <img src={item.img} alt={item.title} />
               </div>
-              <div className="card-info">
-                <h3>{item.title}</h3>
+              <div className="card-info" style={{ background: "#000" }}>
+                <h3 style={{ color: "#fff" }}>{item.title}</h3>
                 <Link to="/customization" className="btn">
                   {item.btn}
                 </Link>
