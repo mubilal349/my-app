@@ -5,8 +5,8 @@ const ProjectComparison = () => {
   // Sample image URLs (replace with your actual images for before/after steering wheels)
   const wheels = [
     {
-      before: "/img/before-and-after/before-after 1.jpg", // Dirty steering wheel
-      after: "/img/before-and-after/before-after 1 (2).jpg", // Clean steering wheel
+      before: "/img/before-and-after/before-after 1.jpg",
+      after: "/img/before-and-after/before-after 1 (2).jpg",
       alt: "Steering Wheel 1",
     },
     {
@@ -23,7 +23,7 @@ const ProjectComparison = () => {
 
   return (
     <div className="slider-container">
-      <h2>Before & After Steering Wheel Cleaning</h2>
+      <h2>Before & After Customization</h2>
       <div className="wheels-grid">
         {wheels.map((wheel, index) => (
           <BeforeAfterSlider

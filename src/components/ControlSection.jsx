@@ -5,16 +5,16 @@ const ControlSection = () => {
   const navigate = useNavigate();
   const sections = [
     {
-      title: "Buy Now",
+      title: "Accessories",
       img: "/img/banner/landscape no 1.jpg",
       align: "right",
-      link: "/shop",
+      link: "/accessories",
     },
     {
-      title: "Accessories",
+      title: " Buy Now",
       img: "/img/banner/landscape no 2.jpg",
       align: "left",
-      link: "/accessories",
+      link: "/steeringwheelpage",
     },
     {
       title: "Design Your Wheel",

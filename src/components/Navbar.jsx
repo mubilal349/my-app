@@ -113,7 +113,7 @@ const Navbar = () => {
               "About us",
               "Design my wheel",
               "Realisations",
-              "catalogue",
+              "Catalogue",
               "Accessories",
               "Shop now",
             ].map((item, index) => (
@@ -234,7 +234,7 @@ const Navbar = () => {
               "Home",
               "Design my wheel",
               "Realisations",
-              "catalogue",
+              "Catalogue",
               "Accessories",
               "Shop now",
               "About us",

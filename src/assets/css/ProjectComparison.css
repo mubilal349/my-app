@@ -7,9 +7,10 @@
 }
 
 .slider-container h2 {
-  font-family: Arial, sans-serif;
-  color: #fff;
+  font-family: "HighRise bb", sans-serif;
+  color: #1285d4;
   margin-bottom: 20px;
+  text-transform: uppercase;
 }
 
 .wheels-grid {
@@ -41,7 +42,7 @@
   left: 0;
   width: 100%;
   height: 100%;
-  object-fit: cover;
+  object-fit: contain;
   transition: none; /* Remove transition for performance */
 }
 
@@ -75,6 +76,7 @@
   margin-top: 10px;
   font-size: 14px;
   color: #fff;
+  text-transform: uppercase;
 }
 
 .slider-handle {
@@ -164,6 +166,6 @@
   }
 
   .slider {
-    height: 250px;
+    height: 300px;
   }
 }

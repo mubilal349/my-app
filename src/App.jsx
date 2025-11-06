@@ -31,6 +31,8 @@ import AdminDashboard from "./pages/AdminDashboard.jsx";
 import Catalogue from "./pages/Catalogue.jsx";
 import SubcategoryPage from "./pages/SubCategoryPage.jsx";
 import SubcategoryDetail from "./pages/SubCategoryDetail.jsx";
+import SteeringWheelPage from "./pages/SteeringWheelPage.jsx";
+import ScrollToTop from "./components/ScroolToTop.jsx";
 
 const AppLayout = ({ children }) => {
   const location = useLocation();
@@ -56,6 +58,7 @@ const App = () => {
   }, []);
   return (
     <Router>
+      <ScrollToTop />
       <AppLayout>
         <Routes>
           {/* ✅ Home Page */}
@@ -87,6 +90,7 @@ const App = () => {
               </>
             }
           />
+          <Route path="/products/:categoryId" element={<SteeringWheelPage />} />
           {/* Admin Route */}
           <Route path="/admin" element={<AdminDashboard />} />
 
@@ -104,6 +108,7 @@ const App = () => {
             element={<SubcategoryDetail />}
           />
           <Route path="/accessories" element={<AccessoriesPage />} />
+          <Route path="/steeringwheelpage" element={<SteeringWheelPage />} />
           <Route path="/shopnow" element={<ShopPage />} />
         </Routes>
       </AppLayout>
