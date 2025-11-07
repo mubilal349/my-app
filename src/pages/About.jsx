@@ -14,6 +14,69 @@ const About = () => {
       nav.classList.toggle("active");
       hamburger.classList.toggle("open");
     });
+
+    // Add scroll animations
+    const observerOptions = {
+      threshold: 0.1,
+      rootMargin: "0px 0px -50px 0px",
+    };
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add("animate-in");
+        }
+      });
+    }, observerOptions);
+
+    // Observe all sections
+    document.querySelectorAll("section").forEach((section) => {
+      observer.observe(section);
+    });
+
+    // Add counter animation for stats
+    const animateCounter = (element, target) => {
+      let count = 0;
+      const increment = target / 100;
+      const timer = setInterval(() => {
+        count += increment;
+        if (count >= target) {
+          element.textContent =
+            target + (element.textContent.includes("+") ? "+" : "");
+          clearInterval(timer);
+        } else {
+          element.textContent =
+            Math.floor(count) + (element.textContent.includes("+") ? "+" : "");
+        }
+      }, 20);
+    };
+
+    // Trigger counter animation when stats section is visible
+    const statsObserver = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (
+          entry.isIntersecting &&
+          !entry.target.classList.contains("counted")
+        ) {
+          entry.target.classList.add("counted");
+          const statNumbers = entry.target.querySelectorAll(".stat h3");
+          statNumbers.forEach((stat) => {
+            const target = parseInt(stat.textContent);
+            animateCounter(stat, target);
+          });
+        }
+      });
+    }, observerOptions);
+
+    const statsSection = document.querySelector(".stats");
+    if (statsSection) {
+      statsObserver.observe(statsSection);
+    }
+
+    return () => {
+      observer.disconnect();
+      statsObserver.disconnect();
+    };
   }, []);
 
   return (
@@ -33,12 +96,12 @@ const About = () => {
       </section>
 
       {/* ===== About Section ===== */}
-      <section className="about" style={{ background: "#000", color: "#fff" }}>
+      <section className="about">
         <div className="about-content">
           <div className="text">
             <h4>ABOUT US</h4>
             <h2>Market leaders</h2>
-            <p style={{ color: "#fff" }}>
+            <p>
               Welcome to <strong>Steer Line England</strong>, the premier
               destination for steering wheel re-trimming and customization. We
               understand how important it is for Canadians to have a vehicle
@@ -46,7 +109,7 @@ const About = () => {
               your driving experience like a custom-crafted steering wheel.
             </p>
 
-            <p style={{ color: "#fff" }}>
+            <p>
               At <strong>Steer Line</strong>, we offer premium steering wheels
               built with the finest materials, including carbon fibre and
               Alcantara. Whether you drive through snowy Alberta mornings or the
@@ -55,7 +118,7 @@ const About = () => {
               lifestyle.
             </p>
 
-            <p style={{ color: "#fff" }}>
+            <p>
               Every wheel we craft is designed to perfection — from unique
               stitching patterns to custom finishes — ensuring your car interior
               feels as exceptional as it performs. Our team is dedicated to
@@ -90,7 +153,7 @@ const About = () => {
       </section>
 
       {/* ===== Clients / Map Section ===== */}
-      <section className="clients-section" style={{ background: "#000" }}>
+      <section className="clients-section">
         <div className="container">
           <div className="map-area">
             <img
@@ -109,9 +172,7 @@ const About = () => {
 
           <div className="text-area">
             <h5>OUR CLIENTS</h5>
-            <h2 style={{ color: "#fff" }}>
-              We serve customers from all over the world
-            </h2>
+            <h2>We serve customers from all over the world</h2>
             <p>
               Our collaborations extend beyond national borders. We pride
               ourselves on satisfied customers all over the world.
@@ -136,11 +197,11 @@ const About = () => {
       </section>
 
       {/* ===== What Sets Us Apart ===== */}
-      <section className="what-sets-us-apart" style={{ background: "#000" }}>
+      <section className="what-sets-us-apart">
         <div className="container">
           <div className="left-content">
             <p className="subtitle">WHY CONTROL CUSTOMS</p>
-            <h1 style={{ color: "#fff" }}>What sets us apart</h1>
+            <h1>What sets us apart</h1>
             <p className="description">
               Four key features set us apart: highest quality materials,
               individual order handling, multiple contact options, and the
@@ -156,30 +217,28 @@ const About = () => {
 
           <div className="right-content">
             <div className="feature-card">
-              <h2 style={{ color: "#fff" }}>Top quality materials</h2>
+              <h2>Top quality materials</h2>
               <p>
                 We focus on quality. Sustainability and customer satisfaction is
                 our priority.
               </p>
             </div>
             <div className="feature-card">
-              <h2 style={{ color: "#fff" }}>Individual order handling</h2>
+              <h2>Individual order handling</h2>
               <p>
                 The customer is the most important to us, which is why we devote
                 our full attention to each client.
               </p>
             </div>
             <div className="feature-card">
-              <h2 style={{ color: "#fff" }}>We modify every steering wheel</h2>
+              <h2>We modify every steering wheel</h2>
               <p>
                 We are able to help you no matter what kind of steering wheel
                 you have.
               </p>
             </div>
             <div className="feature-card">
-              <h2 style={{ color: "#fff" }}>
-                Multiple opportunities for contact
-              </h2>
+              <h2>Multiple opportunities for contact</h2>
               <p>You can contact us by phone, email and social media.</p>
             </div>
           </div>

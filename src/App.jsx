@@ -32,7 +32,7 @@ import Catalogue from "./pages/Catalogue.jsx";
 import SubcategoryPage from "./pages/SubCategoryPage.jsx";
 import SubcategoryDetail from "./pages/SubCategoryDetail.jsx";
 import SteeringWheelPage from "./pages/SteeringWheelPage.jsx";
-import ScrollToTop from "./components/ScroolToTop.jsx";
+import ScrollToTop from "./components/ScrolToTop.jsx";
 import ProductDetails from "./pages/ProductDetails.jsx";
 
 const AppLayout = ({ children }) => {

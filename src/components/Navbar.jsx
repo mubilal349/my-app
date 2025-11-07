@@ -122,6 +122,8 @@ const Navbar = () => {
                   to={
                     item.toLowerCase() === "home"
                       ? "/"
+                      : item.toLowerCase() === "design my wheel"
+                      ? "/customization" // 👈 special route
                       : `/${item.toLowerCase().replace(/\s+/g, "")}`
                   }
                   style={{
@@ -244,15 +246,17 @@ const Navbar = () => {
                   to={
                     item.toLowerCase() === "home"
                       ? "/"
+                      : item.toLowerCase() === "design my wheel"
+                      ? "/customization" // 👈 special route
                       : `/${item.toLowerCase().replace(/\s+/g, "")}`
                   }
+                  onClick={() => setMenuOpen(false)} // 👈 CLOSE MENU ON CLICK
                   style={{
                     color: "#000",
                     textDecoration: "none",
-                    fontSize: "20px",
                     fontWeight: "500",
+                    fontSize: "18px",
                   }}
-                  onClick={() => setMenuOpen(false)}
                 >
                   {item}
                 </Link>

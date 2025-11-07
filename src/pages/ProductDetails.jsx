@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import "../assets/css/ProductDetails.css"; // ✅ import external CSS
+import "../assets/css/ProductDetails.css";
 
 const ProductDetails = () => {
   const { id } = useParams();
   const [data, setData] = useState(null);
   const [quantity, setQuantity] = useState(1);
-  const [selectedColor, setSelectedColor] = useState("black");
+  const [selectedProduct, setSelectedProduct] = useState(null);
 
   useEffect(() => {
     fetch("/data/products.json")
@@ -15,89 +15,97 @@ const ProductDetails = () => {
       .catch((err) => console.error("Error loading JSON:", err));
   }, []);
 
-  if (!data) return <p className="loading-text">Loading...</p>;
+  useEffect(() => {
+    if (!data) return;
 
-  const product = data.categories
-    .flatMap((cat) => cat.products)
-    .find((p) => p.id === parseInt(id));
+    const allProducts = data.categories.flatMap((cat) => cat.products);
+    const mainProduct = allProducts.find((p) => p.id === parseInt(id));
+    if (!mainProduct) return;
 
-  if (!product) return <h2 className="not-found-text">Product not found</h2>;
+    const variants = allProducts.filter((p) => p.title === mainProduct.title);
+    setSelectedProduct(variants[0]);
+  }, [data, id]);
 
-  const colorOptions = ["black", "white", "blue", "grey"];
+  if (!data || !selectedProduct) {
+    return <p>Loading...</p>; // or a spinner
+  }
+
+  // Find the main product
+  const allProducts = data.categories.flatMap((cat) => cat.products);
+  const mainProduct = allProducts.find((p) => p.id === parseInt(id));
+
+  if (!mainProduct)
+    return <h2 className="not-found-text">Product not found</h2>;
+
+  // Get all variants with the same title
+  const productVariants = allProducts.filter(
+    (p) => p.title === mainProduct.title
+  );
+
+  // Set default selected product if not already set
+  if (!selectedProduct) setSelectedProduct(productVariants[0]);
 
   const handleAddToCart = () => {
-    alert(`${product.title} (${selectedColor}) x${quantity} added to cart!`);
-  };
-  // ✅ Makes sure quantity never goes below 1
-  const increaseQuantity = () => {
-    setQuantity((prev) => (prev < 1 ? 1 : prev + 1));
+    alert(`${selectedProduct.title} x${quantity} added to cart!`);
   };
 
-  const decreaseQuantity = () => {
+  const increaseQuantity = () => setQuantity((prev) => prev + 1);
+  const decreaseQuantity = () =>
     setQuantity((prev) => (prev <= 1 ? 1 : prev - 1));
-  };
 
   return (
     <div className="product-details">
       {/* Image Section */}
       <div className="image-section">
         <img
-          src={product.image}
-          alt={product.title}
+          src={selectedProduct.image}
+          alt={selectedProduct.title}
           className="product-image"
         />
 
         {/* Color Options */}
         <div className="color-options">
-          {colorOptions.map((color) => (
-            <button
-              key={color}
-              onClick={() => setSelectedColor(color)}
-              className={`color-btn ${
-                selectedColor === color ? "active-color" : ""
+          {productVariants.map((variant) => (
+            <img
+              key={variant.id}
+              src={variant.image}
+              alt={variant.title}
+              className={`color-thumb ${
+                selectedProduct.id === variant.id ? "selected" : ""
               }`}
-              style={{ backgroundColor: color }}
-            ></button>
+              onClick={() => setSelectedProduct(variant)}
+            />
           ))}
         </div>
-        <p className="selected-color" style={{ color: "#fff" }}>
-          Selected: {selectedColor}
-        </p>
       </div>
 
       {/* Details Section */}
       <div className="details-section">
-        <h2 className="product-title" style={{ color: "#fff" }}>
-          {product.title}
-        </h2>
-        <p className="original-price">{product.originalPrice}</p>
-        <p className="discount-price">{product.discountPrice}</p>
+        <h2 className="product-title">{selectedProduct.title}</h2>
+        <p className="original-price">{selectedProduct.originalPrice}</p>
+        <p className="discount-price">{selectedProduct.discountPrice}</p>
 
-        {/* ✅ Brief Description */}
         <p className="product-description">
-          {product.description ||
-            "This product is made with high-quality materials and designed to offer durability, comfort, and a stylish look. Perfect for everyday use and gifting."}
+          {selectedProduct.description ||
+            "This product is made with high-quality materials, durable, and stylish."}
         </p>
 
-        {/* Quantity */}
         <div className="quantity-box">
           <button onClick={decreaseQuantity} className="qty-btn">
             -
           </button>
-          <span className="qty-value" style={{ color: "#fff" }}>
-            {quantity}
-          </span>
+          <span className="qty-value">{quantity}</span>
           <button onClick={increaseQuantity} className="qty-btn">
             +
           </button>
         </div>
 
-        {/* Add to Cart */}
         <button className="add-cart-btn" onClick={handleAddToCart}>
           Add to Cart
         </button>
       </div>
-      {/* ✅ Related Products */}
+
+      {/* Related Products */}
       <div className="related-products">
         <h3 className="related-title">Buyers bought these:</h3>
         <div className="related-images">

@@ -14,6 +14,21 @@ const AccessoriesPage = () => {
   const { addToCart } = useCart();
   const navigate = useNavigate();
 
+  // Filter unique products by title
+  const getUniqueProducts = (products) => {
+    const unique = [];
+    const titles = new Set();
+
+    products.forEach((product) => {
+      if (!titles.has(product.title)) {
+        titles.add(product.title);
+        unique.push(product);
+      }
+    });
+
+    return unique;
+  };
+
   useEffect(() => {
     fetch("/data/products.json")
       .then((res) => {
@@ -56,11 +71,11 @@ const AccessoriesPage = () => {
 
           {/* Product Grid */}
           <div className="product-grid">
-            {category.products.map((product) => (
+            {getUniqueProducts(category.products).map((product) => (
               <div key={product.id} className="product-card">
                 <div className="image-wrapper">
                   <img
-                    src={product.image}
+                    src={product.image} // just show one color
                     alt={product.title}
                     className="product-image"
                     onClick={() => navigate(`/product/${product.id}`)}
