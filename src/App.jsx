@@ -33,6 +33,7 @@ import SubcategoryPage from "./pages/SubCategoryPage.jsx";
 import SubcategoryDetail from "./pages/SubCategoryDetail.jsx";
 import SteeringWheelPage from "./pages/SteeringWheelPage.jsx";
 import ScrollToTop from "./components/ScroolToTop.jsx";
+import ProductDetails from "./pages/ProductDetails.jsx";
 
 const AppLayout = ({ children }) => {
   const location = useLocation();
@@ -108,6 +109,7 @@ const App = () => {
             element={<SubcategoryDetail />}
           />
           <Route path="/accessories" element={<AccessoriesPage />} />
+          <Route path="/product/:id" element={<ProductDetails />} />
           <Route path="/steeringwheelpage" element={<SteeringWheelPage />} />
           <Route path="/shopnow" element={<ShopPage />} />
         </Routes>

@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import "../assets/css/AccessoriesPage.css"; // ✅ linked CSS file
 import { useCart } from "../context/CartContext";
+import { useNavigate } from "react-router-dom";
 import WhatsappIcon from "../components/WhatsappIcon";
 import BackToTop from "../components/BackToTop";
 
@@ -11,6 +12,7 @@ const AccessoriesPage = () => {
   const [selectedProduct, setSelectedProduct] = useState(null);
 
   const { addToCart } = useCart();
+  const navigate = useNavigate();
 
   useEffect(() => {
     fetch("/data/products.json")
@@ -61,7 +63,7 @@ const AccessoriesPage = () => {
                     src={product.image}
                     alt={product.title}
                     className="product-image"
-                    onClick={() => setSelectedProduct(product)}
+                    onClick={() => navigate(`/product/${product.id}`)}
                   />
                   <button
                     className="shop-button"

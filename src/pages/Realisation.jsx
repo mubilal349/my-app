@@ -1,94 +1,129 @@
 import React from "react";
 import BackToTop from "../components/BackToTop";
 import WhatsappIcon from "../components/WhatsappIcon";
-import bg from "/img/img-11.jpeg";
-
+import RealisationAferBefore from "../components/RealisationAfterBefore";
 const Realisations = () => {
   return (
     <>
-      {/* ✅ Hero Section */}
-      <section className="realisation-hero">
-        <div className="hero-overlay">
-          <h1 className="hero-title">Our Realisations</h1>
-        </div>
-      </section>
-
-      {/* ✅ Image Section */}
-      <section className="realisation-image-section">
+      {/* ✅ Main Realisation Section */}
+      <section className="realisation-section">
         <div className="content-box">
           <img
             src="/img/Our Realisations.jpg"
             alt="Our Realisations"
-            className="realisation-image"
+            className="realisation-main-image"
           />
         </div>
       </section>
 
+      {/* ✅ Realisation Gallery */}
+      <RealisationAferBefore />
+
       <WhatsappIcon />
       <BackToTop />
 
+      {/* ✅ Styling */}
       <style jsx>{`
-        /* ✅ Hero Section */
-        .realisation-hero {
-          background: url(${bg}) center/cover no-repeat;
-          background-size: cover;
-          background-position: center;
-          height: 60vh; /* Hero height */
-          position: relative;
-          display: flex;
-          justify-content: center;
-          align-items: center;
-          color: white;
-        }
-
-        /* ✅ Optional dark overlay */
-        .hero-overlay {
-          background: rgba(0, 0, 0, 0.5); /* dark overlay */
-          position: absolute;
-          top: 0;
-          left: 0;
-          width: 100%;
-          height: 100%;
-          display: flex;
-          justify-content: center;
-          align-items: center;
-          flex-direction: column;
-        }
-
-        .hero-title {
-          font-size: 3rem;
-          font-weight: bold;
+        /* --- 🌟 General Section --- */
+        .realisation-section {
+          background-color: #000;
           text-align: center;
-          z-index: 2;
+          padding: 50px 110px 30px;
         }
 
-        /* ✅ Image Section */
-        .realisation-image-section {
-          background-color: #000; /* background for bottom part */
-          padding: 50px 20px;
-          text-align: center;
-        }
-
-        .realisation-image {
+        .realisation-main-image {
           width: 100%;
           max-width: 1000px;
           height: auto;
-          border-radius: 10px;
+          border-radius: 16px;
+          box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4);
+          transition: transform 0.4s ease;
         }
 
-        /* ✅ Responsive styles */
+        .realisation-main-image:hover {
+          transform: scale(1.03);
+        }
+
+        /* --- 🖼️ Gallery Section --- */
+        .realisation-gallery {
+          background-color: #0f0f0f;
+          padding: 60px 8%;
+          text-align: center;
+          color: #fff;
+        }
+
+        .gallery-title {
+          font-size: 2rem;
+          font-weight: 700;
+          color: #1285d4;
+          margin-bottom: 40px;
+          text-transform: uppercase;
+          letter-spacing: 1px;
+        }
+
+        .gallery-grid {
+          display: grid;
+          grid-template-columns: repeat(4, 1fr);
+          gap: 20px;
+        }
+
+        .gallery-item {
+          overflow: hidden;
+          border-radius: 12px;
+          position: relative;
+          transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .gallery-item img {
+          width: 100%;
+          height: 100%;
+          object-fit: cover;
+          transition: transform 0.4s ease;
+          border-radius: 12px;
+        }
+
+        .gallery-item:hover img {
+          transform: scale(1.08);
+        }
+
+        .gallery-item:hover {
+          box-shadow: 0 6px 20px rgba(18, 133, 212, 0.4);
+          transform: translateY(-4px);
+        }
+
+        /* --- 📱 Responsive --- */
+        @media (max-width: 1024px) {
+          .gallery-grid {
+            grid-template-columns: repeat(3, 1fr);
+          }
+        }
+
         @media (max-width: 768px) {
-          .hero-title {
-            font-size: 2rem;
-            padding: 0 10px;
+          .gallery-grid {
+            grid-template-columns: repeat(2, 1fr);
           }
 
-          .realisation-hero {
-            height: 40vh;
+          .gallery-title {
+            font-size: 1.6rem;
+            margin-bottom: 30px;
           }
 
-          .realisation-image {
-            width: 100%;
+          .realisation-section {
+            padding: 40px 15px 20px;
+          }
+        }
+
+        @media (max-width: 480px) {
+          .gallery-grid {
+            gap: 12px;
+          }
+
+          .gallery-title {
+            font-size: 1.4rem;
+          }
+
+          .realisation-main-image {
+            border-radius: 10px;
           }
         }
       `}</style>
