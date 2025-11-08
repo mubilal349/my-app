@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { useCart } from "../context/CartContext";
-import { color } from "framer-motion";
+import { motion } from "framer-motion";
+import { useLocation } from "react-router-dom";
 
 const ProductDetails = () => {
   const { id } = useParams();
@@ -10,8 +11,66 @@ const ProductDetails = () => {
   const [selectedProduct, setSelectedProduct] = useState(null);
   const [selectedColor, setSelectedColor] = useState(1);
   const [isDesktop, setIsDesktop] = useState(window.innerWidth >= 768);
+  const [randomProducts, setRandomProducts] = useState([]);
 
   const { addToCart } = useCart();
+
+  const location = useLocation();
+  const { categoryId } = location.state || {};
+
+  useEffect(() => {
+    fetch("/data/products.json")
+      .then((res) => res.json())
+      .then((json) => setData(json))
+      .catch((err) => console.error("Failed to load products:", err));
+  }, []);
+
+  // Then later in your component
+  const selectedCategory = data?.categories?.find((cat) =>
+    cat.products?.some((prod) => prod.id === selectedProduct?.id)
+  );
+
+  const categoryDescription = selectedCategory?.description || "";
+
+  // After data is loaded, pick selected product and random products
+  useEffect(() => {
+    if (!data || !data.categories) return;
+
+    // Find the selected category
+    const category = data.categories.find((cat) =>
+      cat.products.some((p) => p.id === parseInt(id))
+    );
+
+    if (!category) return;
+
+    // Set the main product
+    const mainProduct = category.products.find((p) => p.id === parseInt(id));
+    setSelectedProduct(mainProduct);
+
+    // Pick products for "Buyers bought these"
+    const others = category.products.filter((p) => p.id !== mainProduct.id);
+
+    let productsToShow = [];
+    if (others.length === 0) {
+      // Only one product in category, show it
+      productsToShow = [mainProduct];
+    } else {
+      // Shuffle others and pick up to 3
+      productsToShow = others.sort(() => 0.5 - Math.random()).slice(0, 3);
+    }
+
+    setRandomProducts(productsToShow);
+  }, [data, id]);
+
+  // Determine if selected product belongs to an accessory category
+  const isAccessory =
+    data &&
+    selectedProduct &&
+    data.categories.some(
+      (cat) =>
+        cat.id === "steeringwheel" &&
+        cat.products.some((p) => p.id === selectedProduct.id)
+    );
 
   const productVariants_1 = [
     { id: 1, color: "#2F2F2F", name: "Dark Grey" },
@@ -64,28 +123,31 @@ const ProductDetails = () => {
     productVariants_1.find((v) => v.id === selectedColor)?.name || "Dark Grey";
 
   return (
-    <div
+    <motion.div
+      initial={{ opacity: 0, y: 50 }} // start transparent and slightly below
+      animate={{ opacity: 1, y: 0 }} // animate to visible and normal position
+      transition={{ duration: 0.6, ease: "easeOut" }} // smooth duration
       style={{
         fontFamily: "'Montserrat', sans-serif",
         backgroundColor: "#000",
-        padding: "20px",
       }}
     >
       <div
         style={{
           display: "flex",
           flexDirection: isDesktop ? "row" : "column",
-          maxWidth: "1200px",
+          maxWidth: "1000px",
           margin: "0 auto",
           gap: "20px",
+          padding: isDesktop ? "20px" : "0",
         }}
       >
         {/* IMAGE */}
-        <div
-          style={{
-            width: isDesktop ? "50%" : "100%",
-            // backgroundColor: "#f5f5f5",
-          }}
+        <motion.div
+          initial={{ opacity: 0, x: -50 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ duration: 0.5 }}
+          style={{ width: isDesktop ? "50%" : "100%" }}
         >
           <img
             src={selectedProduct.image}
@@ -94,12 +156,17 @@ const ProductDetails = () => {
               width: "100%",
               height: isDesktop ? "450px" : "350px",
               objectFit: "cover",
+              borderRadius: isDesktop ? "10px" : "0",
+              display: "block",
             }}
           />
-        </div>
+        </motion.div>
 
         {/* DETAILS */}
-        <div
+        <motion.div
+          initial={{ opacity: 0, x: 50 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ duration: 0.5, delay: 0.3 }}
           style={{
             width: isDesktop ? "50%" : "100%",
             display: "flex",
@@ -135,16 +202,16 @@ const ProductDetails = () => {
             }}
           >
             <strong style={{ color: "#666" }}>
-              ${selectedProduct.discountPrice}
+              {selectedProduct.discountPrice}
             </strong>
             <span
               style={{
                 textDecoration: "line-through",
-                color: "#666",
+                color: "#fefefe",
                 fontSize: "14px",
               }}
             >
-              ${selectedProduct.originalPrice}
+              {selectedProduct.originalPrice}
             </span>
           </p>
 
@@ -158,7 +225,11 @@ const ProductDetails = () => {
             }}
           >
             <p
-              style={{ fontSize: "14px", color: "#666", marginBottom: "10px" }}
+              style={{
+                fontSize: "14px",
+                color: "#fefefe",
+                marginBottom: "10px",
+              }}
             >
               COLOUR: {selectedColorName}
             </p>
@@ -191,59 +262,61 @@ const ProductDetails = () => {
           </div>
 
           {/* QUANTITY */}
-          <div
-            style={{
-              display: "flex",
-              alignItems: "center",
-              justifyContent: isDesktop ? "flex-start" : "center",
-              gap: "10px",
-              marginBottom: "20px",
-              marginTop: isDesktop ? "0px" : "30px",
-            }}
-          >
-            <button
-              onClick={decreaseQuantity}
+          {!isAccessory && (
+            <div
               style={{
-                width: "35px",
-                height: "35px",
-                borderRadius: "6px",
-                border: "1px solid #000",
-                backgroundColor: "#1187cf",
-                color: "#fff",
-                cursor: "pointer",
-                fontSize: "18px",
-                fontWeight: "600",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: isDesktop ? "flex-start" : "center",
+                gap: "10px",
+                marginBottom: "20px",
+                marginTop: isDesktop ? "0px" : "30px",
               }}
             >
-              -
-            </button>
-            <span
-              style={{
-                fontSize: "16px",
-                minWidth: "25px",
-                textAlign: "center",
-                color: "#fff",
-              }}
-            >
-              {quantity}
-            </span>
-            <button
-              onClick={increaseQuantity}
-              style={{
-                width: "35px",
-                height: "35px",
-                borderRadius: "6px",
-                border: "1px solid #000",
-                backgroundColor: "#1187cf",
-                color: "#fff",
-                cursor: "pointer",
-                fontSize: "18px",
-                fontWeight: "600",
-              }}
-            >
-              +
-            </button>
-          </div>
+              <button
+                onClick={decreaseQuantity}
+                style={{
+                  width: "35px",
+                  height: "35px",
+                  borderRadius: "6px",
+                  border: "1px solid #000",
+                  backgroundColor: "#1187cf",
+                  color: "#fff",
+                  cursor: "pointer",
+                  fontSize: "18px",
+                  fontWeight: "600",
+                }}
+              >
+                -
+              </button>
+              <span
+                style={{
+                  fontSize: "16px",
+                  minWidth: "25px",
+                  textAlign: "center",
+                  color: "#fff",
+                }}
+              >
+                {quantity}
+              </span>
+              <button
+                onClick={increaseQuantity}
+                style={{
+                  width: "35px",
+                  height: "35px",
+                  borderRadius: "6px",
+                  border: "1px solid #000",
+                  backgroundColor: "#1187cf",
+                  color: "#fff",
+                  cursor: "pointer",
+                  fontSize: "18px",
+                  fontWeight: "600",
+                }}
+              >
+                +
+              </button>
+            </div>
+          )}
 
           {/* ADD TO CART */}
           <button
@@ -269,46 +342,95 @@ const ProductDetails = () => {
           </button>
 
           {/* DESCRIPTION */}
+          {selectedProduct && (
+            <div
+              style={{
+                fontFamily: '"Montserrat", "sans-serif"',
+                fontWeight: "900",
+                fontSize: "24px",
+                borderTop: "1px solid #e0e0e0",
+                paddingTop: "10px",
+                display: "flex",
+                flexDirection: "column",
+                alignItems: isDesktop ? "flex-start" : "center",
+                textAlign: isDesktop ? "left" : "center",
+                maxWidth: "600px",
+                width: "100%",
+              }}
+            >
+              <h3
+                style={{
+                  fontSize: "24px",
+                  fontWeight: "900",
+                  marginBottom: "10px",
+                  color: "#1187cf",
+                }}
+              >
+                DESCRIPTION
+              </h3>
+              <p
+                style={{
+                  fontSize: "14px",
+                  color: "#fefefe",
+                  lineHeight: "1.5",
+                  opacity: 0.8,
+                }}
+              >
+                {categoryDescription}
+              </p>
+            </div>
+          )}
+
+          {/* Buyers Bought These Section */}
           <div
             style={{
-              fontFamily: '"Montserrat", "sans-serif"',
-              fontWeight: "900",
-              fontSize: "24px",
-              borderTop: "1px solid #e0e0e0",
-              paddingTop: "10px",
-              display: "flex",
-              flexDirection: "column",
-              alignItems: isDesktop ? "flex-start" : "center",
-              textAlign: isDesktop ? "left" : "center",
-              maxWidth: "600px",
+              marginTop: "40px",
               width: "100%",
+              textAlign: isDesktop ? "left" : "center",
             }}
           >
             <h3
               style={{
-                fontSize: "24px",
-                fontWeight: "900",
-                marginBottom: "10px",
+                fontFamily: '"Montserrat", "sans-serif"',
+                fontWeight: "800",
+                fontSize: "22px",
                 color: "#1187cf",
+                marginBottom: "20px",
               }}
             >
-              DESCRIPTION
+              Buyers bought these
             </h3>
-            <p
-              style={{
-                fontSize: "14px",
-                color: "#fefefe",
-                lineHeight: "1.5",
-                opacity: 0.8,
-              }}
-            >
-              {selectedProduct.description ||
-                "This product is made with high-quality materials and modern design."}
-            </p>
+
+            {randomProducts.length > 0 && (
+              <div
+                style={{
+                  display: "flex",
+                  gap: "10px",
+                  flexWrap: isDesktop ? "wrap" : "nowrap",
+                  paddingBottom: "10px",
+                }}
+              >
+                {randomProducts.map((product, index) => (
+                  <img
+                    key={index}
+                    src={product.image}
+                    alt={product.title}
+                    style={{
+                      width: isDesktop ? "180px" : "120px",
+                      height: isDesktop ? "180px" : "120px",
+                      objectFit: "cover",
+                      borderRadius: "10px",
+                      border: "1px solid #333",
+                      flex: "0 0 auto",
+                    }}
+                  />
+                ))}
+              </div>
+            )}
           </div>
-        </div>
+        </motion.div>
       </div>
-    </div>
+    </motion.div>
   );
 };
 
