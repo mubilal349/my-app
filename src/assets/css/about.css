@@ -8,7 +8,6 @@
 body {
   background-color: #000;
   color: #fff;
-  font-family: Arial, sans-serif;
 }
 
 /* ===== Hero Section ===== */
@@ -32,6 +31,8 @@ body {
   position: relative;
   color: white;
   text-align: center;
+  font-family: "Montserrat", sans-serif;
+  text-transform: uppercase;
   z-index: 2;
   opacity: 0;
   transform: translateY(30px);
@@ -41,6 +42,8 @@ body {
 .hero-text h1 {
   font-size: 2.5rem;
   font-weight: 600;
+  font-family: "Montserrat", sans-serif;
+  text-transform: uppercase;
   margin-bottom: 10px;
   letter-spacing: 1px;
   color: #fff;
@@ -53,6 +56,8 @@ body {
   border-bottom: 2px solid #3b82f6;
   display: inline-block;
   padding-bottom: 5px;
+  font-family: "Montserrat", sans-serif;
+  text-transform: uppercase;
 }
 
 /* ===== About Section ===== */
@@ -84,6 +89,8 @@ body {
   margin-bottom: 10px;
   position: relative;
   display: inline-block;
+  font-family: "Montserrat", sans-serif;
+  text-transform: uppercase;
 }
 
 .about .text h4::after {
@@ -106,6 +113,8 @@ body {
   margin-bottom: 20px;
   color: #3b82f6;
   transition: transform 0.3s ease;
+  font-family: "Montserrat", sans-serif;
+  text-transform: uppercase;
 }
 
 .about .text h2:hover {
@@ -117,6 +126,7 @@ body {
   color: #fff !important;
   margin-bottom: 15px;
   transition: transform 0.3s ease;
+  font-family: "Montserrat", sans-serif;
 }
 
 .about .text p:hover {
@@ -136,6 +146,7 @@ body {
 .about .text ul li {
   margin-bottom: 10px;
   font-size: 1rem;
+  font-family: "Montserrat", sans-serif;
   color: #fff;
   display: flex;
   align-items: center;
@@ -274,6 +285,7 @@ body {
   margin-bottom: 15px;
   position: relative;
   display: inline-block;
+  font-family: "Montserrat", sans-serif;
 }
 
 .text-area h5::after {
@@ -297,6 +309,7 @@ body {
   margin-bottom: 20px;
   color: #3b82f6;
   transition: transform 0.3s ease;
+  font-family: "Montserrat", sans-serif;
 }
 
 .text-area h2:hover {
@@ -308,6 +321,7 @@ body {
   font-size: 15px;
   line-height: 1.6;
   margin-bottom: 40px;
+  font-family: "Montserrat", sans-serif;
 }
 
 .stats {
@@ -340,6 +354,7 @@ body {
   color: #fff !important;
   font-size: 14px;
   margin: 0;
+  font-family: "Montserrat", sans-serif;
 }
 
 /* ===== What Sets Us Apart Section ===== */
@@ -380,6 +395,8 @@ body {
   letter-spacing: 1px;
   position: relative;
   display: inline-block;
+  font-family: "Montserrat", sans-serif;
+  text-transform: uppercase;
 }
 
 .what-sets-us-apart .left-content .subtitle::after {
@@ -412,6 +429,7 @@ body {
 .what-sets-us-apart .left-content .description {
   font-size: 1.1em;
   line-height: 1.6;
+  font-family: "Montserrat", sans-serif;
   margin-bottom: 30px;
   color: #fff !important;
 }
@@ -465,6 +483,7 @@ body {
   border-radius: 10px;
   border-left: 3px solid #3b82f6;
   transition: all 0.3s ease;
+  font-family: "Montserrat", sans-serif;
 }
 
 .what-sets-us-apart .feature-card:hover {

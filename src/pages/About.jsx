@@ -217,28 +217,36 @@ const About = () => {
 
           <div className="right-content">
             <div className="feature-card">
-              <h2>Top quality materials</h2>
+              <h2 style={{ textTransform: "uppercase" }}>
+                Top quality materials
+              </h2>
               <p>
                 We focus on quality. Sustainability and customer satisfaction is
                 our priority.
               </p>
             </div>
             <div className="feature-card">
-              <h2>Individual order handling</h2>
+              <h2 style={{ textTransform: "uppercase" }}>
+                Individual order handling
+              </h2>
               <p>
                 The customer is the most important to us, which is why we devote
                 our full attention to each client.
               </p>
             </div>
             <div className="feature-card">
-              <h2>We modify every steering wheel</h2>
+              <h2 style={{ textTransform: "uppercase" }}>
+                We modify every steering wheel
+              </h2>
               <p>
                 We are able to help you no matter what kind of steering wheel
                 you have.
               </p>
             </div>
             <div className="feature-card">
-              <h2>Multiple opportunities for contact</h2>
+              <h2 style={{ textTransform: "uppercase" }}>
+                Multiple opportunities for contact
+              </h2>
               <p>You can contact us by phone, email and social media.</p>
             </div>
           </div>

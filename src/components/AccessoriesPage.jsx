@@ -6,6 +6,7 @@ import WhatsappIcon from "../components/WhatsappIcon";
 import BackToTop from "../components/BackToTop";
 
 const AccessoriesPage = () => {
+  const [selectedVariants, setSelectedVariants] = useState({});
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -13,6 +14,8 @@ const AccessoriesPage = () => {
 
   const { addToCart } = useCart();
   const navigate = useNavigate();
+
+  const isDesktop = window.innerWidth > 768;
 
   // Filter unique products by title
   const getUniqueProducts = (products) => {
@@ -71,37 +74,78 @@ const AccessoriesPage = () => {
 
           {/* Product Grid */}
           <div className="product-grid">
-            {getUniqueProducts(category.products).map((product) => (
-              <div key={product.id} className="product-card">
-                <div className="image-wrapper">
-                  <img
-                    src={product.image} // just show one color
-                    alt={product.title}
-                    className="product-image"
-                    onClick={() => navigate(`/product/${product.id}`)}
-                  />
-                  <button
-                    className="shop-button"
-                    onClick={() => handleAddToCart(product)}
-                  >
-                    Shop Now
-                  </button>
-                </div>
+            {getUniqueProducts(category.products).map((product) => {
+              // Get all variants for this product title
+              const productVariants = category.products.filter(
+                (p) => p.title === product.title
+              );
 
-                <div className="product-info">
-                  <h3 className="product-title">{product.title}</h3>
-                  <div className="price-box">
-                    <span className="discount-price">
-                      {product.discountPrice}
-                    </span>
-                    <span className="original-price">
-                      {product.originalPrice}
-                    </span>
+              // State for currently selected variant image
+              const currentVariant =
+                selectedVariants[product.id] || productVariants[0];
+
+              return (
+                <div key={product.id} className="product-card">
+                  <div
+                    className="image-wrapper"
+                    style={{
+                      position: "relative",
+                      width: "100%",
+                      height: isDesktop ? "350px" : "250px",
+                      backgroundColor: "#f5f5f5",
+                      display: "flex",
+                      justifyContent: "center",
+                      alignItems: "center",
+                    }}
+                  >
+                    <img
+                      src={currentVariant.image}
+                      alt={currentVariant.title}
+                      style={{
+                        width: "100%",
+                        height: "100%",
+                        objectFit: "contain",
+                        display: "block",
+                      }}
+                      onClick={() => navigate(`/product/${currentVariant.id}`)}
+                    />
+
+                    <button
+                      style={{
+                        position: "absolute",
+                        bottom: "15px",
+                        left: "50%",
+                        transform: "translateX(-50%)",
+                        backgroundColor: "#000",
+                        color: "#fff",
+                        border: "none",
+                        padding: "10px 20px",
+                        borderRadius: "4px",
+                        cursor: "pointer",
+                        fontWeight: "600",
+                        opacity: 1, // ✅ always visible
+                      }}
+                      onClick={() => handleAddToCart(currentVariant)}
+                    >
+                      Shop Now
+                    </button>
                   </div>
-                  <span className="badge">Popular</span>
+
+                  <div className="product-info">
+                    <h3 className="product-title">{currentVariant.title}</h3>
+                    <div className="price-box">
+                      <span className="discount-price">
+                        {currentVariant.discountPrice}
+                      </span>
+                      <span className="original-price">
+                        {currentVariant.originalPrice}
+                      </span>
+                    </div>
+                    <span className="badge">Popular</span>
+                  </div>
                 </div>
-              </div>
-            ))}
+              );
+            })}
           </div>
           {selectedProduct && (
             <div className="modal-backdrop">

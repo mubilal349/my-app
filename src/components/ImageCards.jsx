@@ -21,7 +21,7 @@ const ImageCards = () => {
       <style jsx>{`
         .how-it-works {
           text-align: center;
-          font-family: "Arial Black", sans-serif;
+          // font-family: "Arial Black", sans-serif;
         }
 
         .content-box {
