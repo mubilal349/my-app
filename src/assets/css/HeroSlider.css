@@ -26,7 +26,7 @@
 /* Make sure it’s responsive */
 @media (max-width: 768px) {
   .hero-slider.single-image {
-    height: 95vh; /* Slightly shorter on mobile */
+    height: 88vh; /* Slightly shorter on mobile */
     width: 100vw;
     background-size: cover; /* ✅ CHANGE: Fully covers the element */
     background-color: #000; /* fill empty space */

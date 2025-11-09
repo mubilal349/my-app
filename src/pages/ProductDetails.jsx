@@ -136,10 +136,11 @@ const ProductDetails = () => {
         style={{
           display: "flex",
           flexDirection: isDesktop ? "row" : "column",
-          maxWidth: "1000px",
+          maxWidth: "100%",
           margin: "0 auto",
           gap: "20px",
           padding: isDesktop ? "20px" : "0",
+          overflow: "hidden",
         }}
       >
         {/* IMAGE */}
