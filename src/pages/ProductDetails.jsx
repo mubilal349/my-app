@@ -13,7 +13,7 @@ const ProductDetails = () => {
   const [isDesktop, setIsDesktop] = useState(window.innerWidth >= 768);
   const [randomProducts, setRandomProducts] = useState([]);
 
-  const { addToCart } = useCart();
+  const { cartItems, addToCart, removeFromCart, calculateTotal } = useCart(); // ✅ works now
 
   const location = useLocation();
   const { categoryId } = location.state || {};
@@ -99,20 +99,34 @@ const ProductDetails = () => {
   }, []);
 
   // Set selected product based on ID
-  useEffect(() => {
-    if (!data) return;
-    const allProducts = data.categories.flatMap((cat) => cat.products);
-    const mainProduct = allProducts.find((p) => p.id === parseInt(id));
-    if (!mainProduct) return;
-    const variants = allProducts.filter((p) => p.title === mainProduct.title);
-    setSelectedProduct(variants[0]);
-    setSelectedColor(variants[0]?.id || 1);
-  }, [data, id]);
+  // useEffect(() => {
+  //   if (!data) return;
+  //   const allProducts = data.categories.flatMap((cat) => cat.products);
+  //   const mainProduct = allProducts.find((p) => p.id === parseInt(id));
+  //   if (!mainProduct) return;
+  //   const variants = allProducts.filter((p) => p.title === mainProduct.title);
+  //   setSelectedProduct(variants[0]);
+  //   setSelectedColor(variants[0]?.id || 1);
+  // }, [data, id]);
 
   if (!data || !selectedProduct) return <div>Loading...</div>;
 
   const handleAddToCart = (product) => {
-    addToCart({ ...product, selectedColor, quantity });
+    if (!product) return;
+
+    // Convert discountPrice string to number
+    const priceNumber = parseFloat(
+      (product.discountPrice || product.originalPrice || "0")
+        .replace("£", "")
+        .trim()
+    );
+
+    addToCart({
+      ...product,
+      price: priceNumber, // numeric price
+      quantity, // selected quantity
+      selectedColor, // selected color
+    });
   };
 
   const increaseQuantity = () => setQuantity((prev) => prev + 1);
@@ -246,7 +260,7 @@ const ProductDetails = () => {
                   key={variant.id}
                   onClick={() => setSelectedColor(variant.id)}
                   style={{
-                    width: "40px",
+                    width: isDesktop ? "40px" : "30px",
                     height: "40px",
                     borderRadius: "50%",
                     backgroundColor: variant.color,
@@ -321,7 +335,27 @@ const ProductDetails = () => {
 
           {/* ADD TO CART */}
           <button
-            onClick={() => handleAddToCart(selectedProduct)}
+            onClick={() => {
+              if (!selectedProduct) return;
+
+              // Convert price string to number
+              const priceNumber = parseFloat(
+                (
+                  selectedProduct.discountPrice ||
+                  selectedProduct.originalPrice ||
+                  "0"
+                )
+                  .replace("£", "")
+                  .trim()
+              );
+
+              handleAddToCart({
+                ...selectedProduct,
+                price: priceNumber, // numeric price
+                quantity, // quantity selected
+                selectedColor, // selected color
+              });
+            }}
             style={{
               fontFamily: '"Montserrat", "sans-serif"',
               width: "100%",
@@ -417,7 +451,7 @@ const ProductDetails = () => {
                     src={product.image}
                     alt={product.title}
                     style={{
-                      width: isDesktop ? "180px" : "120px",
+                      width: isDesktop ? "150px" : "115px",
                       height: isDesktop ? "180px" : "120px",
                       objectFit: "cover",
                       borderRadius: "10px",

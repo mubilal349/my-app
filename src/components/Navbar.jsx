@@ -351,13 +351,13 @@ const Navbar = () => {
                   <div style={{ flex: 1 }}>
                     <h4 style={{ margin: "0 0 5px 0" }}>{item.title}</h4>
                     <p style={{ margin: 0, color: "#666" }}>
-                      ${item.price} x {item.quantity}
+                      £{item.price} x {item.quantity}
                     </p>
                   </div>
 
                   {/* Subtotal */}
                   <div style={{ fontWeight: "bold" }}>
-                    ${item.price * item.quantity}
+                    £{item.price * item.quantity}
                     {/* DELETE ICON */}
                     <Trash2
                       size={18}

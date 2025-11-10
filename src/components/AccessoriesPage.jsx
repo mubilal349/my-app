@@ -50,8 +50,22 @@ const AccessoriesPage = () => {
 
   const handleAddToCart = (product) => {
     if (!product || !product.id) return;
-    addToCart(product);
+
+    // Convert price string to number
+    const discount =
+      parseFloat(product.discountPrice?.replace(/[^\d.]/g, "")) || 0;
+    const original =
+      parseFloat(product.originalPrice?.replace(/[^\d.]/g, "")) || 0;
+    const priceNumber = discount > 0 ? discount : original;
+
+    // Add to cart with numeric price and quantity
+    addToCart({
+      ...product,
+      price: priceNumber, // numeric
+      quantity: 1, // default quantity
+    });
   };
+
   if (loading)
     return (
       <div className="loading-container">
@@ -76,13 +90,12 @@ const AccessoriesPage = () => {
           <div className="product-grid">
             {getUniqueProducts(category.products).map((product) => {
               // Get all variants for this product title
-              const productVariants = category.products.filter(
-                (p) => p.title === product.title
-              );
+              // const productVariants = category.products.filter(
+              //   (p) => p.id === product.id
+              // );
 
               // State for currently selected variant image
-              const currentVariant =
-                selectedVariants[product.id] || productVariants[0];
+              const currentVariant = selectedVariants[product.id] || product;
 
               return (
                 <div key={product.id} className="product-card">
@@ -123,8 +136,20 @@ const AccessoriesPage = () => {
                         borderRadius: "4px",
                         cursor: "pointer",
                         fontWeight: "600",
-                        opacity: 1, // ✅ always visible
+                        overflow: "hidden",
+                        transition: "background 0.4s ease",
+                        backgroundImage:
+                          "linear-gradient(to top, rgba(255,255,255,0.2) 0%, rgba(255,255,255,0) 100%)",
+                        backgroundRepeat: "no-repeat",
+                        backgroundPosition: "bottom",
+                        backgroundSize: "100% 0%", // start from bottom
                       }}
+                      onMouseEnter={(e) =>
+                        (e.currentTarget.style.backgroundSize = "100% 200%")
+                      } // grow the wave
+                      onMouseLeave={(e) =>
+                        (e.currentTarget.style.backgroundSize = "100% 0%")
+                      } // reset
                       onClick={() => handleAddToCart(currentVariant)}
                     >
                       Shop Now

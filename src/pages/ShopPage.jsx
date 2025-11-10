@@ -3,6 +3,7 @@ import "../assets/css/ShopPage.css";
 import { useCart } from "../context/CartContext";
 import WhatsappIcon from "../components/WhatsappIcon";
 import BackToTop from "../components/BackToTop";
+import { useNavigate } from "react-router-dom";
 
 const ShopPage = () => {
   const [allProducts, setAllProducts] = useState([]);
@@ -13,6 +14,7 @@ const ShopPage = () => {
   const [selectedProduct, setSelectedProduct] = useState(null);
 
   const { addToCart } = useCart();
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchProducts = async () => {
@@ -144,12 +146,25 @@ const ShopPage = () => {
                     src={product.image}
                     alt={product.title}
                     className="shop-image"
-                    onClick={() => setSelectedProduct(product)}
+                    onClick={() =>
+                      navigate(`/product/${product.id}`, {
+                        state: { category: product.category }, // optional
+                      })
+                    }
                   />
 
                   <button
                     className="shop-btn"
-                    onClick={() => addToCart(product)}
+                    onClick={() => {
+                      const priceNumber =
+                        parseFloat(product.discountPrice.replace("$", "")) || 0;
+
+                      addToCart({
+                        ...product,
+                        price: priceNumber, // numeric price
+                        quantity: 1, // default quantity
+                      });
+                    }}
                   >
                     Shop Now
                   </button>
@@ -168,61 +183,6 @@ const ShopPage = () => {
             <p className="no-results">No products found for this category.</p>
           )}
         </div>
-        {/* Product Modal */}
-        {selectedProduct && (
-          <div
-            className="modal-backdrop"
-            onClick={() => setSelectedProduct(null)}
-          >
-            <div
-              className="modal-card"
-              onClick={(e) => e.stopPropagation()} // Prevent closing on click inside
-            >
-              {/* Close Button */}
-              <button
-                className="modal-close"
-                onClick={() => setSelectedProduct(null)}
-              >
-                &times;
-              </button>
-
-              {/* Modal Content */}
-              <div className="modal-content">
-                {/* Image */}
-                <img
-                  src={selectedProduct.image}
-                  alt={selectedProduct.title}
-                  className="modal-image"
-                />
-
-                {/* Info */}
-                <div className="modal-info">
-                  <h2 className="modal-title">{selectedProduct.title}</h2>
-                  <div className="modal-price-box">
-                    <span className="modal-price">
-                      {selectedProduct.discountPrice}
-                    </span>
-                    <span className="modal-original">
-                      {selectedProduct.originalPrice}
-                    </span>
-                  </div>
-                  <p className="modal-description">
-                    {selectedProduct.description}
-                  </p>
-                  <button
-                    className="modal-add-btn"
-                    onClick={() => {
-                      addToCart(selectedProduct);
-                      setSelectedProduct(null);
-                    }}
-                  >
-                    Add to Cart
-                  </button>
-                </div>
-              </div>
-            </div>
-          </div>
-        )}
       </div>
 
       <WhatsappIcon />

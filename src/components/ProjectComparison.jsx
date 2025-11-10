@@ -97,7 +97,7 @@ const BeforeAfterSlider = ({ before, after, alt }) => {
         <div className="slider-handle" style={{ left: `${sliderPosition}%` }}>
           <div className="handle-line"></div>
           <div className="handle-circle">
-            <span className="arrow left"> ⮚</span>
+            <span className="arrow left">⮚</span>
             <span className="arrow right">⮘</span>
           </div>
         </div>
