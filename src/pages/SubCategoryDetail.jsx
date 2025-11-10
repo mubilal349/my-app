@@ -21,41 +21,41 @@ const productDetails = {
     ],
   },
   Badges: {
-    slider: ["/img/badges1.png", "/img/badges2.png", "/img/badges3.png"],
+    slider: ["/img/badges/29.png", "/img/badges/28.png", "/img/badges/29.png"],
     description:
       "Custom badges to show off your style. Ideal for jackets, bags, and accessories.",
     related: [
-      { image: "/img/badges4.png", name: "Badge 4" },
-      { image: "/img/badges5.png", name: "Badge 5" },
-      { image: "/img/badges6.png", name: "Badge 6" },
+      { image: "/img/badges/29.png", name: "Badge 5" },
+      { image: "/img/badges/28.png", name: "Badge 4" },
+      { image: "/img/badges/29.png", name: "Badge 6" },
     ],
   },
   Diffusers: {
     slider: [
-      "/img/diffusers1.png",
-      "/img/diffusers2.png",
-      "/img/diffusers3.png",
+      "/img/images/diffuser.png",
+      "/img/Diffuser/1.png",
+      "/img/Diffuser/2.png",
     ],
     description:
       "Aromatic diffusers for home or office. Eco-friendly and long-lasting scents.",
     related: [
-      { image: "/img/diffusers4.png", name: "Diffuser 4" },
-      { image: "/img/diffusers5.png", name: "Diffuser 5" },
-      { image: "/img/diffusers6.png", name: "Diffuser 6" },
+      { image: "/img/Diffuser/1.png", name: "Diffuser 1" },
+      { image: "/img/Diffuser/2.png", name: "Diffuser 2" },
+      { image: "/img/Diffuser/3.png", name: "Diffuser 3" },
     ],
   },
-  SteeringWheels: {
+  Steering: {
     slider: [
-      "/img/steeringwheels1.jpg",
-      "/img/steeringwheels2.jpg",
-      "/img/steeringwheels3.jpg",
+      "/img/steeringwheels/10.jpg",
+      "/img/steeringwheels/9.jpg",
+      "/img/steeringwheels/11.jpg",
     ],
     description:
       "Premium steering wheels for comfort and style. Upgrade your driving experience.",
     related: [
-      { image: "/img/steeringwheels4.jpg", name: "Steering Wheel 4" },
-      { image: "/img/steeringwheels5.jpg", name: "Steering Wheel 5" },
-      { image: "/img/steeringwheels6.jpg", name: "Steering Wheel 6" },
+      { image: "/img/steeringwheels/8.jpg", name: "Steering Wheel 8" },
+      { image: "/img/steeringwheels/6.jpg", name: "Steering Wheel 6" },
+      { image: "/img/steeringwheels/5.jpg", name: "Steering Wheel 5" },
     ],
   },
 };

@@ -11,7 +11,7 @@ const categories = {
     { name: "Badges", image: "/img/accessories/28.png" },
     { name: "Diffusers", image: "/img/accessories/1.png" },
     {
-      name: "Steering Wheels",
+      name: "Steering",
       image: "/img/before-and-after/before-after 1 (2).jpg",
     },
   ],

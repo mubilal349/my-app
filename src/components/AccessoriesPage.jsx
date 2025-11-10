@@ -4,8 +4,11 @@ import { useCart } from "../context/CartContext";
 import { useNavigate } from "react-router-dom";
 import WhatsappIcon from "../components/WhatsappIcon";
 import BackToTop from "../components/BackToTop";
+import { useLocation } from "react-router-dom";
 
 const AccessoriesPage = () => {
+  const location = useLocation();
+  const product = location.state?.product;
   const [selectedVariants, setSelectedVariants] = useState({});
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -66,6 +69,24 @@ const AccessoriesPage = () => {
     });
   };
 
+  const productVariants_1 = [
+    { id: 1, color: "#2F2F2F", name: "Dark Grey" },
+    { id: 2, color: "#FF3B3B", name: "Red" },
+    { id: 3, color: "#1B3A52", name: "Navy Blue" },
+    { id: 4, color: "#A8D5D5", name: "Light Blue" },
+    { id: 5, color: "#D9D9D9", name: "silver " },
+    { id: 6, color: "#00FF00", name: "green" },
+    { id: 7, color: "#FFA500", name: "orange " },
+    { id: 8, color: "#CD7F32", name: "bronze " },
+  ];
+  const productVariants_2 = [
+    { id: 1, color: "#000000", name: "Full Black" },
+    { id: 2, color: "#E6E6E6", name: "LT Black White" },
+    { id: 3, color: "#FF0000", name: "Red Carbon" },
+    { id: 4, color: "#1C1C1C", name: "Black Carbon" },
+    { id: 5, color: "#003366", name: "Blue Carbon" },
+  ];
+
   if (loading)
     return (
       <div className="loading-container">
@@ -93,9 +114,10 @@ const AccessoriesPage = () => {
               // const productVariants = category.products.filter(
               //   (p) => p.id === product.id
               // );
-
-              // State for currently selected variant image
               const currentVariant = selectedVariants[product.id] || product;
+
+              const currentVariants =
+                product.id === 3 ? productVariants_2 : productVariants_1;
 
               return (
                 <div key={product.id} className="product-card">
@@ -120,7 +142,14 @@ const AccessoriesPage = () => {
                         objectFit: "contain",
                         display: "block",
                       }}
-                      onClick={() => navigate(`/product/${currentVariant.id}`)}
+                      onClick={() =>
+                        navigate(`/product/${currentVariant.id}`, {
+                          state: {
+                            product: currentVariant,
+                            variants: currentVariants,
+                          },
+                        })
+                      }
                     />
 
                     <button
@@ -200,16 +229,64 @@ const AccessoriesPage = () => {
                     {selectedProduct.originalPrice}
                   </span>
                 </div>
+
+                {/* Description */}
                 <p className="modal-description">
                   {selectedProduct.description}
                 </p>
+
+                {/* Color Selection */}
+                <div style={{ margin: "15px 0" }}>
+                  <p style={{ marginBottom: "8px", color: "#333" }}>
+                    COLOR:{" "}
+                    {currentVariants_1.find((v) => v.id === selectedColor)
+                      ?.name || "Select"}
+                  </p>
+                  <div style={{ display: "flex", gap: "10px" }}>
+                    {[
+                      { id: 1, color: "#000000", name: "Black" },
+                      { id: 2, color: "#FF0000", name: "Red" },
+                      { id: 3, color: "#0000FF", name: "Blue" },
+                      { id: 4, color: "#00FF00", name: "Green" },
+                      { id: 5, color: "#FFFF00", name: "Yellow" },
+                    ].map((variant) => (
+                      <div
+                        key={variant.id}
+                        onClick={() => setSelectedColor(variant.id)}
+                        style={{
+                          width: "30px",
+                          height: "30px",
+                          borderRadius: "50%",
+                          backgroundColor: variant.color,
+                          cursor: "pointer",
+                          border:
+                            selectedColor === variant.id
+                              ? "3px solid #1187cf"
+                              : "1px solid #ccc",
+                          transition: "all 0.2s ease",
+                        }}
+                        title={variant.name}
+                      />
+                    ))}
+                  </div>
+                </div>
 
                 {/* Add to Cart Button */}
                 <button
                   className="modal-add-btn"
                   onClick={() => {
-                    handleAddToCart(selectedProduct);
+                    handleAddToCart({ ...selectedProduct, selectedColor });
                     setSelectedProduct(null);
+                  }}
+                  style={{
+                    marginTop: "15px",
+                    padding: "12px 20px",
+                    backgroundColor: "#1187cf",
+                    color: "#fff",
+                    fontWeight: "700",
+                    border: "none",
+                    borderRadius: "5px",
+                    cursor: "pointer",
                   }}
                 >
                   Add to Cart

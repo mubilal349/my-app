@@ -9,21 +9,22 @@ const allProducts = {
     name: `Keyring ${i + 1}`,
     image: `/img/keychains/${10 + i}.png`,
   })),
-  Badges: Array.from({ length: 12 }, (_, i) => ({
+  Badges: [28, 29].map((num, i) => ({
     id: i + 1,
-    name: `Badge ${i + 1}`,
-    image: `/img/badges${(i % 4) + 1}.png`,
-  })),
-  Diffusers: Array.from({ length: 12 }, (_, i) => ({
-    id: i + 1,
-    name: `Diffusers ${i + 1}`,
-    image: `/img/diffusers${(i % 4) + 1}.png`,
+    name: `Badge ${num}`,
+    image: `/img/badges/${num}.png`,
   })),
 
-  SteeringWheels: Array.from({ length: 10 }, (_, i) => ({
+  Diffusers: [1, 2, 3].map((num, i) => ({
     id: i + 1,
-    name: `SteeringWheels ${i + 1}`,
-    image: `/img/steeringwheels${(i % 4) + 1}.jpg`,
+    name: `Diffuser ${num}`,
+    image: `/img/Diffuser/${num}.png`,
+  })),
+
+  Steering: [1, 2, 5, 6, 7, 8, 9, 10, 11].map((num, i) => ({
+    id: i + 1,
+    name: `Steering ${num}`,
+    image: `/img/steeringwheels/${num}.jpg`,
   })),
 };
 
