@@ -19,9 +19,8 @@ const ShopPage = () => {
   useEffect(() => {
     const fetchProducts = async () => {
       setLoading(true);
-
       try {
-        // 1️⃣ Fetch from local JSON
+        // 1️⃣ Fetch local JSON
         const res = await fetch("/data/products.json");
         const data = await res.json();
 
@@ -34,14 +33,13 @@ const ShopPage = () => {
           }))
         );
 
-        // 2️⃣ Fetch from backend API
+        // 2️⃣ Fetch backend
         let backendProducts = [];
         try {
           const apiRes = await fetch(
             "https://cornflowerblue-gaur-794659.hostingersite.com/api/getProducts.php"
           );
           const apiData = await apiRes.json();
-
           backendProducts = apiData.map((p) => ({
             id: p.id,
             title: p.title,
@@ -58,34 +56,55 @@ const ShopPage = () => {
           console.error("Backend fetch error:", err);
         }
 
-        // 3️⃣ Fetch products added via Admin Dashboard (from localStorage)
+        // 3️⃣ Fetch admin products
         const adminProducts =
           JSON.parse(localStorage.getItem("products"))?.map((p) => ({
             id: p.id,
             title: p.title,
-            image: p.image, // Use the base64 image directly
-            discountPrice: p.discountPrice || "$0.00",
-            originalPrice: p.originalPrice || "$0.00",
+            image: p.image,
+            discountPrice: p.discountPrice || "£0.00",
+            originalPrice: p.originalPrice || "£0.00",
             category: "New Products Added",
-            price: parseFloat(p.discountPrice?.replace("$", "") || 0),
+            price: parseFloat(p.discountPrice?.replace("£", "") || 0),
             originalPriceNum: parseFloat(
-              p.originalPrice?.replace("$", "") || 0
+              p.originalPrice?.replace("£", "") || 0
             ),
           })) || [];
 
-        // 4️⃣ Combine everything
-        const combinedProducts = [
+        // 4️⃣ Combine all products
+        let combinedProducts = [
           ...localJsonProducts,
           ...backendProducts,
           ...adminProducts,
         ];
 
-        // 5️⃣ Set all products + categories
-        setAllProducts(combinedProducts);
-        setFilteredProducts(combinedProducts);
+        // 5️⃣ Remove duplicate products based on image or title
+        // Remove duplicates but keep all steering wheels
+        const uniqueProducts = combinedProducts.filter(
+          (product, index, self) => {
+            // Always include steering wheels
+            if (product.category.toLowerCase().includes("steering"))
+              return true;
+
+            // Otherwise remove duplicates by title only
+            return (
+              index ===
+              self.findIndex(
+                (p) =>
+                  p.title.trim().toLowerCase() ===
+                  product.title.trim().toLowerCase()
+              )
+            );
+          }
+        );
+
+        // 6️⃣ Set state
+        setAllProducts(uniqueProducts);
+        setFilteredProducts(uniqueProducts);
+
         setCategories([
           "All",
-          ...new Set(combinedProducts.map((p) => p.category)),
+          ...new Set(uniqueProducts.map((p) => p.category)),
         ]);
       } catch (err) {
         console.error("Error loading products:", err);
@@ -148,7 +167,7 @@ const ShopPage = () => {
                     className="shop-image"
                     onClick={() =>
                       navigate(`/product/${product.id}`, {
-                        state: { category: product.category }, // optional
+                        state: { product }, // optional
                       })
                     }
                   />

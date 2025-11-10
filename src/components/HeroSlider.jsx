@@ -13,7 +13,7 @@ const HeroSlider = () => {
       style={{
         backgroundImage: `url('/img/cover.jpg')`,
       }}
-      onClick={() => handleClick("steeringwheel")} // matches JSON id
+      onClick={() => handleClick("steeringwheel")}
     >
       <div className="overlay"></div>
     </section>

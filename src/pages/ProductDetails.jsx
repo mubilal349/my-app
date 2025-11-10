@@ -1,22 +1,88 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { useCart } from "../context/CartContext";
-import { motion } from "framer-motion";
+import { color, motion } from "framer-motion";
 import { useLocation } from "react-router-dom";
 
 const ProductDetails = () => {
+  const location = useLocation();
+  const product = location.state?.product;
   const { id } = useParams();
   const [data, setData] = useState(null);
   const [quantity, setQuantity] = useState(1);
   const [selectedProduct, setSelectedProduct] = useState(null);
-  const [selectedColor, setSelectedColor] = useState(1);
+  const productVariants_1 = [
+    { id: 1, color: "#2F2F2F", name: "Dark Grey" },
+    { id: 2, color: "#FF3B3B", name: "Red" },
+    { id: 3, color: "#1B3A52", name: "Navy Blue" },
+    { id: 4, color: "#A8D5D5", name: "Light Blue" },
+    { id: 5, color: "#D9D9D9", name: "silver " },
+    { id: 6, color: "#00FF00", name: "green" },
+    { id: 7, color: "#FFA500", name: "orange " },
+    { id: 8, color: "#CD7F32", name: "bronze " },
+  ];
+  const productVariants_2 = [
+    { id: 1, color: "#000000", name: "Full Black" },
+    { id: 2, color: "#E6E6E6", name: "LT Black White" },
+    { id: 3, color: "#FF0000", name: "Red Carbon" },
+    { id: 4, color: "#1C1C1C", name: "Black Carbon" },
+    { id: 5, color: "#003366", name: "Blue Carbon" },
+  ];
+
+  const productVariants_32 = [{ id: 1, color: "#000000", name: "Black" }];
+  const productVariants_33 = [{ id: 1, color: "#000000", name: "Black" }];
+  const productVariants_35 = [{ id: 1, color: "#000000", name: "Black" }];
+  const productVariants_36 = [{ id: 1, color: "#000000", name: "Black" }];
+  const productVariants_43 = [{ id: 1, color: "#ADD8E6", name: "Blue White" }];
+  const productVariants_13 = [
+    {
+      id: 1,
+      color: "#F7C948",
+      name: "warm golden yellow:",
+    },
+    { id: 2, color: "#FFF44F", name: "lemon" },
+  ];
+  const productVariants_14 = [
+    {
+      id: 1,
+      color: "#F7C948",
+      name: "warm golden yellow:",
+    },
+    { id: 2, color: "#FFF44F", name: "lemon" },
+  ];
+
+  // Pick the variant array for colors
+  const currentVariants_1 =
+    product.id === 3
+      ? productVariants_2 // BMW Steering logo
+      : product.id === 32
+      ? productVariants_32
+      : product.id === 33
+      ? productVariants_33
+      : product.id === 35
+      ? productVariants_35 // Product id 35
+      : product.id === 36
+      ? productVariants_36
+      : product.id === 43
+      ? productVariants_43
+      : product.id === 13
+      ? productVariants_13
+      : product.id === 14
+      ? productVariants_14
+      : productVariants_1; // All other accessories
+  const [selectedColor, setSelectedColor] = useState(null);
+  const [currentVariants, setCurrentVariants] = useState(productVariants_1); // default
   const [isDesktop, setIsDesktop] = useState(window.innerWidth >= 768);
   const [randomProducts, setRandomProducts] = useState([]);
 
   const { cartItems, addToCart, removeFromCart, calculateTotal } = useCart(); // ✅ works now
 
-  const location = useLocation();
   const { categoryId } = location.state || {};
+
+  const handleProductClick = (product) => {
+    setSelectedProduct(product); // store clicked product
+    setSelectedColor(null); // reset selected color
+  };
 
   useEffect(() => {
     fetch("/data/products.json")
@@ -32,6 +98,7 @@ const ProductDetails = () => {
 
   const categoryDescription = selectedCategory?.description || "";
 
+  // After data is loaded, pick selected product and random products
   // After data is loaded, pick selected product and random products
   useEffect(() => {
     if (!data || !data.categories) return;
@@ -71,17 +138,6 @@ const ProductDetails = () => {
         cat.id === "steeringwheel" &&
         cat.products.some((p) => p.id === selectedProduct.id)
     );
-
-  const productVariants_1 = [
-    { id: 1, color: "#2F2F2F", name: "Dark Grey" },
-    { id: 2, color: "#FF3B3B", name: "Red" },
-    { id: 3, color: "#1B3A52", name: "Navy Blue" },
-    { id: 4, color: "#A8D5D5", name: "Light Blue" },
-    { id: 5, color: "#D9D9D9", name: "silver " },
-    { id: 6, color: "#00FF00", name: "green" },
-    { id: 7, color: "#FFA500", name: "orange " },
-    { id: 8, color: "#CD7F32", name: "bronze " },
-  ];
 
   // Handle resize for responsive layout
   useEffect(() => {
@@ -236,7 +292,6 @@ const ProductDetails = () => {
               marginBottom: "25px",
               display: "flex",
               flexDirection: "column",
-              // alignItems: "center",
             }}
           >
             <p
@@ -246,21 +301,18 @@ const ProductDetails = () => {
                 marginBottom: "10px",
               }}
             >
-              COLOUR: {selectedColorName}
+              COLOUR:{" "}
+              {currentVariants_1.find((v) => v.id === selectedColor)?.name ||
+                "Select"}
             </p>
-            <div
-              style={{
-                display: "flex",
-                gap: "10px",
-                justifyContent: isDesktop ? "flex-start" : "center",
-              }}
-            >
-              {productVariants_1.map((variant) => (
+
+            <div style={{ display: "flex", gap: "10px", marginTop: "10px" }}>
+              {currentVariants_1.map((variant) => (
                 <div
                   key={variant.id}
                   onClick={() => setSelectedColor(variant.id)}
                   style={{
-                    width: isDesktop ? "40px" : "30px",
+                    width: "40px",
                     height: "40px",
                     borderRadius: "50%",
                     backgroundColor: variant.color,
@@ -416,6 +468,7 @@ const ProductDetails = () => {
             </div>
           )}
 
+          {/* Buyers Bought These Section */}
           {/* Buyers Bought These Section */}
           <div
             style={{
