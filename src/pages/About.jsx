@@ -14,6 +14,69 @@ const About = () => {
       nav.classList.toggle("active");
       hamburger.classList.toggle("open");
     });
+
+    // Add scroll animations
+    const observerOptions = {
+      threshold: 0.1,
+      rootMargin: "0px 0px -50px 0px",
+    };
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add("animate-in");
+        }
+      });
+    }, observerOptions);
+
+    // Observe all sections
+    document.querySelectorAll("section").forEach((section) => {
+      observer.observe(section);
+    });
+
+    // Add counter animation for stats
+    const animateCounter = (element, target) => {
+      let count = 0;
+      const increment = target / 100;
+      const timer = setInterval(() => {
+        count += increment;
+        if (count >= target) {
+          element.textContent =
+            target + (element.textContent.includes("+") ? "+" : "");
+          clearInterval(timer);
+        } else {
+          element.textContent =
+            Math.floor(count) + (element.textContent.includes("+") ? "+" : "");
+        }
+      }, 20);
+    };
+
+    // Trigger counter animation when stats section is visible
+    const statsObserver = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (
+          entry.isIntersecting &&
+          !entry.target.classList.contains("counted")
+        ) {
+          entry.target.classList.add("counted");
+          const statNumbers = entry.target.querySelectorAll(".stat h3");
+          statNumbers.forEach((stat) => {
+            const target = parseInt(stat.textContent);
+            animateCounter(stat, target);
+          });
+        }
+      });
+    }, observerOptions);
+
+    const statsSection = document.querySelector(".stats");
+    if (statsSection) {
+      statsObserver.observe(statsSection);
+    }
+
+    return () => {
+      observer.disconnect();
+      statsObserver.disconnect();
+    };
   }, []);
 
   return (
@@ -21,7 +84,9 @@ const About = () => {
       {/* ===== Hero Section ===== */}
       <section
         className="hero"
-        style={{ background: `url(${bg}) center/cover no-repeat` }}
+        style={{
+          background: `url(${bg}) center/cover no-repeat`,
+        }}
       >
         <div className="overlay"></div>
         <div className="hero-text">
@@ -152,28 +217,36 @@ const About = () => {
 
           <div className="right-content">
             <div className="feature-card">
-              <h2>Top quality materials</h2>
+              <h2 style={{ textTransform: "uppercase" }}>
+                Top quality materials
+              </h2>
               <p>
                 We focus on quality. Sustainability and customer satisfaction is
                 our priority.
               </p>
             </div>
             <div className="feature-card">
-              <h2>Individual order handling</h2>
+              <h2 style={{ textTransform: "uppercase" }}>
+                Individual order handling
+              </h2>
               <p>
                 The customer is the most important to us, which is why we devote
                 our full attention to each client.
               </p>
             </div>
             <div className="feature-card">
-              <h2>We modify every steering wheel</h2>
+              <h2 style={{ textTransform: "uppercase" }}>
+                We modify every steering wheel
+              </h2>
               <p>
                 We are able to help you no matter what kind of steering wheel
                 you have.
               </p>
             </div>
             <div className="feature-card">
-              <h2>Multiple opportunities for contact</h2>
+              <h2 style={{ textTransform: "uppercase" }}>
+                Multiple opportunities for contact
+              </h2>
               <p>You can contact us by phone, email and social media.</p>
             </div>
           </div>

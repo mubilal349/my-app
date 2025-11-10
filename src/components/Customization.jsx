@@ -5,33 +5,56 @@ import "../index.css";
 
 const Customization = () => {
   const handlePersonalInfoSubmit = () => {
-    const { fullName, country, email, phone } = formData;
-
-    if (!fullName || !country || !email || !phone) {
-      Swal.fire("⚠️ Missing Info", "Please fill all fields!", "warning");
+    if (
+      !formData.fullName ||
+      !formData.country ||
+      !formData.email ||
+      !formData.phone
+    ) {
+      Swal.fire(
+        "⚠️ Missing Info",
+        "Please fill all personal details before continuing!",
+        "warning"
+      );
       return;
     }
 
-    Swal.fire({
-      icon: "success",
-      title: "✅ Success!",
-      text: "Personal info saved successfully!",
-      showConfirmButton: false,
-      timer: 1500,
-    });
+    // Prepare WhatsApp message
+    let message = `
+Hello! I want a quote for the following customization:
+- Full Name: ${formData.fullName}
+- Country: ${formData.country}
+- Email: ${formData.email}
+- Phone: ${formData.phone}
+- Car: ${formData.carMake} ${formData.carModel} (${formData.carYear})
+- Transmission: ${formData.transmission}
+- Stripe Color: ${formData.stripeColor}
+- Stitching Color: ${formData.stitchingColor}
+- Shape: ${formData.shape}
+- Rev Counter: ${formData.revCounter}
+- Materials: ${formData.materials.join(", ")}
+- Carbon: ${formData.carbon.join(", ")}
+`;
 
-    // Move to next step (Customization Page)
-    setTimeout(() => {
-      setCurrentStep((prev) => prev + 1);
-    }, 1500); // wait for alert to finish
+    // Include steering wheel photo note
+    if (formData.steeringWheelPhoto) {
+      message += `- Steering Wheel Photo: ${formData.steeringWheelPhoto.name} (attach manually in WhatsApp)\n`;
+    }
+
+    const encodedMessage = encodeURIComponent(message);
+    const whatsappNumber = "447598863458"; // replace with your number
+
+    // Open WhatsApp in new tab
+    window.open(
+      `https://wa.me/${whatsappNumber}?text=${encodedMessage}`,
+      "_blank"
+    );
+
+    // Move to Thank You screen
+    setCurrentStep(9);
   };
 
   const [currentStep, setCurrentStep] = useState(1);
-  useEffect(() => {
-    if (currentStep === 8) {
-      handlePersonalInfoSubmit();
-    }
-  }, [currentStep]);
 
   const [formData, setFormData] = useState({
     shape: "original",
@@ -40,7 +63,7 @@ const Customization = () => {
     materials: [],
     stitchingColor: "red",
     stitchingCustom: "mPower",
-    stripeColor: "Red",
+    stripeColor: "",
     carMake: "audi",
     carModel: "rs 3",
     carYear: "2020",
@@ -61,8 +84,84 @@ const Customization = () => {
     { number: 7, label: "Car" },
     { number: 8, label: "Contact" },
   ];
+  const handleFileChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        updateFormData("steeringWheelPhoto", reader.result); // base64 string
+      };
+      reader.readAsDataURL(file);
+    }
+  };
 
   const handleNext = () => {
+    // Step 2: Carbon validation
+    if (currentStep === 2 && formData.carbon.length === 0) {
+      Swal.fire(
+        "⚠️ Missing Selection",
+        "Please select at least one carbon option!",
+        "warning"
+      );
+      return;
+    }
+
+    // Step 4: Material validation
+    if (currentStep === 4 && formData.materials.length === 0) {
+      Swal.fire(
+        "⚠️ Missing Selection",
+        "Please select at least one material!",
+        "warning"
+      );
+      return;
+    }
+
+    // Step 5: Stitching color validation
+    if (currentStep === 5 && !formData.stitchingColor) {
+      Swal.fire(
+        "⚠️ Missing Info",
+        "Please enter a stitching color!",
+        "warning"
+      );
+      return;
+    }
+
+    // Step 6: Stripe color validation
+    if (currentStep === 6 && !formData.stripeColor) {
+      Swal.fire("⚠️ Missing Info", "Please enter a stripe color!", "warning");
+      return;
+    }
+
+    // Step 7: Car info validation
+    if (
+      currentStep === 7 &&
+      (!formData.carMake || !formData.carModel || !formData.carYear)
+    ) {
+      Swal.fire(
+        "⚠️ Missing Info",
+        "Please fill in all car details!",
+        "warning"
+      );
+      return;
+    }
+
+    // ✅ Step 8 → 9: Validate ONLY when user clicks Next
+    if (
+      currentStep === 8 &&
+      (!formData.fullName ||
+        !formData.country ||
+        !formData.email ||
+        !formData.phone)
+    ) {
+      Swal.fire(
+        "⚠️ Missing Info",
+        "Please fill in all personal details before continuing!",
+        "warning"
+      );
+      return;
+    }
+
+    // ✅ If all good, move to next step
     if (currentStep < 8) setCurrentStep(currentStep + 1);
   };
 
@@ -135,7 +234,7 @@ const Customization = () => {
         {/* Static Image */}
         <div className="mb-6 flex justify-center">
           <img
-            src="/img/img-1.png"
+            src="/img/before-and-after/before-after 3 02.jpg"
             alt="Steering Wheel"
             className="w-80 md:w-96 rounded-xl shadow-lg transform transition-transform duration-500 hover:scale-105 hover:rotate-1 hover:shadow-2xl"
           />
@@ -227,54 +326,53 @@ const Customization = () => {
                     </h3>
 
                     <div className="space-y-3">
-                      {[
-                        "Piano Black",
-                        "Gloss Carbon",
-                        "Matte Carbon",
-                        "Forged Carbon",
-                      ].map((item) => {
-                        const key = `${section}-${item}`;
-                        const selected = formData.carbon.includes(key);
+                      {["Piano Black", "Gloss Carbon", "Forged Carbon"].map(
+                        (item) => {
+                          const key = `${section}-${item}`;
+                          const selected = formData.carbon.includes(key);
 
-                        return (
-                          <label
-                            key={key}
-                            className={`flex items-center space-x-3 p-3 rounded cursor-pointer transition-all
+                          return (
+                            <label
+                              key={key}
+                              className={`flex items-center space-x-3 p-3 rounded cursor-pointer transition-all
                 ${selected ? "" : ""}`}
-                          >
-                            {/* Checkbox Circle */}
-                            <div className="relative">
-                              <input
-                                type="checkbox"
-                                checked={selected}
-                                onChange={() => toggleArrayValue("carbon", key)}
-                                className="sr-only"
-                              />
-                              <div
-                                className={`w-5 h-5 rounded-full border-2 flex items-center justify-center ${
-                                  selected
-                                    ? "border-[#297fff] bg-[#297fff]"
-                                    : "border-gray-600 bg-gray-900"
+                            >
+                              {/* Checkbox Circle */}
+                              <div className="relative">
+                                <input
+                                  type="checkbox"
+                                  checked={selected}
+                                  onChange={() =>
+                                    toggleArrayValue("carbon", key)
+                                  }
+                                  className="sr-only"
+                                />
+                                <div
+                                  className={`w-5 h-5 rounded-full border-2 flex items-center justify-center ${
+                                    selected
+                                      ? "border-[#297fff] bg-[#297fff]"
+                                      : "border-gray-600 bg-gray-900"
+                                  }`}
+                                >
+                                  {selected && (
+                                    <div className="w-2 h-2 bg-white rounded-full"></div>
+                                  )}
+                                </div>
+                              </div>
+
+                              {/* Label Text */}
+                              <span
+                                style={{ marginLeft: "5px" }}
+                                className={` text-base ${
+                                  selected ? "text-white" : "text-gray-400"
                                 }`}
                               >
-                                {selected && (
-                                  <div className="w-2 h-2 bg-white rounded-full"></div>
-                                )}
-                              </div>
-                            </div>
-
-                            {/* Label Text */}
-                            <span
-                              style={{ marginLeft: "5px" }}
-                              className={` text-base ${
-                                selected ? "text-white" : "text-gray-400"
-                              }`}
-                            >
-                              {item}
-                            </span>
-                          </label>
-                        );
-                      })}
+                                {item}
+                              </span>
+                            </label>
+                          );
+                        }
+                      )}
                     </div>
                   </div>
                 ))}
@@ -331,7 +429,6 @@ const Customization = () => {
                     {[
                       "Black alcantara 9040",
                       "Charcoal grey alcantara 9002",
-                      "Black nappa leather",
                       "Black perforated leather",
                     ].map((item) => {
                       const selected = formData.materials.includes(item);
@@ -422,29 +519,29 @@ const Customization = () => {
 
                 {/* Custom Style Options */}
                 <div className="mb-8">
-                  <h3
+                  {/* <h3
                     className="text-lg font-semibold text-yellow-400 mb-4"
                     style={{ marginTop: "10px" }}
                   >
                     Select Custom Style
-                  </h3>
+                  </h3> */}
 
                   <div className="space-y-3">
                     {[
                       {
                         value: "mPower",
-                        label: "M Power (3 colours)",
-                        desc: "BMW M Sport style",
+                        label: "",
+                        desc: "",
                       },
                       {
                         value: "sLine",
-                        label: "S-line (3 colours)",
-                        desc: "Audi Sport style",
+                        label: "",
+                        desc: "",
                       },
                       {
                         value: "pianoBlack",
-                        label: "Piano Black",
-                        desc: "Glossy black luxury finish",
+                        label: "",
+                        desc: "",
                       },
                     ].map((option) => {
                       const selected =
@@ -476,7 +573,7 @@ const Customization = () => {
                           </label>
 
                           {/* Radio Button */}
-                          <div className="relative ml-4">
+                          {/* <div className="relative ml-4">
                             <input
                               id={optionId}
                               type="radio"
@@ -499,7 +596,7 @@ const Customization = () => {
                                 <div className="w-2 h-2 bg-white rounded-full"></div>
                               )}
                             </div>
-                          </div>
+                          </div> */}
                         </div>
                       );
                     })}
@@ -538,41 +635,13 @@ const Customization = () => {
                   </label>
                   <input
                     type="text"
-                    value={formData.stripeColor}
+                    placeholder="Enter your color..."
+                    value={formData.stripeColor || ""} // ✅ bound to formData
                     onChange={(e) =>
                       updateFormData("stripeColor", e.target.value)
                     }
-                    className="w-full bg-gray-900 border border-gray-700 rounded-lg px-4 py-3 "
+                    className="w-full bg-gray-900 border border-gray-700 rounded-lg px-4 py-3 text-white focus:border-blue-400 outline-none"
                   />
-                </div>
-                <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
-                  {[
-                    "Red",
-                    "Blue",
-                    "Yellow",
-                    "Green",
-                    "Orange",
-                    "White",
-                    "Silver",
-                    "Black",
-                  ].map((color) => (
-                    <button
-                      style={{
-                        marginTop: "10px",
-                        width: "100%",
-                        height: "5vh",
-                      }}
-                      key={color}
-                      onClick={() => updateFormData("stripeColor", color)}
-                      className={`p-4  border transition-all duration-200 ${
-                        formData.stripeColor === color
-                          ? "border-blue-400 bg-blue-400 bg-opacity-10 scale-105"
-                          : "border-gray-700 hover:border-gray-600"
-                      }`}
-                    >
-                      {color}
-                    </button>
-                  ))}
                 </div>
               </div>
             )}
@@ -633,7 +702,7 @@ const Customization = () => {
                 {/* Transmission */}
                 <div className="grid grid-cols-2 gap-4">
                   {[
-                    { value: "dsg", label: "DSG / Automatic" },
+                    { value: "dsg", label: " Automatic" },
                     { value: "manual", label: "Manual" },
                   ].map((option) => {
                     const selected = formData.transmission === option.value;
@@ -664,12 +733,7 @@ const Customization = () => {
                   <input
                     type="file"
                     accept="image/*"
-                    onChange={(e) => {
-                      const file = e.target.files[0];
-                      if (file) {
-                        updateFormData("steeringWheelPhoto", file);
-                      }
-                    }}
+                    onChange={handleFileChange}
                     className="w-full text-sm text-white file:bg-gray-700 file:text-white file:px-4 file:py-2 file:border-0 file:rounded-lg file:cursor-pointer hover:file:bg-gray-600"
                   />
                   {formData.steeringWheelPhoto && (
@@ -687,76 +751,96 @@ const Customization = () => {
                 <h2 className="text-xl font-bold text-white mb-4">
                   Personal Information
                 </h2>
-
-                {/* Rows Wrapper */}
-                <div className="space-y-4">
-                  {/* Row 1: Full Name & Country */}
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div className="bg-gray-800 bg-opacity-50 rounded-xl p-5">
-                      <label className="block text-sm text-gray-400 mb-2">
-                        Full Name
-                      </label>
-                      <input
-                        type="text"
-                        value={formData.fullName}
-                        onChange={(e) =>
-                          updateFormData("fullName", e.target.value)
-                        }
-                        placeholder="Enter full name"
-                        className="w-full bg-gray-900 border border-gray-700 rounded-lg px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-[#297fff]"
-                      />
-                    </div>
-                    <div className="bg-gray-800 bg-opacity-50 rounded-xl p-5">
-                      <label className="block text-sm text-gray-400 mb-2">
-                        Country
-                      </label>
-                      <input
-                        type="text"
-                        value={formData.country}
-                        onChange={(e) =>
-                          updateFormData("country", e.target.value)
-                        }
-                        placeholder="Enter country"
-                        className="w-full bg-gray-900 border border-gray-700 rounded-lg px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-[#297fff]"
-                      />
-                    </div>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div className="bg-gray-800 bg-opacity-50 rounded-xl p-5">
+                    <label className="block text-sm text-gray-400 mb-2">
+                      Full Name
+                    </label>
+                    <input
+                      type="text"
+                      value={formData.fullName}
+                      onChange={(e) =>
+                        updateFormData("fullName", e.target.value)
+                      }
+                      placeholder="Enter full name"
+                      className="w-full bg-gray-900 border border-gray-700 rounded-lg px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-[#297fff]"
+                    />
                   </div>
-
-                  {/* Row 2: Email & Phone */}
-                  <div
-                    className="grid grid-cols-1 md:grid-cols-2 gap-4"
-                    style={{ marginTop: "10px" }}
-                  >
-                    <div className="bg-gray-800 bg-opacity-50 rounded-xl p-5">
-                      <label className="block text-sm text-gray-400 mb-2">
-                        Email
-                      </label>
-                      <input
-                        type="email"
-                        value={formData.email}
-                        onChange={(e) =>
-                          updateFormData("email", e.target.value)
-                        }
-                        placeholder="Enter email"
-                        className="w-full bg-gray-900 border border-gray-700 rounded-lg px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-[#297fff]"
-                      />
-                    </div>
-                    <div className="bg-gray-800 bg-opacity-50 rounded-xl p-5">
-                      <label className="block text-sm text-gray-400 mb-2">
-                        Phone
-                      </label>
-                      <input
-                        type="tel"
-                        value={formData.phone}
-                        onChange={(e) =>
-                          updateFormData("phone", e.target.value)
-                        }
-                        placeholder="Enter phone number"
-                        className="w-full bg-gray-900 border border-gray-700 rounded-lg px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-[#297fff]"
-                      />
-                    </div>
+                  <div className="bg-gray-800 bg-opacity-50 rounded-xl p-5">
+                    <label className="block text-sm text-gray-400 mb-2">
+                      Country
+                    </label>
+                    <input
+                      type="text"
+                      value={formData.country}
+                      onChange={(e) =>
+                        updateFormData("country", e.target.value)
+                      }
+                      placeholder="Enter country"
+                      className="w-full bg-gray-900 border border-gray-700 rounded-lg px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-[#297fff]"
+                    />
                   </div>
                 </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
+                  <div className="bg-gray-800 bg-opacity-50 rounded-xl p-5">
+                    <label className="block text-sm text-gray-400 mb-2">
+                      Email
+                    </label>
+                    <input
+                      type="email"
+                      value={formData.email}
+                      onChange={(e) => updateFormData("email", e.target.value)}
+                      placeholder="Enter email"
+                      className="w-full bg-gray-900 border border-gray-700 rounded-lg px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-[#297fff]"
+                    />
+                  </div>
+                  <div className="bg-gray-800 bg-opacity-50 rounded-xl p-5">
+                    <label className="block text-sm text-gray-400 mb-2">
+                      Phone
+                    </label>
+                    <input
+                      type="tel"
+                      value={formData.phone}
+                      onChange={(e) => updateFormData("phone", e.target.value)}
+                      placeholder="Enter phone number"
+                      className="w-full bg-gray-900 border border-gray-700 rounded-lg px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-[#297fff]"
+                    />
+                  </div>
+                </div>
+
+                <div className="bg-gray-800 bg-opacity-50 rounded-xl p-5 mt-6">
+                  <label className="block text-sm text-gray-400 mb-2">
+                    Steering Wheel Photo
+                  </label>
+                  <input
+                    type="file"
+                    accept="image/*"
+                    onChange={handleFileChange}
+                    className="w-full text-sm text-white file:bg-gray-700 file:text-white file:px-4 file:py-2 file:border-0 file:rounded-lg file:cursor-pointer hover:file:bg-gray-600"
+                  />
+                  {formData.steeringWheelPhoto && (
+                    <p className="mt-2 text-xs text-gray-400">
+                      Selected file: {formData.steeringWheelPhoto.name}
+                    </p>
+                  )}
+                </div>
+              </div>
+            )}
+            {currentStep === 9 && (
+              <div className="flex flex-col  items-center justify-center text-center py-20">
+                <img
+                  src="/img/thank-you.jpg"
+                  alt="Thank You"
+                  className="w-48 mb-8 rounded-xl"
+                />
+                <h1 className="text-4xl font-bold mb-4 text-yellow-400">
+                  Thank You!
+                </h1>
+                <p className="text-gray-300 max-w-xl">
+                  Your inquiry was sent successfully. We’ll get back to you
+                  within 24 hours!
+                </p>
               </div>
             )}
           </div>

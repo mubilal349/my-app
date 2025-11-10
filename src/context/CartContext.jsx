@@ -19,19 +19,32 @@ export const CartProvider = ({ children }) => {
   // ✅ Add product to cart
   // CartContext.jsx
   const addToCart = (product) => {
-    const price = parseFloat(product.discountPrice.replace("$", ""));
+    if (!product) return;
+
+    // Get numeric price safely
+    const priceNumber = product.discountPrice
+      ? parseFloat(product.discountPrice.replace(/[£]/, "").trim())
+      : parseFloat(product.originalPrice.replace(/[£]/, "").trim()) || 0;
+
     setCartItems((prev) => {
-      const existing = prev.find((item) => item.id === product.id);
-      if (existing) {
-        return prev.map((item) =>
-          item.id === product.id
-            ? { ...item, quantity: item.quantity + 1 }
-            : item
-        );
+      // Check if same product + color exists
+      const existingIndex = prev.findIndex(
+        (item) =>
+          item.id === product.id && item.selectedColor === product.selectedColor
+      );
+
+      if (existingIndex >= 0) {
+        // Update quantity
+        const updated = [...prev];
+        updated[existingIndex].quantity += product.quantity; // use quantity from details
+        return updated;
       }
-      return [...prev, { ...product, quantity: 1, price }];
+
+      // Add new product
+      return [...prev, { ...product, price: priceNumber }];
     });
-    // ✅ Show toast message
+
+    // Show toast
     setToastMessage("✅ Your product is added successfully!");
   };
 

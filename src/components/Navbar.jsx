@@ -111,16 +111,19 @@ const Navbar = () => {
             {[
               "Home",
               "About us",
-              "Design",
+              "Design my wheel",
               "Realisations",
+              "Catalogue",
               "Accessories",
-              "Shop",
+              "Shop now",
             ].map((item, index) => (
               <li key={index}>
                 <Link
                   to={
                     item.toLowerCase() === "home"
                       ? "/"
+                      : item.toLowerCase() === "design my wheel"
+                      ? "/customization" // 👈 special route
                       : `/${item.toLowerCase().replace(/\s+/g, "")}`
                   }
                   style={{
@@ -231,22 +234,29 @@ const Navbar = () => {
           >
             {[
               "Home",
-              "About us",
-              "Design",
+              "Design my wheel",
               "Realisations",
+              "Catalogue",
               "Accessories",
-              "Shop",
+              "Shop now",
+              "About us",
             ].map((item, index) => (
               <li key={index}>
                 <Link
-                  to={`/${item.toLowerCase().replace(" ", "")}`}
+                  to={
+                    item.toLowerCase() === "home"
+                      ? "/"
+                      : item.toLowerCase() === "design my wheel"
+                      ? "/customization" // 👈 special route
+                      : `/${item.toLowerCase().replace(/\s+/g, "")}`
+                  }
+                  onClick={() => setMenuOpen(false)} // 👈 CLOSE MENU ON CLICK
                   style={{
                     color: "#000",
                     textDecoration: "none",
-                    fontSize: "20px",
                     fontWeight: "500",
+                    fontSize: "18px",
                   }}
-                  onClick={() => setMenuOpen(false)}
                 >
                   {item}
                 </Link>
@@ -341,13 +351,13 @@ const Navbar = () => {
                   <div style={{ flex: 1 }}>
                     <h4 style={{ margin: "0 0 5px 0" }}>{item.title}</h4>
                     <p style={{ margin: 0, color: "#666" }}>
-                      ${item.price} x {item.quantity}
+                      £{item.price} x {item.quantity}
                     </p>
                   </div>
 
                   {/* Subtotal */}
                   <div style={{ fontWeight: "bold" }}>
-                    ${item.price * item.quantity}
+                    £{item.price * item.quantity}
                     {/* DELETE ICON */}
                     <Trash2
                       size={18}

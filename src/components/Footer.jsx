@@ -4,22 +4,6 @@ import { FaFacebookF, FaInstagram, FaYoutube, FaTiktok } from "react-icons/fa";
 const Footer = () => {
   return (
     <footer className="footer">
-      {/* Footer Links */}
-      <div className="footer-links">
-        <a href="#" className=" hover:text-[#3b82f6] transition-colors">
-          Shipping Policy
-        </a>
-        <a href="#" className=" hover:text-[#3b82f6] transition-colors">
-          Warranty & Refund Policy
-        </a>
-        <a href="#" className=" hover:text-[#3b82f6] transition-colors">
-          Privacy Policy
-        </a>
-        <a href="#" className=" hover:text-[#3b82f6] transition-colors">
-          Terms of Service
-        </a>
-      </div>
-
       {/* Footer Socials (Unicons) */}
 
       <div className="footer-socials flex gap-4">

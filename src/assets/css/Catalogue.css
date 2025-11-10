@@ -1,0 +1,66 @@
+.catalogue-container {
+  background: #000;
+  color: #fff;
+  padding: 2rem;
+}
+
+.category-section {
+  margin-bottom: 3rem;
+}
+
+.category-section h2 {
+  text-align: center;
+  font-size: 1.8rem;
+  margin-bottom: 1rem;
+}
+
+.subcategories-grid {
+  display: grid;
+  gap: 1rem;
+  justify-content: center;
+}
+
+/* Desktop 3 per row */
+@media (min-width: 768px) {
+  .subcategories-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+/* Mobile 2 per row */
+@media (max-width: 767px) {
+  .subcategories-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+.subcategory-card {
+  display: block;
+  text-align: center;
+  border-radius: 10px;
+  overflow: hidden;
+  width: 100%;
+  transition: transform 0.3s;
+}
+
+.subcategory-card img {
+  width: 100%;
+  height: 150px;
+  object-fit: cover;
+  border-radius: 8px;
+}
+/* Desktop height */
+@media (min-width: 768px) {
+  .subcategory-card img {
+    height: 350px;
+  }
+}
+
+.subcategory-card p {
+  margin-top: 0.5rem;
+  font-weight: 500;
+}
+
+.subcategory-card:hover {
+  transform: scale(1.05);
+}

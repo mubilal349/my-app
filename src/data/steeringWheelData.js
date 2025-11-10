@@ -1,0 +1,71 @@
+export const steeringWheelCategory = {
+  id: "steeringwheel",
+  title: "steering wheel",
+  description:
+    "Crafted for precision and style — elevate your driving experience with custom steering logos..",
+  products: [
+    {
+      id: 9,
+      title: "Volkswagen Steering wheel",
+      image: "/img/accessories/20250730_150323.jpg",
+      originalPrice: " £280.30",
+      discountPrice: " £270.10",
+    },
+    {
+      id: 10,
+      title: "BMW steering wheel",
+      image: "/img/accessories/20250911_123610.jpg",
+      originalPrice: " £480.30",
+      discountPrice: " £370.10",
+    },
+    {
+      id: 11,
+      title: "Steering wheel",
+      image: "/img/accessories/1000035770.jpg",
+      originalPrice: " £450.30",
+      discountPrice: " £350.10",
+    },
+    {
+      id: 12,
+      title: "BMW with light",
+      image: "/img/accessories/1000046733.jpg",
+      originalPrice: " £500.30",
+      discountPrice: " £400.10",
+    },
+    {
+      id: 13,
+      title: "BMW dark steering wheel",
+      image: "/img/accessories/1000047180.jpg",
+      originalPrice: " £580.30",
+      discountPrice: " £470.10",
+    },
+    {
+      id: 14,
+      title: "BMW with lightbeam",
+      image: "/img/accessories/1000050396.jpg",
+      originalPrice: " £680.30",
+      discountPrice: " £570.10",
+    },
+    {
+      id: 15,
+      title: "volkswagen with lightbeam",
+      image: "/img/accessories/1000059977.jpg",
+      originalPrice: " £780.30",
+      discountPrice: " £670.10",
+    },
+    {
+      id: 16,
+      title: "Carbon fiber steering wheel",
+      image: "/img/accessories/1000060649.jpg",
+      originalPrice: " £280.30",
+      discountPrice: " £170.10",
+    },
+    {
+      id: 17,
+      title: "Carbon fiber steering wheel",
+      image: "/img/accessories/1000062897.jpg",
+      originalPrice: " £150.30",
+      discountPrice: " £120.10",
+    },
+  ],
+};

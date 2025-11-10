@@ -5,13 +5,13 @@ const ProjectComparison = () => {
   // Sample image URLs (replace with your actual images for before/after steering wheels)
   const wheels = [
     {
-      before: "/img/before-and-after/before-after 1.jpg",
-      after: "/img/before-and-after/before-after 1 (2).jpg",
+      before: "/img/before-and-after/before-after 2.jpg",
+      after: "/img/before-and-after/before-after 2 02.jpg",
       alt: "Steering Wheel 1",
     },
     {
-      before: "/img/before-and-after/before-after 4.jpg",
-      after: "/img/before-and-after/before-after 4 02.jpg",
+      before: "/img/before-and-after/before-after 3.jpg",
+      after: "/img/before-and-after/before-after 3 02.jpg",
       alt: "Steering Wheel 2",
     },
     {
@@ -97,7 +97,7 @@ const BeforeAfterSlider = ({ before, after, alt }) => {
         <div className="slider-handle" style={{ left: `${sliderPosition}%` }}>
           <div className="handle-line"></div>
           <div className="handle-circle">
-            <span className="arrow left">⮚</span>
+            <span className="arrow left"> ⮚</span>
             <span className="arrow right">⮘</span>
           </div>
         </div>
