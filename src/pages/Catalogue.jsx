@@ -1,5 +1,5 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import "../assets/css/Catalogue.css";
 
 const categories = {
@@ -18,6 +18,13 @@ const categories = {
 };
 
 const Catalogue = () => {
+  const navigate = useNavigate();
+
+  const handleExploreMore = (e) => {
+    e.preventDefault();
+    navigate("/accessories");
+  };
+
   return (
     <div className="catalogue-container">
       {Object.keys(categories).map((category) => (
@@ -25,14 +32,25 @@ const Catalogue = () => {
           <h2>{category}</h2>
           <div className="subcategories-grid">
             {categories[category].map((subcat) => (
-              <Link
-                key={subcat.name}
-                to={`/category/${category}/${subcat.name}`}
-                className="subcategory-card"
-              >
-                <img src={subcat.image} alt={subcat.name} />
-                <p>{subcat.name}</p>
-              </Link>
+              <div key={subcat.name} className="subcategory-card-wrapper">
+                <Link
+                  to={`/category/${category}/${subcat.name}`}
+                  className="subcategory-card"
+                >
+                  <img src={subcat.image} alt={subcat.name} />
+                  <p>{subcat.name}</p>
+                </Link>
+
+                {/* Explore More Button */}
+                <button
+                  className="explore-more-btn"
+                  onClick={handleExploreMore}
+                  aria-label="Explore more products"
+                >
+                  <span className="btn-text">Explore</span>
+                  <span className="btn-icon">→</span>
+                </button>
+              </div>
             ))}
           </div>
         </div>

@@ -1,3 +1,4 @@
+/* Container */
 .subcategory-detail {
   padding: 2rem;
   text-align: center;
@@ -6,101 +7,420 @@
   font-family: "Montserrat", sans-serif;
   font-weight: 700;
   font-size: 1rem;
+  min-height: 100vh;
 }
+
 .subcategory-detail h2 {
   color: #1584d7;
-  font-size: 1rem;
+  font-size: 2rem;
   font-family: "Montserrat", sans-serif;
   font-weight: 700;
+  margin-bottom: 2rem;
+  text-transform: capitalize;
 }
 
+/* Slider Container */
 .slider {
   position: relative;
-  width: 300px;
-  margin: 0 auto;
-}
-
-.slider img {
   width: 100%;
-  height: auto;
-  border-radius: 10px;
+  max-width: 500px;
+  margin: 0 auto 2rem;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 8px 30px rgba(21, 132, 215, 0.3);
 }
 
-.slider button {
+/* Slider Images */
+.slider-images {
+  position: relative;
+  width: 100%;
+  height: 300px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #111;
+  overflow: hidden;
+}
+
+.slide {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  opacity: 0;
+  transition: opacity 0.8s ease-in-out;
+  padding: 1rem;
+}
+
+.slide.active {
+  opacity: 1;
+}
+
+/* Navigation Buttons */
+.slider button,
+.prev,
+.next {
   position: absolute;
   top: 50%;
   transform: translateY(-50%);
-  background: rgba(0, 0, 0, 0.5);
-  color: #fff;
+  background: rgba(21, 132, 215, 0.6);
   border: none;
-  padding: 0.5rem 1rem;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
   cursor: pointer;
-  border-radius: 5px;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+  backdrop-filter: blur(5px);
 }
 
-.slider .prev {
-  left: -40px;
+.slider button:hover,
+.prev:hover,
+.next:hover {
+  background: rgba(21, 132, 215, 0.9);
+  transform: translateY(-50%) scale(1.15);
+  box-shadow: 0 0 20px rgba(21, 132, 215, 0.6);
 }
 
-.slider .next {
-  right: -40px;
+.slider button:active,
+.prev:active,
+.next:active {
+  transform: translateY(-50%) scale(0.95);
 }
 
+.slider .prev,
+.prev {
+  left: 10px;
+}
+
+.slider .next,
+.next {
+  right: 10px;
+}
+
+/* Slider Dots */
+.slider-dots {
+  position: absolute;
+  bottom: 1rem;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 0.75rem;
+  z-index: 10;
+}
+
+.dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.4);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  border: 2px solid transparent;
+}
+
+.dot:hover {
+  background: rgba(21, 132, 215, 0.8);
+  transform: scale(1.3);
+  box-shadow: 0 0 10px rgba(21, 132, 215, 0.6);
+}
+
+.dot.active {
+  background: #1584d7;
+  width: 14px;
+  height: 14px;
+  box-shadow: 0 0 15px rgba(21, 132, 215, 0.8);
+}
+
+/* Description */
 .description {
-  margin: 1.5rem 0;
+  margin: 2rem auto;
   font-family: "Roboto", sans-serif;
   line-height: 1.8;
   font-size: 1rem;
+  font-weight: 400;
   max-width: 600px;
-  margin-left: auto;
-  margin-right: auto;
+  padding: 1.5rem;
+  background: rgba(21, 132, 215, 0.1);
+  border-radius: 10px;
+  border: 1px solid rgba(21, 132, 215, 0.3);
+  transition: all 0.3s ease;
 }
 
+.description:hover {
+  background: rgba(21, 132, 215, 0.15);
+  border-color: rgba(21, 132, 215, 0.5);
+  transform: translateY(-2px);
+}
+
+/* Related Products */
 .related-products {
-  margin-top: 2rem;
-  text-align: center; /* center the heading and overall content */
+  margin-top: 3rem;
 }
 
 .related-products h3 {
-  margin-bottom: 0.5rem;
+  font-size: 1.5rem;
+  font-weight: 600;
+  text-align: center;
+  margin-bottom: 1.5rem;
   color: #1584d7;
 }
 
-/* Flex layout for related images, centered */
 .related-grid {
   display: flex;
-  justify-content: center; /* center the row */
-  gap: 1rem; /* space between images */
-  flex-wrap: nowrap; /* keep in single row on desktop */
+  justify-content: center;
+  gap: 1.5rem;
+  flex-wrap: nowrap;
+  padding: 0 1rem;
 }
 
 .related-card {
-  flex: 0 0 auto; /* prevent shrinking */
-  text-align: center;
+  flex: 0 0 auto;
+  background: rgba(21, 132, 215, 0.1);
+  border-radius: 10px;
+  overflow: hidden;
+  border: 2px solid rgba(21, 132, 215, 0.2);
+  transition: all 0.4s ease;
+  cursor: pointer;
+  padding: 1rem;
+}
+
+.related-card:hover {
+  transform: translateY(-10px) scale(1.05);
+  border-color: #1584d7;
+  box-shadow: 0 15px 40px rgba(21, 132, 215, 0.4);
+  background: rgba(21, 132, 215, 0.2);
 }
 
 .related-card img {
-  width: 100px; /* fixed width */
-  height: 100px; /* fixed height */
+  width: 120px;
+  height: 120px;
   object-fit: cover;
-  border-radius: 5px;
-  margin: 0; /* remove default margin */
+  border-radius: 8px;
+  transition: transform 0.4s ease;
+  border: 2px solid rgba(21, 132, 215, 0.3);
+}
+
+.related-card:hover img {
+  transform: scale(1.1) rotate(2deg);
+  border-color: #1584d7;
 }
 
 .related-card p {
-  margin-top: 0.2rem;
+  margin-top: 0.75rem;
   font-size: 0.9rem;
   color: #1584d7;
+  font-weight: 600;
+  transition: color 0.3s ease;
 }
 
-@media (max-width: 768px) {
+.related-card:hover p {
+  color: #fff;
+}
+
+/* Tablet Styles (768px - 1024px) */
+@media (max-width: 1024px) {
+  .subcategory-detail h2 {
+    font-size: 1.75rem;
+  }
+
+  .slider {
+    max-width: 450px;
+  }
+
+  .slider-images {
+    height: 350px;
+  }
+
+  .slider button,
+  .prev,
+  .next {
+    width: 45px;
+    height: 45px;
+  }
+
   .related-grid {
-    flex-wrap: wrap; /* allow wrapping */
-    justify-content: center; /* center the row */
+    gap: 1.25rem;
+  }
+
+  .related-card img {
+    width: 110px;
+    height: 110px;
+  }
+}
+
+/* Mobile Styles (max-width: 767px) */
+@media (max-width: 768px) {
+  .subcategory-detail {
+    padding: 1.5rem 1rem;
+  }
+
+  .subcategory-detail h2 {
+    font-size: 1.5rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .slider {
+    margin-bottom: 1.5rem;
+    border-radius: 10px;
+    max-width: 100%;
+  }
+
+  .slider-images {
+    height: 280px;
+  }
+
+  .slide {
+    padding: 0.75rem;
+  }
+
+  .slider button,
+  .prev,
+  .next {
+    width: 40px;
+    height: 40px;
+  }
+
+  .slider .prev,
+  .prev {
+    left: 8px;
+  }
+
+  .slider .next,
+  .next {
+    right: 8px;
+  }
+
+  .slider-dots {
+    bottom: 0.75rem;
+    gap: 0.5rem;
+  }
+
+  .dot {
+    width: 10px;
+    height: 10px;
+  }
+
+  .dot.active {
+    width: 12px;
+    height: 12px;
+  }
+
+  .description {
+    font-size: 0.95rem;
+    padding: 1.25rem;
+    margin: 1.5rem auto;
+  }
+
+  .related-products {
+    margin-top: 2rem;
+  }
+
+  .related-products h3 {
+    font-size: 1.3rem;
+    margin-bottom: 1.25rem;
+  }
+
+  .related-grid {
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 1rem;
   }
 
   .related-card {
-    flex: 0 0 calc(33.33% - 0.5rem); /* 3 cards per row with small gap */
-    margin-bottom: 0.5rem;
+    flex: 0 0 calc(33.33% - 0.75rem);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
   }
+
+  .related-card img {
+    width: 100%;
+    height: auto;
+    aspect-ratio: 1;
+    max-width: 100px;
+    margin: 0 auto;
+  }
+
+  .related-card p {
+    font-size: 0.85rem;
+    margin-top: 0.5rem;
+  }
+}
+
+/* Small Mobile (max-width: 480px) */
+@media (max-width: 480px) {
+  .subcategory-detail {
+    padding: 1rem 0.75rem;
+  }
+
+  .subcategory-detail h2 {
+    font-size: 1.25rem;
+  }
+
+  .slider-images {
+    height: 240px;
+  }
+
+  .slider button,
+  .prev,
+  .next {
+    width: 36px;
+    height: 36px;
+  }
+
+  .slider .prev,
+  .prev {
+    left: 5px;
+  }
+
+  .slider .next,
+  .next {
+    right: 5px;
+  }
+
+  .description {
+    font-size: 0.9rem;
+    padding: 1rem;
+  }
+
+  .related-grid {
+    gap: 0.75rem;
+  }
+
+  .related-card {
+    flex: 0 0 calc(50% - 0.5rem);
+    padding: 0.75rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .related-card img {
+    max-width: 90px;
+    margin: 0 auto;
+  }
+
+  .related-card p {
+    font-size: 0.8rem;
+    text-align: center;
+  }
+}
+
+/* Loading Animation for Images */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.slide,
+.related-card img {
+  animation: fadeIn 0.3s ease-in;
 }
