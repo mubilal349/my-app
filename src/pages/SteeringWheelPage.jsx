@@ -3,8 +3,10 @@ import { useCart } from "../context/CartContext";
 import WhatsappIcon from "../components/WhatsappIcon";
 import BackToTop from "../components/BackToTop";
 import "../assets/css/ShopPage.css";
+import { useNavigate } from "react-router-dom";
 
 const SteeringWheelPage = () => {
+  const navigate = useNavigate();
   const [products, setProducts] = useState([]);
   const [selectedProduct, setSelectedProduct] = useState(null);
   const { addToCart } = useCart();
@@ -52,8 +54,11 @@ const SteeringWheelPage = () => {
                   src={product.image}
                   alt={product.title}
                   className="shop-image"
-                  onClick={() => setSelectedProduct(product)}
+                  onClick={() =>
+                    navigate(`/product/${product.id}`, { state: { product } })
+                  }
                 />
+
                 <button className="shop-btn" onClick={() => addToCart(product)}>
                   Add to Cart
                 </button>

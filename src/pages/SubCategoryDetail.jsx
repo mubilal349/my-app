@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { FaCaretLeft, FaCaretRight } from "react-icons/fa6";
 import { useParams } from "react-router-dom";
 import "../assets/css/SubcategoryDetail.css";
 
@@ -6,10 +7,8 @@ import "../assets/css/SubcategoryDetail.css";
 const productDetails = {
   Keyrings: {
     slider: [
-      "/img/keychains/10.png",
-      "/img/keychains/11.png",
-      "/img/keychains/12.png",
-      "/img/keychains/13.png",
+      "/img/keychains/26.png",
+      "/img/keychains/22.png",
       "/img/keychains/14.png",
     ],
     description:
@@ -68,30 +67,55 @@ const SubcategoryDetail = () => {
 
   const [currentSlide, setCurrentSlide] = useState(0);
 
+  // Manual slide controls
   const prevSlide = () => {
     setCurrentSlide((prev) => (prev === 0 ? data.slider.length - 1 : prev - 1));
   };
-
   const nextSlide = () => {
     setCurrentSlide((prev) => (prev === data.slider.length - 1 ? 0 : prev + 1));
   };
+
+  // Auto-play slider
+  useEffect(() => {
+    const interval = setInterval(nextSlide, 3000); // 3s per slide
+    return () => clearInterval(interval);
+  }, [currentSlide]);
 
   return (
     <div className="subcategory-detail">
       <h2>{subcategory}</h2>
 
-      {/* Image slider */}
+      {/* Slider */}
       <div className="slider">
         <button onClick={prevSlide} className="prev">
-          &lt;
+          <FaCaretLeft size={36} color="#fff" />
         </button>
-        <img
-          src={data.slider[currentSlide]}
-          alt={`${subcategory} ${currentSlide + 1}`}
-        />
+
+        <div className="slider-images">
+          {data.slider.map((img, index) => (
+            <img
+              key={index}
+              src={img}
+              alt={`${subcategory} ${index + 1}`}
+              className={`slide ${index === currentSlide ? "active" : ""}`}
+            />
+          ))}
+        </div>
+
         <button onClick={nextSlide} className="next">
-          &gt;
+          <FaCaretRight size={36} color="#fff" />
         </button>
+
+        {/* Slider dots */}
+        <div className="slider-dots">
+          {data.slider.map((_, index) => (
+            <span
+              key={index}
+              className={`dot ${index === currentSlide ? "active" : ""}`}
+              onClick={() => setCurrentSlide(index)}
+            ></span>
+          ))}
+        </div>
       </div>
 
       {/* Description */}
