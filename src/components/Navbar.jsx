@@ -149,7 +149,7 @@ const Navbar = () => {
           cursor: "pointer",
           order: 3,
           position: "relative",
-          padding: "8px",
+          // padding: "8px",
         }}
       >
         <svg

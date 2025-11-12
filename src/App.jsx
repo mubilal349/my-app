@@ -110,7 +110,10 @@ const App = () => {
           />
           <Route path="/accessories" element={<AccessoriesPage />} />
           <Route path="/product/:id" element={<ProductDetails />} />
-          <Route path="/steeringwheelpage" element={<SteeringWheelPage />} />
+          <Route
+            path="/products/steeringwheel"
+            element={<SteeringWheelPage />}
+          />
           <Route path="/shopnow" element={<ShopPage />} />
         </Routes>
       </AppLayout>

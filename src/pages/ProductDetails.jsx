@@ -1,26 +1,52 @@
 import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
-import { useCart } from "../context/CartContext";
-import { color, motion } from "framer-motion";
-import { useLocation } from "react-router-dom";
+import { useParams, useLocation } from "react-router-dom";
+import {
+  ShoppingCart,
+  Plus,
+  Minus,
+  Check,
+  Heart,
+  Star,
+  Truck,
+  Shield,
+  RefreshCw,
+  ChevronLeft,
+  ChevronRight,
+} from "lucide-react";
+import { useCart } from "../context/CartContext"; // Import CartContext
 
 const ProductDetails = () => {
   const location = useLocation();
-  const product = location.state?.product;
   const { id } = useParams();
   const [data, setData] = useState(null);
   const [quantity, setQuantity] = useState(1);
   const [selectedProduct, setSelectedProduct] = useState(null);
+  const [selectedColor, setSelectedColor] = useState(null);
+  const [activeTab, setActiveTab] = useState("description");
+  // const [showNotification, setShowNotification] = useState(false);
+  const [wishlist, setWishlist] = useState([]);
+  const [selectedImage, setSelectedImage] = useState(0);
+  const [randomProducts, setRandomProducts] = useState([]);
+  const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
+  const [isTablet, setIsTablet] = useState(
+    window.innerWidth >= 768 && window.innerWidth < 1024
+  );
+
+  // Use CartContext instead of local state
+  const { cartItems, addToCart, removeFromCart, calculateTotal } = useCart();
+
+  // Color variants for different products
   const productVariants_1 = [
     { id: 1, color: "#2F2F2F", name: "Dark Grey" },
     { id: 2, color: "#FF3B3B", name: "Red" },
     { id: 3, color: "#1B3A52", name: "Navy Blue" },
     { id: 4, color: "#A8D5D5", name: "Light Blue" },
-    { id: 5, color: "#D9D9D9", name: "silver " },
-    { id: 6, color: "#00FF00", name: "green" },
-    { id: 7, color: "#FFA500", name: "orange " },
-    { id: 8, color: "#CD7F32", name: "bronze " },
+    { id: 5, color: "#D9D9D9", name: "Silver" },
+    { id: 6, color: "#00FF00", name: "Green" },
+    { id: 7, color: "#FFA500", name: "Orange" },
+    { id: 8, color: "#CD7F32", name: "Bronze" },
   ];
+
   const productVariants_2 = [
     { id: 1, color: "#000000", name: "Full Black" },
     { id: 2, color: "#E6E6E6", name: "LT Black White" },
@@ -29,61 +55,56 @@ const ProductDetails = () => {
     { id: 5, color: "#003366", name: "Blue Carbon" },
   ];
 
-  const productVariants_32 = [{ id: 1, color: "#000000", name: "Black" }];
-  const productVariants_33 = [{ id: 1, color: "#000000", name: "Black" }];
-  const productVariants_35 = [{ id: 1, color: "#000000", name: "Black" }];
-  const productVariants_36 = [{ id: 1, color: "#000000", name: "Black" }];
-  const productVariants_43 = [{ id: 1, color: "#ADD8E6", name: "Blue White" }];
+  const productVariants_single = [{ id: 1, color: "#000000", name: "Black" }];
   const productVariants_13 = [
-    {
-      id: 1,
-      color: "#F7C948",
-      name: "warm golden yellow:",
-    },
-    { id: 2, color: "#FFF44F", name: "lemon" },
-  ];
-  const productVariants_14 = [
-    {
-      id: 1,
-      color: "#F7C948",
-      name: "warm golden yellow:",
-    },
-    { id: 2, color: "#FFF44F", name: "lemon" },
+    { id: 1, color: "#F7C948", name: "Warm Golden Yellow" },
+    { id: 2, color: "#FFF44F", name: "Lemon" },
   ];
 
-  // Pick the variant array for colors
-  const currentVariants_1 =
-    product.id === 3
-      ? productVariants_2 // BMW Steering logo
-      : product.id === 32
-      ? productVariants_32
-      : product.id === 33
-      ? productVariants_33
-      : product.id === 35
-      ? productVariants_35 // Product id 35
-      : product.id === 36
-      ? productVariants_36
-      : product.id === 43
-      ? productVariants_43
-      : product.id === 13
+  // Determine current variants based on product ID
+  const currentVariants = selectedProduct
+    ? selectedProduct.id === 3 ||
+      selectedProduct.id === 2 ||
+      selectedProduct.id === 4 ||
+      selectedProduct.id === 5 ||
+      selectedProduct.id === 6 ||
+      selectedProduct.id === 7 ||
+      selectedProduct.id === 8 ||
+      selectedProduct.id === 9
+      ? productVariants_2
+      : selectedProduct.id === 32 ||
+        selectedProduct.id === 33 ||
+        selectedProduct.id === 35 ||
+        selectedProduct.id === 36 ||
+        selectedProduct.id === 41 ||
+        selectedProduct.id === 42 ||
+        selectedProduct.id === 43 ||
+        selectedProduct.id === 46 ||
+        selectedProduct.id === 47 ||
+        selectedProduct.id === 48 ||
+        selectedProduct.id === 49 ||
+        selectedProduct.id === 50 ||
+        selectedProduct.id === 51 ||
+        selectedProduct.id === 52 ||
+        selectedProduct.id === 53 ||
+        selectedProduct.id === 54
+      ? productVariants_single
+      : selectedProduct.id === 13 || selectedProduct.id === 14
       ? productVariants_13
-      : product.id === 14
-      ? productVariants_14
-      : productVariants_1; // All other accessories
-  const [selectedColor, setSelectedColor] = useState(null);
-  const [currentVariants, setCurrentVariants] = useState(productVariants_1); // default
-  const [isDesktop, setIsDesktop] = useState(window.innerWidth >= 768);
-  const [randomProducts, setRandomProducts] = useState([]);
+      : productVariants_1
+    : productVariants_1;
 
-  const { cartItems, addToCart, removeFromCart, calculateTotal } = useCart(); // ✅ works now
+  // Handle resize for responsive
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth < 768);
+      setIsTablet(window.innerWidth >= 768 && window.innerWidth < 1024);
+    };
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
 
-  const { categoryId } = location.state || {};
-
-  const handleProductClick = (product) => {
-    setSelectedProduct(product); // store clicked product
-    setSelectedColor(null); // reset selected color
-  };
-
+  // Load products from JSON
   useEffect(() => {
     fetch("/data/products.json")
       .then((res) => res.json())
@@ -91,434 +112,746 @@ const ProductDetails = () => {
       .catch((err) => console.error("Failed to load products:", err));
   }, []);
 
-  // Then later in your component
-  const selectedCategory = data?.categories?.find((cat) =>
-    cat.products?.some((prod) => prod.id === selectedProduct?.id)
-  );
-
-  const categoryDescription = selectedCategory?.description || "";
-
-  // After data is loaded, pick selected product and random products
-  // After data is loaded, pick selected product and random products
+  // Set selected product and related products
   useEffect(() => {
     if (!data || !data.categories) return;
 
-    // Find the selected category
     const category = data.categories.find((cat) =>
       cat.products.some((p) => p.id === parseInt(id))
     );
 
     if (!category) return;
 
-    // Set the main product
     const mainProduct = category.products.find((p) => p.id === parseInt(id));
     setSelectedProduct(mainProduct);
+    setSelectedColor(1); // Set default color
 
-    // Pick products for "Buyers bought these"
-    const others = category.products.filter((p) => p.id !== mainProduct.id);
+    // Get all products from the same category except the current product
+    const categoryProducts = category.products.filter(
+      (p) => p.id !== mainProduct.id
+    );
 
+    // If there are more than 4 products, show 4 random ones
+    // Otherwise, show all of them
     let productsToShow = [];
-    if (others.length === 0) {
-      // Only one product in category, show it
-      productsToShow = [mainProduct];
-    } else {
-      // Shuffle others and pick up to 3
-      productsToShow = others.sort(() => 0.5 - Math.random()).slice(0, 3);
+
+    if (categoryProducts.length > 0) {
+      if (categoryProducts.length > 4) {
+        // Shuffle and take first 4
+        productsToShow = [...categoryProducts]
+          .sort(() => 0.5 - Math.random())
+          .slice(0, 4);
+      } else {
+        // Show all products from this category
+        productsToShow = [...categoryProducts];
+      }
     }
 
     setRandomProducts(productsToShow);
   }, [data, id]);
 
-  // Determine if selected product belongs to an accessory category
-  const isAccessory =
-    data &&
-    selectedProduct &&
-    data.categories.some(
-      (cat) =>
-        cat.id === "steeringwheel" &&
-        cat.products.some((p) => p.id === selectedProduct.id)
-    );
+  // Get category description
+  const selectedCategory = data?.categories?.find((cat) =>
+    cat.products?.some((prod) => prod.id === selectedProduct?.id)
+  );
+  const categoryDescription = selectedCategory?.description || "";
 
-  // Handle resize for responsive layout
-  useEffect(() => {
-    const handleResize = () => setIsDesktop(window.innerWidth >= 768);
-    window.addEventListener("resize", handleResize);
-    return () => window.removeEventListener("resize", handleResize);
-  }, []);
+  // Check if the product is from steering wheel category
+  const isSteeringWheel = selectedCategory?.id === "steeringwheel";
 
-  // Fetch product data
-  useEffect(() => {
-    fetch("/data/products.json")
-      .then((res) => res.json())
-      .then((json) => setData(json))
-      .catch((err) => console.error("Error loading JSON:", err));
-  }, []);
-
-  // Set selected product based on ID
-  // useEffect(() => {
-  //   if (!data) return;
-  //   const allProducts = data.categories.flatMap((cat) => cat.products);
-  //   const mainProduct = allProducts.find((p) => p.id === parseInt(id));
-  //   if (!mainProduct) return;
-  //   const variants = allProducts.filter((p) => p.title === mainProduct.title);
-  //   setSelectedProduct(variants[0]);
-  //   setSelectedColor(variants[0]?.id || 1);
-  // }, [data, id]);
-
-  if (!data || !selectedProduct) return <div>Loading...</div>;
-
-  const handleAddToCart = (product) => {
-    if (!product) return;
-
-    // Convert discountPrice string to number
+  // Updated addToCart function using CartContext
+  const handleAddToCart = (item, itemQuantity = 1) => {
     const priceNumber = parseFloat(
-      (product.discountPrice || product.originalPrice || "0")
-        .replace("£", "")
-        .trim()
+      (item.discountPrice || item.originalPrice || "0").replace("£", "").trim()
     );
 
-    addToCart({
-      ...product,
-      price: priceNumber, // numeric price
-      quantity, // selected quantity
-      selectedColor, // selected color
-    });
+    const newItem = {
+      ...item,
+      quantity: isSteeringWheel ? 1 : itemQuantity, // Always set quantity to 1 for steering wheels
+      selectedColor:
+        currentVariants.find((c) => c.id === selectedColor)?.name ||
+        currentVariants[0]?.name,
+      price: priceNumber,
+    };
+
+    addToCart(newItem); // Use CartContext's addToCart
+  };
+
+  const toggleWishlist = (itemId) => {
+    setWishlist((prev) =>
+      prev.includes(itemId)
+        ? prev.filter((item) => item !== itemId)
+        : [...prev, itemId]
+    );
   };
 
   const increaseQuantity = () => setQuantity((prev) => prev + 1);
   const decreaseQuantity = () =>
-    setQuantity((prev) => (prev <= 1 ? 1 : prev - 1));
+    setQuantity((prev) => (prev > 1 ? prev - 1 : 1));
 
-  const selectedColorName =
-    productVariants_1.find((v) => v.id === selectedColor)?.name || "Dark Grey";
-
-  return (
-    <motion.div
-      initial={{ opacity: 0, y: 50 }} // start transparent and slightly below
-      animate={{ opacity: 1, y: 0 }} // animate to visible and normal position
-      transition={{ duration: 0.6, ease: "easeOut" }} // smooth duration
-      style={{
-        fontFamily: "'Montserrat', sans-serif",
-        backgroundColor: "#000",
-      }}
-    >
+  if (!data || !selectedProduct) {
+    return (
       <div
         style={{
           display: "flex",
-          flexDirection: isDesktop ? "row" : "column",
-          maxWidth: "100%",
-          margin: "0 auto",
-          gap: "20px",
-          padding: isDesktop ? "20px" : "0",
-          overflow: "hidden",
+          justifyContent: "center",
+          alignItems: "center",
+          minHeight: "100vh",
+          backgroundColor: "#000",
+          fontSize: "18px",
+          color: "#fff",
         }}
       >
-        {/* IMAGE */}
-        <motion.div
-          initial={{ opacity: 0, x: -50 }}
-          animate={{ opacity: 1, x: 0 }}
-          transition={{ duration: 0.5 }}
-          style={{ width: isDesktop ? "50%" : "100%" }}
-        >
-          <img
-            src={selectedProduct.image}
-            alt={selectedProduct.title}
-            style={{
-              width: "100%",
-              height: isDesktop ? "450px" : "350px",
-              objectFit: "cover",
-              borderRadius: isDesktop ? "10px" : "0",
-              display: "block",
-            }}
-          />
-        </motion.div>
+        Loading...
+      </div>
+    );
+  }
 
-        {/* DETAILS */}
-        <motion.div
-          initial={{ opacity: 0, x: 50 }}
-          animate={{ opacity: 1, x: 0 }}
-          transition={{ duration: 0.5, delay: 0.3 }}
+  // Generate multiple images if product has only one (for gallery effect)
+  const productImages = selectedProduct.image
+    ? [selectedProduct.image, selectedProduct.image, selectedProduct.image]
+    : [];
+
+  // Calculate discount percentage
+  const originalPrice = parseFloat(
+    selectedProduct.originalPrice?.replace("£", "") || 0
+  );
+  const discountPrice = parseFloat(
+    selectedProduct.discountPrice?.replace("£", "") || 0
+  );
+  const discountPercent =
+    originalPrice > 0
+      ? Math.round(((originalPrice - discountPrice) / originalPrice) * 100)
+      : 0;
+
+  return (
+    <div
+      style={{
+        fontFamily: "'Inter', sans-serif",
+        backgroundColor: "#000",
+        minHeight: "100vh",
+        paddingBottom: "40px",
+      }}
+    >
+      {/* Cart Badge - using cartItems from CartContext */}
+      <div
+        style={{
+          position: "fixed",
+          top: isMobile ? "10px" : "20px",
+          right: isMobile ? "10px" : "20px",
+          zIndex: 999,
+        }}
+      ></div>
+
+      <div
+        style={{
+          maxWidth: "1400px",
+          margin: "0 auto",
+          padding: isMobile ? "60px 16px 20px" : "40px 20px",
+        }}
+      >
+        {/* Breadcrumb */}
+        <div
           style={{
-            width: isDesktop ? "50%" : "100%",
-            display: "flex",
-            flexDirection: "column",
-            alignItems: isDesktop ? "flex-start" : "center",
-            textAlign: isDesktop ? "left" : "center",
-            padding: isDesktop ? "40px" : "20px",
+            marginBottom: isMobile ? "20px" : "30px",
+            fontSize: isMobile ? "12px" : "14px",
+            color: "#9ca3af",
           }}
         >
-          <h1
-            style={{
-              fontFamily: '"Montserrat", "sans-serif"',
-              fontSize: "24px",
-              fontWeight: "900",
-              marginBottom: "10px",
-              textTransform: "uppercase",
-              color: "#1187cf",
-            }}
-          >
-            {selectedProduct.title}
-          </h1>
+          <span>Home</span> /{" "}
+          <span>{selectedCategory?.name || "Products"}</span> /{" "}
+          <span style={{ color: "#fff" }}>{selectedProduct.title}</span>
+        </div>
 
-          {/* PRICE */}
-          <p
-            style={{
-              fontFamily: '"Montserrat", "sans-serif"',
-              fontSize: "18px",
-              marginBottom: "20px",
-              display: "flex",
-              justifyContent: "space-between",
-              alignItems: "center",
-              width: "120px",
-            }}
-          >
-            <strong style={{ color: "#666" }}>
-              {selectedProduct.discountPrice}
-            </strong>
-            <span
+        {/* Main Product Section */}
+        <div
+          style={{
+            display: "grid",
+            gridTemplateColumns: isMobile ? "1fr" : "1fr 1fr",
+            gap: isMobile ? "24px" : "40px",
+            backgroundColor: "#1a1a1a",
+            padding: isMobile ? "20px" : "40px",
+            borderRadius: "12px",
+            boxShadow: "0 2px 8px rgba(255,255,255,0.05)",
+          }}
+        >
+          {/* Image Gallery */}
+          <div>
+            <div
               style={{
-                textDecoration: "line-through",
-                color: "#fefefe",
-                fontSize: "14px",
+                position: "relative",
+                marginBottom: isMobile ? "12px" : "20px",
               }}
             >
-              {selectedProduct.originalPrice}
-            </span>
-          </p>
-
-          {/* COLORS */}
-          <div
-            style={{
-              marginBottom: "25px",
-              display: "flex",
-              flexDirection: "column",
-            }}
-          >
-            <p
-              style={{
-                fontSize: "14px",
-                color: "#fefefe",
-                marginBottom: "10px",
-              }}
-            >
-              COLOUR:{" "}
-              {currentVariants_1.find((v) => v.id === selectedColor)?.name ||
-                "Select"}
-            </p>
-
-            <div style={{ display: "flex", gap: "10px", marginTop: "10px" }}>
-              {currentVariants_1.map((variant) => (
-                <div
-                  key={variant.id}
-                  onClick={() => setSelectedColor(variant.id)}
-                  style={{
-                    width: "40px",
-                    height: "40px",
-                    borderRadius: "50%",
-                    backgroundColor: variant.color,
-                    cursor: "pointer",
-                    border:
-                      selectedColor === variant.id
-                        ? "3px solid #000"
-                        : "1px solid #ddd",
-                    transition: "all 0.2s ease",
-                  }}
+              <img
+                src={productImages[selectedImage] || selectedProduct.image}
+                alt={selectedProduct.title}
+                style={{
+                  width: "100%",
+                  height: isMobile ? "300px" : "500px",
+                  objectFit: "cover",
+                  borderRadius: "12px",
+                  border: "1px solid #333",
+                }}
+              />
+              <button
+                onClick={() => toggleWishlist(selectedProduct.id)}
+                style={{
+                  position: "absolute",
+                  top: isMobile ? "12px" : "20px",
+                  right: isMobile ? "12px" : "20px",
+                  backgroundColor: "rgba(0,0,0,0.7)",
+                  border: "1px solid #333",
+                  borderRadius: "50%",
+                  width: isMobile ? "36px" : "44px",
+                  height: isMobile ? "36px" : "44px",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  cursor: "pointer",
+                  backdropFilter: "blur(10px)",
+                }}
+              >
+                <Heart
+                  size={isMobile ? 18 : 20}
+                  fill={
+                    wishlist.includes(selectedProduct.id) ? "#ef4444" : "none"
+                  }
+                  color={
+                    wishlist.includes(selectedProduct.id) ? "#ef4444" : "#fff"
+                  }
                 />
-              ))}
+              </button>
             </div>
           </div>
 
-          {/* QUANTITY */}
-          {!isAccessory && (
+          {/* Product Info */}
+          <div>
+            <h1
+              style={{
+                fontSize: isMobile ? "24px" : "32px",
+                fontWeight: "700",
+                marginBottom: "12px",
+                color: "#fff",
+              }}
+            >
+              {selectedProduct.title}
+            </h1>
+
+            {/* Rating */}
             <div
               style={{
                 display: "flex",
                 alignItems: "center",
-                justifyContent: isDesktop ? "flex-start" : "center",
-                gap: "10px",
+                gap: "12px",
                 marginBottom: "20px",
-                marginTop: isDesktop ? "0px" : "30px",
+                flexWrap: "wrap",
               }}
             >
-              <button
-                onClick={decreaseQuantity}
-                style={{
-                  width: "35px",
-                  height: "35px",
-                  borderRadius: "6px",
-                  border: "1px solid #000",
-                  backgroundColor: "#1187cf",
-                  color: "#fff",
-                  cursor: "pointer",
-                  fontSize: "18px",
-                  fontWeight: "600",
-                }}
-              >
-                -
-              </button>
-              <span
-                style={{
-                  fontSize: "16px",
-                  minWidth: "25px",
-                  textAlign: "center",
-                  color: "#fff",
-                }}
-              >
-                {quantity}
-              </span>
-              <button
-                onClick={increaseQuantity}
-                style={{
-                  width: "35px",
-                  height: "35px",
-                  borderRadius: "6px",
-                  border: "1px solid #000",
-                  backgroundColor: "#1187cf",
-                  color: "#fff",
-                  cursor: "pointer",
-                  fontSize: "18px",
-                  fontWeight: "600",
-                }}
-              >
-                +
-              </button>
-            </div>
-          )}
-
-          {/* ADD TO CART */}
-          <button
-            onClick={() => {
-              if (!selectedProduct) return;
-
-              // Convert price string to number
-              const priceNumber = parseFloat(
-                (
-                  selectedProduct.discountPrice ||
-                  selectedProduct.originalPrice ||
-                  "0"
-                )
-                  .replace("£", "")
-                  .trim()
-              );
-
-              handleAddToCart({
-                ...selectedProduct,
-                price: priceNumber, // numeric price
-                quantity, // quantity selected
-                selectedColor, // selected color
-              });
-            }}
-            style={{
-              fontFamily: '"Montserrat", "sans-serif"',
-              width: "100%",
-              padding: "15px",
-              backgroundColor: "#1187cf",
-              color: "#fff",
-              border: "none",
-              fontWeight: "700",
-              cursor: "pointer",
-              borderRadius: "4px",
-              letterSpacing: "1px",
-              marginBottom: "30px",
-              transition: "all 0.2s ease",
-            }}
-            onMouseEnter={(e) => (e.target.style.backgroundColor = "#000")}
-            onMouseLeave={(e) => (e.target.style.backgroundColor = "#1187cf")}
-          >
-            ADD TO CART
-          </button>
-
-          {/* DESCRIPTION */}
-          {selectedProduct && (
-            <div
-              style={{
-                fontFamily: '"Montserrat", "sans-serif"',
-                fontWeight: "900",
-                fontSize: "24px",
-                borderTop: "1px solid #e0e0e0",
-                paddingTop: "10px",
-                display: "flex",
-                flexDirection: "column",
-                alignItems: isDesktop ? "flex-start" : "center",
-                textAlign: isDesktop ? "left" : "center",
-                maxWidth: "600px",
-                width: "100%",
-              }}
-            >
-              <h3
-                style={{
-                  fontSize: "24px",
-                  fontWeight: "900",
-                  marginBottom: "10px",
-                  color: "#1187cf",
-                }}
-              >
-                DESCRIPTION
-              </h3>
-              <p
-                style={{
-                  fontSize: "14px",
-                  color: "#fefefe",
-                  lineHeight: "1.5",
-                  opacity: 0.8,
-                }}
-              >
-                {categoryDescription}
-              </p>
-            </div>
-          )}
-
-          {/* Buyers Bought These Section */}
-          {/* Buyers Bought These Section */}
-          <div
-            style={{
-              marginTop: "40px",
-              width: "100%",
-              textAlign: isDesktop ? "left" : "center",
-            }}
-          >
-            <h3
-              style={{
-                fontFamily: '"Montserrat", "sans-serif"',
-                fontWeight: "800",
-                fontSize: "22px",
-                color: "#1187cf",
-                marginBottom: "20px",
-              }}
-            >
-              Buyers bought these
-            </h3>
-
-            {randomProducts.length > 0 && (
-              <div
-                style={{
-                  display: "flex",
-                  gap: "10px",
-                  flexWrap: isDesktop ? "wrap" : "nowrap",
-                  paddingBottom: "10px",
-                }}
-              >
-                {randomProducts.map((product, index) => (
-                  <img
-                    key={index}
-                    src={product.image}
-                    alt={product.title}
-                    style={{
-                      width: isDesktop ? "150px" : "115px",
-                      height: isDesktop ? "180px" : "120px",
-                      objectFit: "cover",
-                      borderRadius: "10px",
-                      border: "1px solid #333",
-                      flex: "0 0 auto",
-                    }}
+              <div style={{ display: "flex", gap: "4px" }}>
+                {[...Array(5)].map((_, i) => (
+                  <Star
+                    key={i}
+                    size={isMobile ? 16 : 18}
+                    fill={i < 4 ? "#fbbf24" : "none"}
+                    color="#fbbf24"
                   />
                 ))}
               </div>
+              <span
+                style={{
+                  color: "#9ca3af",
+                  fontSize: isMobile ? "12px" : "14px",
+                }}
+              >
+                4.5 (128 reviews)
+              </span>
+            </div>
+
+            {/* Price */}
+            <div
+              style={{
+                display: "flex",
+                alignItems: "center",
+                gap: isMobile ? "12px" : "16px",
+                marginBottom: "24px",
+                flexWrap: "wrap",
+              }}
+            >
+              <span
+                style={{
+                  fontSize: isMobile ? "28px" : "36px",
+                  fontWeight: "700",
+                  color: "#3b82f6",
+                }}
+              >
+                {selectedProduct.discountPrice}
+              </span>
+              {selectedProduct.originalPrice && (
+                <>
+                  <span
+                    style={{
+                      fontSize: isMobile ? "18px" : "24px",
+                      color: "#6b7280",
+                      textDecoration: "line-through",
+                    }}
+                  >
+                    {selectedProduct.originalPrice}
+                  </span>
+                  {discountPercent > 0 && (
+                    <span
+                      style={{
+                        backgroundColor: "#dcfce7",
+                        color: "#166534",
+                        padding: "4px 12px",
+                        borderRadius: "20px",
+                        fontSize: isMobile ? "12px" : "14px",
+                        fontWeight: "600",
+                      }}
+                    >
+                      {discountPercent}% OFF
+                    </span>
+                  )}
+                </>
+              )}
+            </div>
+
+            {/* Stock Status */}
+            <div
+              style={{
+                display: "flex",
+                alignItems: "center",
+                gap: "8px",
+                marginBottom: "24px",
+                color: "#10b981",
+                fontSize: isMobile ? "13px" : "14px",
+                fontWeight: "500",
+              }}
+            >
+              <Check size={isMobile ? 16 : 18} />
+              <span>In Stock - Ready to Ship</span>
+            </div>
+
+            {/* Color Selection */}
+            {currentVariants.length > 0 && (
+              <div style={{ marginBottom: "28px" }}>
+                <p
+                  style={{
+                    fontSize: isMobile ? "13px" : "14px",
+                    fontWeight: "600",
+                    color: "#fff",
+                    marginBottom: "12px",
+                  }}
+                >
+                  COLOR:{" "}
+                  {currentVariants.find((v) => v.id === selectedColor)?.name ||
+                    currentVariants[0]?.name}
+                </p>
+                <div
+                  style={{
+                    display: "flex",
+                    gap: isMobile ? "8px" : "12px",
+                    flexWrap: "wrap",
+                  }}
+                >
+                  {currentVariants.map((variant) => (
+                    <div
+                      key={variant.id}
+                      onClick={() => setSelectedColor(variant.id)}
+                      style={{
+                        width: isMobile ? "40px" : "48px",
+                        height: isMobile ? "40px" : "48px",
+                        borderRadius: "8px",
+                        backgroundColor: variant.color,
+                        cursor: "pointer",
+                        border:
+                          selectedColor === variant.id
+                            ? "3px solid #3b82f6"
+                            : "2px solid #333",
+                        boxShadow:
+                          selectedColor === variant.id
+                            ? "0 0 0 4px rgba(59, 130, 246, 0.1)"
+                            : "none",
+                        transition: "all 0.2s",
+                        position: "relative",
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                      }}
+                      title={variant.name}
+                    >
+                      {selectedColor === variant.id && (
+                        <Check
+                          size={isMobile ? 16 : 20}
+                          color="white"
+                          style={{
+                            filter: "drop-shadow(0 0 2px rgba(0,0,0,0.5))",
+                          }}
+                        />
+                      )}
+                    </div>
+                  ))}
+                </div>
+              </div>
             )}
+
+            {/* Quantity - Only show if not a steering wheel */}
+            {!isSteeringWheel && (
+              <div style={{ marginBottom: "28px" }}>
+                <p
+                  style={{
+                    fontSize: isMobile ? "13px" : "14px",
+                    fontWeight: "600",
+                    color: "#fff",
+                    marginBottom: "12px",
+                  }}
+                >
+                  QUANTITY
+                </p>
+                <div
+                  style={{ display: "flex", alignItems: "center", gap: "12px" }}
+                >
+                  <button
+                    onClick={decreaseQuantity}
+                    style={{
+                      width: isMobile ? "40px" : "44px",
+                      height: isMobile ? "40px" : "44px",
+                      borderRadius: "8px",
+                      border: "1px solid #333",
+                      backgroundColor: "#1a1a1a",
+                      cursor: "pointer",
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      transition: "all 0.2s",
+                    }}
+                    onMouseEnter={(e) =>
+                      (e.target.style.backgroundColor = "#2a2a2a")
+                    }
+                    onMouseLeave={(e) =>
+                      (e.target.style.backgroundColor = "#1a1a1a")
+                    }
+                  >
+                    <Minus size={18} color="#fff" />
+                  </button>
+                  <span
+                    style={{
+                      fontSize: "18px",
+                      fontWeight: "600",
+                      minWidth: "40px",
+                      textAlign: "center",
+                      color: "#fff",
+                    }}
+                  >
+                    {quantity}
+                  </span>
+                  <button
+                    onClick={increaseQuantity}
+                    style={{
+                      width: isMobile ? "40px" : "44px",
+                      height: isMobile ? "40px" : "44px",
+                      borderRadius: "8px",
+                      border: "1px solid #333",
+                      backgroundColor: "#1a1a1a",
+                      cursor: "pointer",
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      transition: "all 0.2s",
+                    }}
+                    onMouseEnter={(e) =>
+                      (e.target.style.backgroundColor = "#2a2a2a")
+                    }
+                    onMouseLeave={(e) =>
+                      (e.target.style.backgroundColor = "#1a1a1a")
+                    }
+                  >
+                    <Plus size={18} color="#fff" />
+                  </button>
+                </div>
+              </div>
+            )}
+
+            {/* Add to Cart Button - using handleAddToCart from CartContext */}
+            <button
+              onClick={() => handleAddToCart(selectedProduct, quantity)}
+              style={{
+                width: "100%",
+                padding: isMobile ? "14px" : "16px",
+                backgroundColor: "#3b82f6",
+                color: "white",
+                border: "none",
+                borderRadius: "8px",
+                fontSize: isMobile ? "15px" : "16px",
+                fontWeight: "600",
+                cursor: "pointer",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                gap: "12px",
+                transition: "all 0.2s",
+                marginBottom: "16px",
+              }}
+              onMouseEnter={(e) => {
+                e.target.style.backgroundColor = "#000";
+                e.target.style.transform = "scale(1.02)";
+              }}
+              onMouseLeave={(e) => {
+                e.target.style.backgroundColor = "#1187cf";
+                e.target.style.transform = "scale(1)";
+              }}
+            >
+              <ShoppingCart size={20} />
+              ADD TO CART
+            </button>
           </div>
-        </motion.div>
+        </div>
+
+        {/* Tabs Section */}
+        <div
+          style={{
+            marginTop: isMobile ? "24px" : "40px",
+            backgroundColor: "#1a1a1a",
+            borderRadius: "12px",
+            padding: isMobile ? "20px" : "30px",
+            boxShadow: "0 2px 8px rgba(255,255,255,0.05)",
+          }}
+        >
+          <div
+            style={{
+              display: "flex",
+              gap: isMobile ? "20px" : "30px",
+              borderBottom: "2px solid #333",
+              marginBottom: isMobile ? "20px" : "30px",
+              flexWrap: "wrap",
+            }}
+          >
+            <button
+              onClick={() => setActiveTab("description")}
+              style={{
+                padding: isMobile ? "10px 0" : "12px 0",
+                backgroundColor: "transparent",
+                border: "none",
+                borderBottom:
+                  activeTab === "description" ? "3px solid #3b82f6" : "none",
+                color: activeTab === "description" ? "#3b82f6" : "#9ca3af",
+                fontSize: isMobile ? "14px" : "16px",
+                fontWeight: "600",
+                cursor: "pointer",
+                textTransform: "uppercase",
+                marginBottom: "-2px",
+              }}
+            >
+              DESCRIPTION
+            </button>
+          </div>
+
+          {activeTab === "description" && (
+            <div
+              style={{
+                color: "#d1d5db",
+                lineHeight: "1.8",
+                fontSize: isMobile ? "14px" : "15px",
+              }}
+            >
+              <p>
+                {categoryDescription ||
+                  selectedProduct.description ||
+                  "High-quality product designed for performance and style. Perfect for enhancing your driving experience with superior comfort and durability."}
+              </p>
+            </div>
+          )}
+        </div>
+
+        {/* Related Products - Buyers Also Bought */}
+        {randomProducts.length > 0 && (
+          <div style={{ marginTop: isMobile ? "40px" : "60px" }}>
+            <h2
+              style={{
+                fontSize: isMobile ? "22px" : "28px",
+                fontWeight: "700",
+                marginBottom: isMobile ? "20px" : "30px",
+                color: "#fff",
+              }}
+            >
+              Buyers Also Bought
+            </h2>
+            <div
+              style={{
+                display: "grid",
+                gridTemplateColumns: isMobile
+                  ? "1fr"
+                  : isTablet
+                  ? "repeat(2, 1fr)"
+                  : "repeat(4, 1fr)",
+                gap: isMobile ? "16px" : "24px",
+              }}
+            >
+              {randomProducts.map((item) => {
+                const itemPrice = parseFloat(
+                  (item.discountPrice || item.originalPrice || "0")
+                    .replace("£", "")
+                    .trim()
+                );
+
+                return (
+                  <div
+                    key={item.id}
+                    style={{
+                      backgroundColor: "#1a1a1a",
+                      borderRadius: "12px",
+                      overflow: "hidden",
+                      boxShadow: "0 2px 8px rgba(255,255,255,0.05)",
+                      transition: "all 0.3s",
+                      cursor: "pointer",
+                      position: "relative",
+                      border: "1px solid #333",
+                      height: "100%",
+                      display: "flex",
+                      flexDirection: "column",
+                    }}
+                    onMouseEnter={(e) => {
+                      e.currentTarget.style.transform = "translateY(-4px)";
+                      e.currentTarget.style.boxShadow =
+                        "0 8px 16px rgba(59, 130, 246, 0.2)";
+                    }}
+                    onMouseLeave={(e) => {
+                      e.currentTarget.style.transform = "translateY(0)";
+                      e.currentTarget.style.boxShadow =
+                        "0 2px 8px rgba(255,255,255,0.05)";
+                    }}
+                  >
+                    <div
+                      style={{
+                        position: "relative",
+                        overflow: "hidden",
+                        height: isMobile ? "250px" : "240px",
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        backgroundColor: "#0a0a0a",
+                      }}
+                    >
+                      <img
+                        src={item.image}
+                        alt={item.title}
+                        style={{
+                          width: "100%",
+                          height: "100%",
+                          objectFit: isMobile ? "contain" : "cover",
+                          transition: "transform 0.3s",
+                        }}
+                        onMouseEnter={(e) => {
+                          e.target.style.transform = "scale(1.05)";
+                        }}
+                        onMouseLeave={(e) => {
+                          e.target.style.transform = "scale(1)";
+                        }}
+                      />
+                    </div>
+                    <div
+                      style={{
+                        padding: isMobile ? "16px" : "20px",
+                        flexGrow: 1,
+                        display: "flex",
+                        flexDirection: "column",
+                      }}
+                    >
+                      <h3
+                        style={{
+                          fontSize: isMobile ? "15px" : "16px",
+                          fontWeight: "600",
+                          marginBottom: "12px",
+                          color: "#fff",
+                          minHeight: isMobile ? "36px" : "40px",
+                          display: "-webkit-box",
+                          WebkitLineClamp: 2,
+                          WebkitBoxOrient: "vertical",
+                          overflow: "hidden",
+                        }}
+                      >
+                        {item.title}
+                      </h3>
+                      <div
+                        style={{
+                          display: "flex",
+                          alignItems: "center",
+                          justifyContent: "space-between",
+                          marginBottom: "12px",
+                          marginTop: "auto",
+                        }}
+                      >
+                        <div
+                          style={{
+                            display: "flex",
+                            flexDirection: "column",
+                            gap: "4px",
+                          }}
+                        >
+                          <span
+                            style={{
+                              fontSize: isMobile ? "18px" : "20px",
+                              fontWeight: "700",
+                              color: "#3b82f6",
+                            }}
+                          >
+                            {item.discountPrice}
+                          </span>
+                          {item.originalPrice && (
+                            <span
+                              style={{
+                                fontSize: isMobile ? "13px" : "14px",
+                                color: "#6b7280",
+                                textDecoration: "line-through",
+                              }}
+                            >
+                              {item.originalPrice}
+                            </span>
+                          )}
+                        </div>
+                      </div>
+                      <button
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          handleAddToCart(item, 1);
+                        }}
+                        style={{
+                          width: "100%",
+                          backgroundColor: "#3b82f6",
+                          color: "white",
+                          border: "none",
+                          borderRadius: "6px",
+                          padding: isMobile ? "10px 16px" : "12px 16px",
+                          cursor: "pointer",
+                          fontSize: isMobile ? "13px" : "14px",
+                          fontWeight: "600",
+                          display: "flex",
+                          alignItems: "center",
+                          justifyContent: "center",
+                          gap: "8px",
+                          transition: "all 0.2s",
+                        }}
+                        onMouseEnter={(e) => {
+                          e.target.style.backgroundColor = "#000";
+                          e.target.style.transform = "scale(1.02)";
+                        }}
+                        onMouseLeave={(e) => {
+                          e.target.style.backgroundColor = "#1187cf";
+                          e.target.style.transform = "scale(1)";
+                        }}
+                      >
+                        <ShoppingCart size={16} />
+                        Add to Cart
+                      </button>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+        )}
       </div>
-    </motion.div>
+    </div>
   );
 };
 

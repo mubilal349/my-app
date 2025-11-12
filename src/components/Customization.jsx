@@ -284,7 +284,7 @@ Hello! I want a quote for the following customization:
                         <div
                           className={`w-5 h-5 rounded-full border-2  ${
                             formData.shape === option.value
-                              ? "#297fff"
+                              ? "border-[#297fff] bg-[#297fff]"
                               : "border-gray-600 bg-gray-900"
                           }`}
                         >
@@ -334,17 +334,29 @@ Hello! I want a quote for the following customization:
                           return (
                             <label
                               key={key}
-                              className={`flex items-center space-x-3 p-3 rounded cursor-pointer transition-all
-                ${selected ? "" : ""}`}
+                              className={`flex items-center space-x-3 p-3 rounded cursor-pointer transition-all ${
+                                selected ? "" : ""
+                              }`}
                             >
                               {/* Checkbox Circle */}
                               <div className="relative">
                                 <input
                                   type="checkbox"
                                   checked={selected}
-                                  onChange={() =>
-                                    toggleArrayValue("carbon", key)
-                                  }
+                                  onChange={() => {
+                                    // ✅ only one selection per section
+                                    setFormData((prev) => {
+                                      const filtered = prev.carbon.filter(
+                                        (val) => !val.startsWith(`${section}-`)
+                                      );
+                                      return selected
+                                        ? { ...prev, carbon: filtered } // deselect if clicked again
+                                        : {
+                                            ...prev,
+                                            carbon: [...filtered, key],
+                                          }; // select new
+                                    });
+                                  }}
                                   className="sr-only"
                                 />
                                 <div
@@ -363,7 +375,7 @@ Hello! I want a quote for the following customization:
                               {/* Label Text */}
                               <span
                                 style={{ marginLeft: "5px" }}
-                                className={` text-base ${
+                                className={`text-base ${
                                   selected ? "text-white" : "text-gray-400"
                                 }`}
                               >
@@ -445,9 +457,13 @@ Hello! I want a quote for the following customization:
                             <input
                               type="checkbox"
                               checked={selected}
-                              onChange={() =>
-                                toggleArrayValue("materials", item)
-                              }
+                              onChange={() => {
+                                // ✅ Allow only one selected material
+                                setFormData((prev) => ({
+                                  ...prev,
+                                  materials: selected ? [] : [item],
+                                }));
+                              }}
                               className="sr-only"
                             />
                             <div

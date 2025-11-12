@@ -14,7 +14,7 @@ const ControlSection = () => {
       title: " Buy Now",
       img: "/img/banner/landscape no 2.jpg",
       align: "left",
-      link: "/steeringwheelpage",
+      link: "/products/steeringwheel",
     },
     {
       title: "Design Your Wheel",

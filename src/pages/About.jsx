@@ -81,20 +81,6 @@ const About = () => {
 
   return (
     <>
-      {/* ===== Hero Section ===== */}
-      <section
-        className="hero"
-        style={{
-          background: `url(${bg}) center/cover no-repeat`,
-        }}
-      >
-        <div className="overlay"></div>
-        <div className="hero-text">
-          <h1>Control Customs</h1>
-          <h2>Group</h2>
-        </div>
-      </section>
-
       {/* ===== About Section ===== */}
       <section className="about">
         <div className="about-content">
@@ -112,10 +98,9 @@ const About = () => {
             <p>
               At <strong>Steer Line</strong>, we offer premium steering wheels
               built with the finest materials, including carbon fibre and
-              Alcantara. Whether you drive through snowy Alberta mornings or the
-              streets of downtown Toronto, our steering wheels combine
-              durability, comfort, and a modern sporty look that matches your
-              lifestyle.
+              Alcantara. Whether you drive through London, our steering wheels
+              combine durability, comfort, and a modern sporty look that matches
+              your lifestyle.
             </p>
 
             <p>
@@ -191,63 +176,6 @@ const About = () => {
                 <h3>33+</h3>
                 <p>Number of brands supported</p>
               </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* ===== What Sets Us Apart ===== */}
-      <section className="what-sets-us-apart">
-        <div className="container">
-          <div className="left-content">
-            <p className="subtitle">WHY CONTROL CUSTOMS</p>
-            <h1>What sets us apart</h1>
-            <p className="description">
-              Four key features set us apart: highest quality materials,
-              individual order handling, multiple contact options, and the
-              ability to modify any steering wheel.
-            </p>
-            <button
-              className="call-to-action"
-              onClick={() => window.open("/realisations", "_self")}
-            >
-              See Realisations
-            </button>
-          </div>
-
-          <div className="right-content">
-            <div className="feature-card">
-              <h2 style={{ textTransform: "uppercase" }}>
-                Top quality materials
-              </h2>
-              <p>
-                We focus on quality. Sustainability and customer satisfaction is
-                our priority.
-              </p>
-            </div>
-            <div className="feature-card">
-              <h2 style={{ textTransform: "uppercase" }}>
-                Individual order handling
-              </h2>
-              <p>
-                The customer is the most important to us, which is why we devote
-                our full attention to each client.
-              </p>
-            </div>
-            <div className="feature-card">
-              <h2 style={{ textTransform: "uppercase" }}>
-                We modify every steering wheel
-              </h2>
-              <p>
-                We are able to help you no matter what kind of steering wheel
-                you have.
-              </p>
-            </div>
-            <div className="feature-card">
-              <h2 style={{ textTransform: "uppercase" }}>
-                Multiple opportunities for contact
-              </h2>
-              <p>You can contact us by phone, email and social media.</p>
             </div>
           </div>
         </div>

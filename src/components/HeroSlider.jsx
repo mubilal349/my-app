@@ -4,16 +4,17 @@ import "../assets/css/HeroSlider.css";
 
 const HeroSlider = () => {
   const navigate = useNavigate();
-  const handleClick = (categoryId) => {
-    navigate(`/products/${categoryId}`);
+  const handleClick = () => {
+    navigate("/products/steeringwheel");
   };
+
   return (
     <section
       className="hero-slider single-image"
       style={{
         backgroundImage: `url('/img/cover.jpg')`,
       }}
-      onClick={() => handleClick("steeringwheel")}
+      onClick={handleClick}
     >
       <div className="overlay"></div>
     </section>

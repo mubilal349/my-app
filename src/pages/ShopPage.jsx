@@ -11,7 +11,6 @@ const ShopPage = () => {
   const [categories, setCategories] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState("All");
   const [loading, setLoading] = useState(true);
-  const [selectedProduct, setSelectedProduct] = useState(null);
 
   const { addToCart } = useCart();
   const navigate = useNavigate();
@@ -28,8 +27,10 @@ const ShopPage = () => {
           cat.products.map((p) => ({
             ...p,
             category: cat.title,
-            price: parseFloat(p.discountPrice.replace("$", "")),
-            originalPriceNum: parseFloat(p.originalPrice.replace("$", "")),
+            price: parseFloat(p.discountPrice.replace(/[^\d.]/g, "")),
+            originalPriceNum: parseFloat(
+              p.originalPrice.replace(/[^\d.]/g, "")
+            ),
           }))
         );
 
@@ -49,8 +50,10 @@ const ShopPage = () => {
             discountPrice: p.discountPrice,
             originalPrice: p.originalPrice,
             category: "Backend",
-            price: parseFloat(p.discountPrice.replace("$", "")),
-            originalPriceNum: parseFloat(p.originalPrice.replace("$", "")),
+            price: parseFloat(p.discountPrice.replace(/[^\d.]/g, "")),
+            originalPriceNum: parseFloat(
+              p.originalPrice.replace(/[^\d.]/g, "")
+            ),
           }));
         } catch (err) {
           console.error("Backend fetch error:", err);
@@ -65,9 +68,9 @@ const ShopPage = () => {
             discountPrice: p.discountPrice || "£0.00",
             originalPrice: p.originalPrice || "£0.00",
             category: "New Products Added",
-            price: parseFloat(p.discountPrice?.replace("£", "") || 0),
+            price: parseFloat(p.discountPrice?.replace(/[^\d.]/g, "") || 0),
             originalPriceNum: parseFloat(
-              p.originalPrice?.replace("£", "") || 0
+              p.originalPrice?.replace(/[^\d.]/g, "") || 0
             ),
           })) || [];
 
@@ -78,15 +81,12 @@ const ShopPage = () => {
           ...adminProducts,
         ];
 
-        // 5️⃣ Remove duplicate products based on image or title
-        // Remove duplicates but keep all steering wheels
+        // 5️⃣ Remove duplicates
         const uniqueProducts = combinedProducts.filter(
           (product, index, self) => {
-            // Always include steering wheels
             if (product.category.toLowerCase().includes("steering"))
               return true;
 
-            // Otherwise remove duplicates by title only
             return (
               index ===
               self.findIndex(
@@ -116,7 +116,6 @@ const ShopPage = () => {
     fetchProducts();
   }, []);
 
-  // 🔹 Category filter handler
   const handleFilter = (category) => {
     setSelectedCategory(category);
     if (category === "All") setFilteredProducts(allProducts);
@@ -124,6 +123,24 @@ const ShopPage = () => {
       setFilteredProducts(
         allProducts.filter((product) => product.category === category)
       );
+  };
+
+  const handleAddToCart = (product) => {
+    const priceNumber =
+      parseFloat(product.discountPrice.replace(/[^\d.]/g, "")) || 0;
+
+    addToCart({
+      ...product,
+      price: priceNumber,
+      quantity: 1,
+    });
+  };
+
+  const getBadgeConfig = (index) => {
+    const mod = index % 3;
+    if (mod === 0) return { type: "New", color: "green" };
+    if (mod === 1) return { type: "Hot", color: "red" };
+    return { type: "Sale", color: "pink" };
   };
 
   if (loading)
@@ -135,8 +152,11 @@ const ShopPage = () => {
 
   return (
     <section className="shop-section">
-      <div className="container">
-        <h2 className="shop-title">Our Products</h2>
+      <div className="shop-container">
+        <div className="shop-header">
+          <h2 className="shop-title">Our Products</h2>
+          <p className="shop-subtitle">Discover premium car accessories</p>
+        </div>
 
         {/* Filter Dropdown */}
         <div className="filter-bar">
@@ -158,46 +178,69 @@ const ShopPage = () => {
         {/* Product Grid */}
         <div className="shop-grid">
           {filteredProducts.length > 0 ? (
-            filteredProducts.map((product) => (
-              <div key={product.id} className="shop-card">
-                <div className="image-wrapper">
-                  <img
-                    src={product.image}
-                    alt={product.title}
-                    className="shop-image"
+            filteredProducts.map((product, index) => {
+              const badgeConfig = getBadgeConfig(index);
+
+              return (
+                <div key={`${product.id}-${index}`} className="shop-card">
+                  {/* Badge */}
+                  <div className="badge-container">
+                    <span className={`badge-new badge-${badgeConfig.color}`}>
+                      {badgeConfig.type}
+                    </span>
+                  </div>
+
+                  {/* Image Wrapper */}
+                  <div
+                    className="image-wrapper"
                     onClick={() =>
                       navigate(`/product/${product.id}`, {
-                        state: { product }, // optional
+                        state: { product },
                       })
                     }
-                  />
-
-                  <button
-                    className="shop-btn"
-                    onClick={() => {
-                      const priceNumber =
-                        parseFloat(product.discountPrice.replace("$", "")) || 0;
-
-                      addToCart({
-                        ...product,
-                        price: priceNumber, // numeric price
-                        quantity: 1, // default quantity
-                      });
-                    }}
                   >
-                    Shop Now
-                  </button>
-                </div>
-                <div className="shop-info">
-                  <h3 className="shop-name">{product.title}</h3>
-                  <p className="shop-category">{product.category}</p>
-                  <div className="shop-prices">
-                    <span className="discount">{product.discountPrice}</span>
-                    <span className="original">{product.originalPrice}</span>
+                    <img
+                      src={product.image}
+                      alt={product.title}
+                      className="shop-image"
+                    />
+
+                    {/* Cart Button */}
+                    <button
+                      className="quick-add-btn"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        handleAddToCart(product);
+                      }}
+                    >
+                      <svg
+                        width="20"
+                        height="20"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth="2"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      >
+                        <circle cx="9" cy="21" r="1"></circle>
+                        <circle cx="20" cy="21" r="1"></circle>
+                        <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
+                      </svg>
+                    </button>
+                  </div>
+
+                  {/* Product Info */}
+                  <div className="shop-info">
+                    <h3 className="shop-name">{product.title}</h3>
+                    <div className="shop-prices">
+                      <span className="original">{product.originalPrice}</span>
+                      <span className="discount">{product.discountPrice}</span>
+                    </div>
                   </div>
                 </div>
-              </div>
-            ))
+              );
+            })
           ) : (
             <p className="no-results">No products found for this category.</p>
           )}

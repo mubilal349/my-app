@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import "../assets/css/AccessoriesPage.css"; // ✅ linked CSS file
+import "../assets/css/AccessoriesPage.css";
 import { useCart } from "../context/CartContext";
 import { useNavigate } from "react-router-dom";
 import WhatsappIcon from "../components/WhatsappIcon";
@@ -13,14 +13,163 @@ const AccessoriesPage = () => {
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [selectedProduct, setSelectedProduct] = useState(null);
+  const [activeFilter, setActiveFilter] = useState("all"); // Default to show all products
+  const [filteredProducts, setFilteredProducts] = useState([]);
 
   const { addToCart } = useCart();
   const navigate = useNavigate();
 
   const isDesktop = window.innerWidth > 768;
 
-  // Filter unique products by title
+  // Filter categories - using more generic IDs that might match the actual data
+  const filterCategories = [
+    { id: "all", name: "All Products", keywords: [] },
+    {
+      id: "steering-logos",
+      name: "Steering Logos",
+      keywords: ["steering", "logo"],
+    },
+    {
+      id: "aromatherapy",
+      name: "Aromatherapy Machine",
+      keywords: ["aromatherapy", "machine"],
+    },
+    { id: "keychains", name: "KeyChain", keywords: ["keychain", "key chain"] },
+    {
+      id: "nos-bottle",
+      name: "NOS Bottle Keychain",
+      keywords: ["nos", "bottle", "keychain"],
+    },
+    {
+      id: "car-perfume",
+      name: "Car Perfume",
+      keywords: ["car perfume", "perfume"],
+    },
+    {
+      id: "magnetic-holder",
+      name: "Magnetic Phone Holder",
+      keywords: ["magnetic", "phone holder", "holder"],
+    },
+    {
+      id: "air-freshener-dispenser",
+      name: "Car Air Freshener Dispenser",
+      keywords: ["air freshener", "dispenser", "freshener"],
+    },
+    {
+      id: "steering-wheel",
+      name: "Steering Wheel",
+      keywords: ["steering wheel", "wheel"],
+    },
+  ];
+
+  useEffect(() => {
+    fetch("/data/products.json")
+      .then((res) => {
+        if (!res.ok) throw new Error("Failed to load products");
+        return res.json();
+      })
+      .then((json) => {
+        setData(json);
+
+        // Flatten all products from all categories
+        const allProducts = [];
+        json.categories.forEach((category) => {
+          category.products.forEach((product) => {
+            allProducts.push({
+              ...product,
+              categoryId: category.id,
+              categoryName: category.title,
+            });
+          });
+        });
+
+        setFilteredProducts(allProducts);
+        setLoading(false);
+      })
+      .catch((err) => {
+        setError(err.message);
+        setLoading(false);
+      });
+  }, []);
+
+  // Filter products when activeFilter changes
+  useEffect(() => {
+    if (!data) return;
+
+    if (activeFilter === "all") {
+      // Flatten all products from all categories
+      const allProducts = [];
+      data.categories.forEach((category) => {
+        category.products.forEach((product) => {
+          allProducts.push({
+            ...product,
+            categoryId: category.id,
+            categoryName: category.title,
+          });
+        });
+      });
+
+      setFilteredProducts(allProducts);
+    } else {
+      // Find the category that matches the active filter
+      const category = data.categories.find((cat) => cat.id === activeFilter);
+      if (category) {
+        const productsWithCategory = category.products.map((product) => ({
+          ...product,
+          categoryId: category.id,
+          categoryName: category.title,
+        }));
+        setFilteredProducts(productsWithCategory);
+      } else {
+        // If no exact match, try to find products by keywords
+        const filterConfig = filterCategories.find(
+          (f) => f.id === activeFilter
+        );
+        if (filterConfig && filterConfig.keywords.length > 0) {
+          const matchedProducts = [];
+
+          data.categories.forEach((category) => {
+            category.products.forEach((product) => {
+              // Check if any keyword matches the product title or category name
+              const isMatch = filterConfig.keywords.some(
+                (keyword) =>
+                  product.title.toLowerCase().includes(keyword.toLowerCase()) ||
+                  category.title
+                    .toLowerCase()
+                    .includes(keyword.toLowerCase()) ||
+                  category.id.toLowerCase().includes(keyword.toLowerCase())
+              );
+
+              if (isMatch) {
+                matchedProducts.push({
+                  ...product,
+                  categoryId: category.id,
+                  categoryName: category.title,
+                });
+              }
+            });
+          });
+
+          setFilteredProducts(matchedProducts);
+        } else {
+          // Fallback: show all products if no matches found
+          const allProducts = [];
+          data.categories.forEach((category) => {
+            category.products.forEach((product) => {
+              allProducts.push({
+                ...product,
+                categoryId: category.id,
+                categoryName: category.title,
+              });
+            });
+          });
+
+          setFilteredProducts(allProducts);
+        }
+      }
+    }
+  }, [activeFilter, data]);
+
   const getUniqueProducts = (products) => {
     const unique = [];
     const titles = new Set();
@@ -35,37 +184,19 @@ const AccessoriesPage = () => {
     return unique;
   };
 
-  useEffect(() => {
-    fetch("/data/products.json")
-      .then((res) => {
-        if (!res.ok) throw new Error("Failed to load products");
-        return res.json();
-      })
-      .then((json) => {
-        setData(json);
-        setLoading(false);
-      })
-      .catch((err) => {
-        setError(err.message);
-        setLoading(false);
-      });
-  }, []);
-
   const handleAddToCart = (product) => {
     if (!product || !product.id) return;
 
-    // Convert price string to number
     const discount =
       parseFloat(product.discountPrice?.replace(/[^\d.]/g, "")) || 0;
     const original =
       parseFloat(product.originalPrice?.replace(/[^\d.]/g, "")) || 0;
     const priceNumber = discount > 0 ? discount : original;
 
-    // Add to cart with numeric price and quantity
     addToCart({
       ...product,
-      price: priceNumber, // numeric
-      quantity: 1, // default quantity
+      price: priceNumber,
+      quantity: 1,
     });
   };
 
@@ -74,11 +205,12 @@ const AccessoriesPage = () => {
     { id: 2, color: "#FF3B3B", name: "Red" },
     { id: 3, color: "#1B3A52", name: "Navy Blue" },
     { id: 4, color: "#A8D5D5", name: "Light Blue" },
-    { id: 5, color: "#D9D9D9", name: "silver " },
-    { id: 6, color: "#00FF00", name: "green" },
-    { id: 7, color: "#FFA500", name: "orange " },
-    { id: 8, color: "#CD7F32", name: "bronze " },
+    { id: 5, color: "#D9D9D9", name: "Silver" },
+    { id: 6, color: "#00FF00", name: "Green" },
+    { id: 7, color: "#FFA500", name: "Orange" },
+    { id: 8, color: "#CD7F32", name: "Bronze" },
   ];
+
   const productVariants_2 = [
     { id: 1, color: "#000000", name: "Full Black" },
     { id: 2, color: "#E6E6E6", name: "LT Black White" },
@@ -86,6 +218,37 @@ const AccessoriesPage = () => {
     { id: 4, color: "#1C1C1C", name: "Black Carbon" },
     { id: 5, color: "#003366", name: "Blue Carbon" },
   ];
+
+  // Determine badge type based on product index
+  const getBadgeConfig = (index, categoryId) => {
+    // Steering Logos - mostly "New"
+    if (categoryId === "steering-logos") {
+      if (index < 3) return { type: "New", color: "green" };
+      if (index < 6) return { type: "Hot", color: "red" };
+      return { type: "Sale", color: "pink" };
+    }
+
+    // Aromatherapy - mix of badges
+    if (categoryId === "aromatherapy") {
+      if (index === 0) return { type: "Hot", color: "red" };
+      if (index === 1) return { type: "New", color: "green" };
+      return { type: "Sale", color: "pink" };
+    }
+
+    // KeyChains - rotating badges
+    if (categoryId === "keychains") {
+      const mod = index % 3;
+      if (mod === 0) return { type: "New", color: "green" };
+      if (mod === 1) return { type: "Hot", color: "red" };
+      return { type: "Sale", color: "pink" };
+    }
+
+    // Default rotation for other categories
+    const mod = index % 3;
+    if (mod === 0) return { type: "New", color: "green" };
+    if (mod === 1) return { type: "Hot", color: "red" };
+    return { type: "Sale", color: "pink" };
+  };
 
   if (loading)
     return (
@@ -98,211 +261,104 @@ const AccessoriesPage = () => {
 
   return (
     <div className="accessories-section">
-      {data.categories.map((category, index) => (
-        <section key={category.id} className="category-section">
-          {/* Header */}
-          <div className="category-header">
-            <p className="category-subtitle">Collection</p>
-            <h2 className="category-title">{category.title}</h2>
-            <p className="category-description">{category.description}</p>
-          </div>
+      {/* Filter Section */}
+      <div className="filter-section">
+        <h2 className="filter-title">Shop by Category</h2>
+        <div className="filter-buttons">
+          {filterCategories.map((filter) => (
+            <button
+              key={filter.id}
+              className={`filter-button ${
+                activeFilter === filter.id ? "active" : ""
+              }`}
+              onClick={() => setActiveFilter(filter.id)}
+            >
+              {filter.name}
+            </button>
+          ))}
+        </div>
+      </div>
 
-          {/* Product Grid */}
-          <div className="product-grid">
-            {getUniqueProducts(category.products).map((product) => {
-              // Get all variants for this product title
-              // const productVariants = category.products.filter(
-              //   (p) => p.id === product.id
-              // );
-              const currentVariant = selectedVariants[product.id] || product;
+      {/* Product Grid */}
+      <div className="product-grid-new">
+        {getUniqueProducts(filteredProducts).map((product, idx) => {
+          const currentVariant = selectedVariants[product.id] || product;
+          const currentVariants =
+            product.id === 3 ? productVariants_2 : productVariants_1;
 
-              const currentVariants =
-                product.id === 3 ? productVariants_2 : productVariants_1;
+          const badgeConfig = getBadgeConfig(idx, product.categoryId);
 
-              return (
-                <div key={product.id} className="product-card">
-                  <div
-                    className="image-wrapper"
-                    style={{
-                      position: "relative",
-                      width: "100%",
-                      height: isDesktop ? "350px" : "250px",
-                      backgroundColor: "#f5f5f5",
-                      display: "flex",
-                      justifyContent: "center",
-                      alignItems: "center",
-                    }}
-                  >
-                    <img
-                      src={currentVariant.image}
-                      alt={currentVariant.title}
-                      style={{
-                        width: "100%",
-                        height: "100%",
-                        objectFit: "contain",
-                        display: "block",
-                      }}
-                      onClick={() =>
-                        navigate(`/product/${currentVariant.id}`, {
-                          state: {
-                            product: currentVariant,
-                            variants: currentVariants,
-                          },
-                        })
-                      }
-                    />
+          return (
+            <div key={product.id} className="product-card-new">
+              {/* Badge Indicator */}
+              <div className="badge-container">
+                <span className={`badge-new badge-${badgeConfig.color}`}>
+                  {badgeConfig.type}
+                </span>
+              </div>
 
-                    <button
-                      style={{
-                        position: "absolute",
-                        bottom: "15px",
-                        left: "50%",
-                        transform: "translateX(-50%)",
-                        backgroundColor: "#000",
-                        color: "#fff",
-                        border: "none",
-                        padding: "10px 20px",
-                        borderRadius: "4px",
-                        cursor: "pointer",
-                        fontWeight: "600",
-                        overflow: "hidden",
-                        transition: "background 0.4s ease",
-                        backgroundImage:
-                          "linear-gradient(to top, rgba(255,255,255,0.2) 0%, rgba(255,255,255,0) 100%)",
-                        backgroundRepeat: "no-repeat",
-                        backgroundPosition: "bottom",
-                        backgroundSize: "100% 0%", // start from bottom
-                      }}
-                      onMouseEnter={(e) =>
-                        (e.currentTarget.style.backgroundSize = "100% 200%")
-                      } // grow the wave
-                      onMouseLeave={(e) =>
-                        (e.currentTarget.style.backgroundSize = "100% 0%")
-                      } // reset
-                      onClick={() => handleAddToCart(currentVariant)}
-                    >
-                      Shop Now
-                    </button>
-                  </div>
-
-                  <div className="product-info">
-                    <h3 className="product-title">{currentVariant.title}</h3>
-                    <div className="price-box">
-                      <span className="discount-price">
-                        {currentVariant.discountPrice}
-                      </span>
-                      <span className="original-price">
-                        {currentVariant.originalPrice}
-                      </span>
-                    </div>
-                    <span className="badge">Popular</span>
-                  </div>
-                </div>
-              );
-            })}
-          </div>
-          {selectedProduct && (
-            <div className="modal-backdrop">
-              <div className="modal-card">
-                {/* Close button */}
-                <button
-                  className="modal-close"
-                  onClick={() => setSelectedProduct(null)}
-                >
-                  &times;
-                </button>
-
-                {/* Product Image */}
+              {/* Product Image */}
+              <div
+                className="image-wrapper-new"
+                onClick={() =>
+                  navigate(`/product/${currentVariant.id}`, {
+                    state: {
+                      product: currentVariant,
+                      variants: currentVariants,
+                    },
+                  })
+                }
+              >
                 <img
-                  src={selectedProduct.image}
-                  alt={selectedProduct.title}
-                  className="modal-image"
+                  src={currentVariant.image}
+                  alt={currentVariant.title}
+                  className="product-image-new"
                 />
 
-                {/* Product Info */}
-                <h2 className="modal-title">{selectedProduct.title}</h2>
-                <div className="modal-price-box">
-                  <span className="modal-price">
-                    {selectedProduct.discountPrice}
-                  </span>
-                  <span className="modal-original">
-                    {selectedProduct.originalPrice}
-                  </span>
-                </div>
-
-                {/* Description */}
-                <p className="modal-description">
-                  {selectedProduct.description}
-                </p>
-
-                {/* Color Selection */}
-                <div style={{ margin: "15px 0" }}>
-                  <p style={{ marginBottom: "8px", color: "#333" }}>
-                    COLOR:{" "}
-                    {currentVariants_1.find((v) => v.id === selectedColor)
-                      ?.name || "Select"}
-                  </p>
-                  <div style={{ display: "flex", gap: "10px" }}>
-                    {[
-                      { id: 1, color: "#000000", name: "Black" },
-                      { id: 2, color: "#FF0000", name: "Red" },
-                      { id: 3, color: "#0000FF", name: "Blue" },
-                      { id: 4, color: "#00FF00", name: "Green" },
-                      { id: 5, color: "#FFFF00", name: "Yellow" },
-                    ].map((variant) => (
-                      <div
-                        key={variant.id}
-                        onClick={() => setSelectedColor(variant.id)}
-                        style={{
-                          width: "30px",
-                          height: "30px",
-                          borderRadius: "50%",
-                          backgroundColor: variant.color,
-                          cursor: "pointer",
-                          border:
-                            selectedColor === variant.id
-                              ? "3px solid #1187cf"
-                              : "1px solid #ccc",
-                          transition: "all 0.2s ease",
-                        }}
-                        title={variant.name}
-                      />
-                    ))}
-                  </div>
-                </div>
-
-                {/* Add to Cart Button */}
+                {/* Quick Add Button */}
                 <button
-                  className="modal-add-btn"
-                  onClick={() => {
-                    handleAddToCart({ ...selectedProduct, selectedColor });
-                    setSelectedProduct(null);
-                  }}
-                  style={{
-                    marginTop: "15px",
-                    padding: "12px 20px",
-                    backgroundColor: "#1187cf",
-                    color: "#fff",
-                    fontWeight: "700",
-                    border: "none",
-                    borderRadius: "5px",
-                    cursor: "pointer",
+                  className="quick-add-btn"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    handleAddToCart(currentVariant);
                   }}
                 >
-                  Add to Cart
+                  <svg
+                    width="20"
+                    height="20"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  >
+                    <circle cx="9" cy="21" r="1"></circle>
+                    <circle cx="20" cy="21" r="1"></circle>
+                    <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
+                  </svg>
                 </button>
               </div>
-            </div>
-          )}
 
-          {/* Divider */}
-          {index !== data.categories.length - 1 && (
-            <div className="divider"></div>
-          )}
-          <WhatsappIcon />
-          <BackToTop />
-        </section>
-      ))}
+              {/* Product Info */}
+              <div className="product-info-new">
+                <h3 className="product-title-new">{currentVariant.title}</h3>
+                <div className="price-box-new">
+                  <span className="original-price-new">
+                    {currentVariant.originalPrice}
+                  </span>
+                  <span className="discount-price-new">
+                    {currentVariant.discountPrice}
+                  </span>
+                </div>
+              </div>
+            </div>
+          );
+        })}
+      </div>
+
+      <WhatsappIcon />
+      <BackToTop />
     </div>
   );
 };

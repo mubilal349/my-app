@@ -1,4 +1,4 @@
-/* SteeringWheelSlider.css */
+/* Container for the whole component */
 .slider-container {
   max-width: 1200px;
   margin: 0 auto;
@@ -7,61 +7,52 @@
 }
 
 .slider-container h2 {
-  font-family: "Montserrat", sans-serif;
-  font-weight: 1000;
-  font-style: normal;
-  font-optical-sizing: auto;
-  color: #1286d1;
   margin-bottom: 20px;
+  font-weight: 900;
+  font-size: 1.5rem;
+  font-family: "Montserrat", sans-serif;
   text-transform: uppercase;
-  font-size: 2rem;
+  color: #1286d1;
 }
 
+/* Grid for desktop */
 .wheels-grid {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
   gap: 20px;
 }
 
+/* Slider wrapper */
 .slider-wrapper {
-  flex: 1 1 300px;
-  max-width: 400px;
-  position: relative;
-}
-
-.slider {
   position: relative;
   width: 100%;
-  height: 300px;
   overflow: hidden;
-  cursor: ew-resize;
-  border-radius: 10px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
-.image {
+/* Images */
+.slider img {
+  width: 100%;
+  display: block;
+  user-select: none;
+  pointer-events: none;
+}
+
+/* Slider overlay for "after" image */
+.slider .after {
   position: absolute;
   top: 0;
   left: 0;
-  width: 100%;
   height: 100%;
-  object-fit: contain;
-  transition: none; /* Remove transition for performance */
+  object-fit: cover;
 }
 
-.after {
-  z-index: 1;
-}
-
+/* Slider handle */
 .slider-handle {
   position: absolute;
   top: 0;
-  width: 4px;
   height: 100%;
-  background: rgba(255, 255, 255, 0.8);
-  z-index: 2;
   cursor: ew-resize;
+  z-index: 10;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -69,53 +60,8 @@
 
 .handle-line {
   width: 2px;
-  height: 50px;
-  background: #fff;
-  border-radius: 1px;
-}
-
-.labels {
-  display: flex;
-  font-family: "Montserrat", sans-serif;
-  justify-content: space-between;
-  margin-top: 10px;
-  font-size: 24px;
-  font-weight: 700;
-  color: #1584cb;
-  text-transform: uppercase;
-}
-
-.slider-handle {
-  position: absolute;
-  top: 0;
   height: 100%;
-  transform: translateX(-50%);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  pointer-events: none;
-}
-
-/* Circle with arrows */
-.slider-handle {
-  position: absolute;
-  top: 0;
-  height: 100%;
-  transform: translateX(-50%);
-  display: flex;
-  justify-content: center;
-  pointer-events: none;
-}
-
-/* Vertical white line (behind circle) */
-.handle-line {
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  width: 4px;
-  background: white;
-  border-radius: 2px;
-  z-index: 1;
+  background: rgba(255, 255, 255, 0.8);
 }
 
 /* Circle with arrows (in front of line) */
@@ -123,8 +69,8 @@
   position: absolute;
   top: 50%;
   transform: translateY(-50%);
-  width: 60px;
-  height: 60px;
+  width: 35px;
+  height: 35px;
   background: transparent;
   border: 3px solid rgba(255, 255, 255, 0.8);
   border-radius: 50%;
@@ -143,35 +89,49 @@
   transform: translateY(-50%) scale(1.05);
 }
 
-/* Arrow styles */
 .arrow {
+  font-size: 12px;
   position: absolute;
-  font-size: 20px;
-  color: #fff;
-  user-select: none;
-  margin: 0 15px;
 }
 
 .arrow.left {
-  left: 14px;
+  left: -10px;
 }
 
 .arrow.right {
-  right: 14px;
+  right: -10px;
 }
 
-/* Mobile responsiveness */
-@media (max-width: 768px) {
+/* Labels */
+.labels {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 10px;
+  font-weight: bold;
+  font-size: 1rem;
+  font-family: "Montserrat", sans-serif;
+  text-transform: uppercase;
+  color: #1286d1;
+}
+
+/* Responsive: mobile devices */
+@media screen and (max-width: 768px) {
   .wheels-grid {
-    flex-direction: column;
-    align-items: center;
+    grid-template-columns: 1fr; /* Stack images vertically */
+    gap: 15px;
   }
 
-  .slider-wrapper {
-    max-width: 100%;
+  .handle-circle {
+    width: 25px;
+    height: 25px;
+    font-size: 12px;
   }
 
-  .slider {
-    height: 300px;
+  .arrow {
+    font-size: 10px;
+  }
+
+  .labels {
+    font-size: 14px;
   }
 }
