@@ -5,7 +5,7 @@ import { Link } from "react-router-dom";
 import { useCart } from "../context/CartContext";
 
 const Navbar = () => {
-  const { cartItems, addToCart, removeFromCart, calculateTotal } = useCart(); // ✅ works now
+  const { cartItems, addToCart, removeFromCart, calculateTotal } = useCart();
   const shadowStyle = {
     backgroundColor: "#fff",
     borderRadius: "12px",
@@ -87,7 +87,7 @@ const Navbar = () => {
         style={{
           filter: "drop-shadow(0 4px 6px rgba(0,0,0,0.3))",
           width: "18%",
-          order: isMobile ? 2 : 1, // Adjust order for mobile
+          order: isMobile ? 2 : 1,
           marginLeft: isMobile ? "10px" : "0",
         }}
       >
@@ -123,7 +123,7 @@ const Navbar = () => {
                     item.toLowerCase() === "home"
                       ? "/"
                       : item.toLowerCase() === "design my wheel"
-                      ? "/customization" // 👈 special route
+                      ? "/customization"
                       : `/${item.toLowerCase().replace(/\s+/g, "")}`
                   }
                   style={{
@@ -149,7 +149,6 @@ const Navbar = () => {
           cursor: "pointer",
           order: 3,
           position: "relative",
-          // padding: "8px",
         }}
       >
         <svg
@@ -196,7 +195,7 @@ const Navbar = () => {
           target="_blank"
           rel="noopener noreferrer"
           className="cta"
-          style={{ shadowStyle, order: 4 }}
+          style={{ ...shadowStyle, order: 4, color: "#000" }}
         >
           Get A Quote
         </a>
@@ -208,12 +207,12 @@ const Navbar = () => {
           style={{
             position: "fixed",
             top: 0,
-            left: menuOpen ? 0 : "-100%", // Changed from right to left
+            left: menuOpen ? 0 : "-100%",
             width: "70%",
             height: "100vh",
             background: "#fff",
-            boxShadow: "2px 0 10px rgba(0,0,0,0.2)", // Shadow on right side now
-            transition: "left 0.3s ease-in-out", // Changed from right to left
+            boxShadow: "2px 0 10px rgba(0,0,0,0.2)",
+            transition: "left 0.3s ease-in-out",
             display: "flex",
             flexDirection: "column",
             paddingTop: "80px",
@@ -247,10 +246,10 @@ const Navbar = () => {
                     item.toLowerCase() === "home"
                       ? "/"
                       : item.toLowerCase() === "design my wheel"
-                      ? "/customization" // 👈 special route
+                      ? "/customization"
                       : `/${item.toLowerCase().replace(/\s+/g, "")}`
                   }
-                  onClick={() => setMenuOpen(false)} // 👈 CLOSE MENU ON CLICK
+                  onClick={() => setMenuOpen(false)}
                   style={{
                     color: "#000",
                     textDecoration: "none",
@@ -371,14 +370,15 @@ const Navbar = () => {
             )}
           </div>
 
-          {cartItems.length > 0 && (
-            <div
-              style={{
-                borderTop: "1px solid #eee",
-                paddingTop: "15px",
-                marginTop: "15px",
-              }}
-            >
+          {/* Checkout section - always visible */}
+          <div
+            style={{
+              borderTop: "1px solid #eee",
+              paddingTop: "15px",
+              marginTop: "15px",
+            }}
+          >
+            {cartItems.length > 0 && (
               <div
                 style={{
                   display: "flex",
@@ -391,47 +391,55 @@ const Navbar = () => {
                 <span>Total:</span>
                 <span>${calculateTotal()}</span>
               </div>
-              <button
-                style={{
-                  width: "100%",
-                  padding: "12px",
-                  background: "#111111",
-                  color: "#fff",
-                  border: "none",
-                  borderRadius: "6px",
-                  cursor: "pointer",
-                  fontSize: "16px",
-                }}
-                onClick={() => {
-                  const whatsappNumber = "447598863458"; // ✅ no "+" or spaces
+            )}
+            <button
+              style={{
+                width: "100%",
+                padding: "12px",
+                background: "#111111",
+                color: "#fff",
+                border: "none",
+                borderRadius: "6px",
+                cursor: "pointer",
+                fontSize: "16px",
+                opacity: cartItems.length === 0 ? 0.5 : 1,
+              }}
+              onClick={() => {
+                if (cartItems.length === 0) {
+                  // Show message or do nothing for empty cart
+                  alert(
+                    "Your cart is empty. Please add items before checkout."
+                  );
+                  return;
+                }
 
-                  // ✅ Message header
-                  let message =
-                    "Hello, I want to order the following items from my cart.%0A%0A";
+                const whatsappNumber = "447598863458";
 
-                  // ✅ Add all cart items with image + name + price
-                  message += cartItems
-                    .map(
-                      (item, index) =>
-                        `${index + 1}. ${item.title}%0A💰 Price: ${
-                          item.discountPrice
-                        }%0A`
-                    )
+                // Message header
+                let message =
+                  "Hello, I want to order the following items from my cart.%0A%0A";
 
-                    .join("%0A");
+                // Add all cart items with image + name + price
+                message += cartItems
+                  .map(
+                    (item, index) =>
+                      `${index + 1}. ${item.title}%0A💰 Price: ${
+                        item.discountPrice
+                      }%0A`
+                  )
+                  .join("%0A");
 
-                  // ✅ Add total at the end
-                  message += `%0A----------------------%0A💵 Total: $${calculateTotal()}`;
+                // Add total at the end
+                message += `%0A----------------------%0A💵 Total: $${calculateTotal()}`;
 
-                  // ✅ Open WhatsApp
-                  const whatsappURL = `https://wa.me/${whatsappNumber}?text=${message}`;
-                  window.open(whatsappURL, "_blank");
-                }}
-              >
-                Checkout
-              </button>
-            </div>
-          )}
+                // Open WhatsApp
+                const whatsappURL = `https://wa.me/${whatsappNumber}?text=${message}`;
+                window.open(whatsappURL, "_blank");
+              }}
+            >
+              Checkout
+            </button>
+          </div>
         </div>
       )}
 

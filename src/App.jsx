@@ -34,6 +34,7 @@ import SubcategoryDetail from "./pages/SubCategoryDetail.jsx";
 import SteeringWheelPage from "./pages/SteeringWheelPage.jsx";
 import ScrollToTop from "./components/ScrolToTop.jsx";
 import ProductDetails from "./pages/ProductDetails.jsx";
+import Compare from "./components/Compare.jsx";
 
 const AppLayout = ({ children }) => {
   const location = useLocation();
@@ -100,6 +101,7 @@ const App = () => {
           <Route path="/designmywheel" element={<Design />} />
           <Route path="/realisations" element={<Realisations />} />
           <Route path="/catalogue" element={<Catalogue />} />
+          <Route path="/compare" element={<Compare />} />
           <Route
             path="/category/:category/:subcategory"
             element={<SubcategoryPage />}

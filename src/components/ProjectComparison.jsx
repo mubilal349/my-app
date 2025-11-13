@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from "react";
-import "../assets/css/ProjectComparison.css"; // We'll define this below
+import "../assets/css/ProjectComparison.css";
 
 const ProjectComparison = () => {
   // Sample image URLs (replace with your actual images for before/after steering wheels)
@@ -43,8 +43,14 @@ const BeforeAfterSlider = ({ before, after, alt }) => {
   const containerRef = useRef(null);
   const isDragging = useRef(false);
 
-  const handleMouseDown = () => {
+  const handleMouseDown = (e) => {
+    e.preventDefault(); // Prevent default to avoid text selection on mobile
     isDragging.current = true;
+
+    // If this is a touch event, calculate the initial position
+    if (e.touches) {
+      updateSliderPosition(e.touches[0].clientX);
+    }
   };
 
   const handleMouseUp = () => {
@@ -53,26 +59,48 @@ const BeforeAfterSlider = ({ before, after, alt }) => {
 
   const handleMouseMove = (e) => {
     if (!isDragging.current || !containerRef.current) return;
-    const rect = containerRef.current.getBoundingClientRect();
-    const x = e.clientX - rect.left;
-    const percentage = Math.min(Math.max((x / rect.width) * 100, 0), 100);
-    setSliderPosition(percentage);
+    updateSliderPosition(e.clientX);
   };
 
   const handleTouchMove = (e) => {
     if (!containerRef.current) return;
+    e.preventDefault(); // Prevent scrolling when moving the slider
+    updateSliderPosition(e.touches[0].clientX);
+  };
+
+  const updateSliderPosition = (clientX) => {
+    if (!containerRef.current) return;
     const rect = containerRef.current.getBoundingClientRect();
-    const x = e.touches[0].clientX - rect.left;
+    const x = clientX - rect.left;
     const percentage = Math.min(Math.max((x / rect.width) * 100, 0), 100);
     setSliderPosition(percentage);
+  };
+
+  // Handle initial click/tap to position slider
+  const handleSliderClick = (e) => {
+    if (!containerRef.current) return;
+
+    // Only update position if not currently dragging
+    if (!isDragging.current) {
+      const rect = containerRef.current.getBoundingClientRect();
+      const x = e.clientX - rect.left;
+      const percentage = Math.min(Math.max((x / rect.width) * 100, 0), 100);
+      setSliderPosition(percentage);
+    }
   };
 
   useEffect(() => {
     const handleGlobalMouseUp = () => {
       isDragging.current = false;
     };
+
     document.addEventListener("mouseup", handleGlobalMouseUp);
-    return () => document.removeEventListener("mouseup", handleGlobalMouseUp);
+    document.addEventListener("touchend", handleGlobalMouseUp);
+
+    return () => {
+      document.removeEventListener("mouseup", handleGlobalMouseUp);
+      document.removeEventListener("touchend", handleGlobalMouseUp);
+    };
   }, []);
 
   return (
@@ -80,12 +108,13 @@ const BeforeAfterSlider = ({ before, after, alt }) => {
       <div
         className="slider"
         ref={containerRef}
-        onMouseMove={handleMouseMove}
-        onTouchMove={handleTouchMove}
         onMouseDown={handleMouseDown}
         onMouseUp={handleMouseUp}
+        onMouseMove={handleMouseMove}
         onTouchStart={handleMouseDown}
         onTouchEnd={handleMouseUp}
+        onTouchMove={handleTouchMove}
+        onClick={handleSliderClick}
       >
         <img src={before} alt={`${alt} Before`} className="image before" />
         <img

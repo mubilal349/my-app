@@ -1,137 +1,176 @@
-/* Container for the whole component */
+/* ProjectComparison.css */
 .slider-container {
+  width: 100%;
   max-width: 1200px;
   margin: 0 auto;
   padding: 20px;
-  text-align: center;
 }
 
 .slider-container h2 {
-  margin-bottom: 20px;
-  font-weight: 900;
-  font-size: 1.5rem;
+  text-align: center;
+  margin-bottom: 30px;
+  font-size: 28px;
   font-family: "Montserrat", sans-serif;
+  font-weight: 900;
+  font-size: 2rem;
   text-transform: uppercase;
-  color: #1286d1;
+  color: #1c85c5;
 }
 
-/* Grid for desktop */
 .wheels-grid {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 20px;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 30px;
 }
 
-/* Slider wrapper */
 .slider-wrapper {
   position: relative;
   width: 100%;
-  overflow: hidden;
+  margin-bottom: 10px;
 }
 
-/* Images */
-.slider img {
+.slider {
+  position: relative;
   width: 100%;
-  display: block;
-  user-select: none;
-  pointer-events: none;
+  overflow: hidden;
+  cursor: col-resize;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
-/* Slider overlay for "after" image */
-.slider .after {
+.image {
+  display: block;
+  width: 100%;
+  height: auto;
+  object-fit: cover;
+  aspect-ratio: 4/3;
+}
+
+.before {
+  position: relative;
+  z-index: 1;
+}
+
+.after {
   position: absolute;
   top: 0;
   left: 0;
-  height: 100%;
-  object-fit: cover;
+  z-index: 2;
 }
 
-/* Slider handle */
 .slider-handle {
   position: absolute;
   top: 0;
-  height: 100%;
-  cursor: ew-resize;
-  z-index: 10;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  bottom: 0;
+  width: 4px;
+  background: white;
+  cursor: col-resize;
+  z-index: 3;
+  transform: translateX(-50%);
+  box-shadow: 0 0 6px rgba(0, 0, 0, 0.3);
 }
 
-.handle-line {
-  width: 2px;
-  height: 100%;
-  background: rgba(255, 255, 255, 0.8);
-}
-
-/* Circle with arrows (in front of line) */
 .handle-circle {
   position: absolute;
   top: 50%;
-  transform: translateY(-50%);
-  width: 35px;
-  height: 35px;
-  background: transparent;
-  border: 3px solid rgba(255, 255, 255, 0.8);
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 40px;
+  height: 40px;
+  background: white;
   border-radius: 50%;
-  /* border: 3px solid white; */
   display: flex;
   align-items: center;
   justify-content: center;
-  box-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
-  z-index: 2;
-  pointer-events: auto;
-  cursor: grab;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
 }
 
-.handle-circle:active {
-  cursor: grabbing;
-  transform: translateY(-50%) scale(1.05);
+.handle-line {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 100%;
+  background: white;
 }
 
 .arrow {
-  font-size: 12px;
-  position: absolute;
+  font-size: 16px;
+  color: #333;
+  font-weight: bold;
 }
 
 .arrow.left {
-  left: -10px;
+  margin-right: 2px;
 }
 
 .arrow.right {
-  right: -10px;
+  margin-left: 2px;
 }
 
-/* Labels */
 .labels {
   display: flex;
   justify-content: space-between;
-  margin-top: 10px;
-  font-weight: bold;
-  font-size: 1rem;
   font-family: "Montserrat", sans-serif;
+  font-weight: bold;
+  padding: 10px 5px;
+  color: #1c85c5;
   text-transform: uppercase;
-  color: #1286d1;
+  font-size: 16px;
 }
 
-/* Responsive: mobile devices */
-@media screen and (max-width: 768px) {
+/* Mobile-specific styles */
+@media (max-width: 768px) {
+  .slider-container {
+    padding: 15px;
+  }
+
+  .slider-container h2 {
+    font-size: 24px;
+    margin-bottom: 20px;
+  }
+
   .wheels-grid {
-    grid-template-columns: 1fr; /* Stack images vertically */
-    gap: 15px;
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+
+  .slider-handle {
+    width: 6px; /* Thicker handle for better touch visibility */
   }
 
   .handle-circle {
-    width: 25px;
-    height: 25px;
-    font-size: 12px;
+    width: 50px; /* Larger touch area */
+    height: 50px;
   }
 
   .arrow {
-    font-size: 10px;
+    font-size: 18px; /* Larger arrows for better visibility */
   }
 
-  .labels {
-    font-size: 14px;
+  .image {
+    aspect-ratio: 1/1; /* More square aspect ratio for mobile */
+  }
+}
+
+@media (max-width: 480px) {
+  .slider-container {
+    padding: 10px;
+  }
+
+  .slider-container h2 {
+    font-size: 20px;
+  }
+
+  .slider-handle {
+    width: 8px; /* Even thicker handle for small screens */
+  }
+
+  .handle-circle {
+    width: 60px; /* Even larger touch area */
+    height: 60px;
+  }
+
+  .arrow {
+    font-size: 20px; /* Even larger arrows */
   }
 }
